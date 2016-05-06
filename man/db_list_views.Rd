@@ -31,5 +31,6 @@ dbserver_views <- db_list_views(db_con = con,
                                 db_name = "dbname",
                                 db_schema = "dbschema")
 }
+
 }
 

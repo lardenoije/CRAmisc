@@ -29,5 +29,6 @@ my_cols <- sql_col_names(c("mixedCasecol", "anothermixedCol"))
 # use
 my_tbl \%>\% select(my_cols)
 }
+
 }
 

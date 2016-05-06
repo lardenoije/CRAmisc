@@ -112,6 +112,7 @@ db_list_ <- function(obj) {
 #' con <- RSQLServer::src_sqlserver(server = "dbserver_dbname", file = "~/.sql.yaml")
 #' dbserver_schemas <- db_list_schemas(db_con = con)
 #' }
+#' @export
 db_list_schemas <- db_list_("schemas")
 
 
@@ -132,6 +133,7 @@ db_list_schemas <- db_list_("schemas")
 #' con <- RSQLServer::src_sqlserver(server = "dbserver_dbname", file = "~/.sql.yaml")
 #' dbserver_tables <- db_list_tables(db_con = con, db_name = "dbname")
 #' }
+#' @export
 db_list_tables <- db_list_("tables")
 
 
@@ -154,6 +156,8 @@ db_list_tables <- db_list_("tables")
 #'                                 db_name = "dbname",
 #'                                 db_schema = "dbschema")
 #' }
+#'
+#' @export
 db_list_views <- db_list_("views")
 
 
@@ -172,6 +176,8 @@ db_list_views <- db_list_("views")
 #'                             db_name = "dbname",
 #'                             db_schema = "dbschema")
 #' }
+#'
+#' @export
 db_list_tvs <- db_list_("tvs")
 
 
@@ -197,6 +203,8 @@ db_list_tvs <- db_list_("tvs")
 #' # use
 #' my_tbl %>% select(my_cols)
 #' }
+#'
+#' @export
 sql_col_names <- function(cols, tbl) {
   purrr::map_chr(
     cols,

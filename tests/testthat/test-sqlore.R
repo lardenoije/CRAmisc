@@ -14,6 +14,7 @@ test_port <- Sys.getenv("TEST_PORT")
 test_db <- Sys.getenv("TEST_DB")
 test_table <- Sys.getenv("TEST_TABLE")
 test_view <- Sys.getenv("TEST_VIEW")
+test_col <- Sys.getenv("TEST_COL")
 
 # connect
 dbConnect_safely <- purrr::safely(DBI::dbConnect, otherwise = NA_character_)
@@ -27,6 +28,10 @@ con <- src_sqlserver_safely(server = test_server,
                               domain = domain_name,
                               useNTLMv2 = TRUE
                             ))
+
+# sample table / query
+sql_query <- paste0("SELECT * FROM [", test_db, "].[dbo].[", test_view, "]")
+test_view_tibble <- dplyr::tbl(con$result, dplyr::sql(sql_query))
 
 # tests
 test_that("db_list_schemas lists schemas", {
@@ -96,4 +101,14 @@ test_that("db_list_views lists tables and views", {
                test_table,
                all = FALSE,
                ignore.case = TRUE)
+})
+
+test_that("sql_col_names returns appropriate case", {
+  skip_if_not(is.null(con$error),
+              message = paste0("Unable to make connection to ", test_server))
+
+  test_col_upper <- toupper(test_col)
+  expect_equal(sql_col_names(cols = test_col_upper,
+                             tbl = test_view_tibble),
+               test_col)
 })

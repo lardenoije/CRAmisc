@@ -4,7 +4,7 @@ Title: Curtis Miscellaneous
 Version: 0.1.0
 Authors@R: person("Curtis", "Alexander", role = c("aut", "cre"), email = "calex@calex.org")
 Maintainer: Curtis Alexander <calex@calex.org>
-Description: Contains a collection of functions for data analysis.
+Description: Contains a collection of personal functions for data analysis.
 License: MIT + file LICENSE
 URL: https://github.com/curtisalexander/CRAmisc
 BugReports: https://github.com/curtisalexander/CRAmisc/issues

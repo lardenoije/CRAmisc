@@ -24,5 +24,6 @@ List all schemas in a Microsoft SQL Server database.
 con <- RSQLServer::src_sqlserver(server = "dbserver_dbname", file = "~/.sql.yaml")
 dbserver_schemas <- db_list_schemas(db_con = con)
 }
+
 }
 

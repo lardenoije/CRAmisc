@@ -11,7 +11,7 @@
 #'   use one of the functions
 #'   \itemize{
 #'     \item \code{\link{db_list_schemas}}
-#'     \item \code{\link{db_list_tables}}
+#'     \item \code{\link{db_list_tbls}}
 #'     \item \code{\link{db_list_views}}
 #'     \item \code{\link{db_list_tvs}}
 #'   }
@@ -75,7 +75,7 @@ db_list_sql_ <- function(db_con, db_name, db_schema, obj) {
 #'   use one of the functions
 #'   \itemize{
 #'     \item \code{\link{db_list_schemas}}
-#'     \item \code{\link{db_list_tables}}
+#'     \item \code{\link{db_list_tbls}}
 #'     \item \code{\link{db_list_views}}
 #'     \item \code{\link{db_list_tvs}}
 #'   }
@@ -112,6 +112,7 @@ db_list_ <- function(obj) {
 #' con <- RSQLServer::src_sqlserver(server = "dbserver_dbname", file = "~/.sql.yaml")
 #' dbserver_schemas <- db_list_schemas(db_con = con)
 #' }
+#'
 #' @export
 db_list_schemas <- db_list_("schemas")
 
@@ -131,10 +132,12 @@ db_list_schemas <- db_list_("schemas")
 #' @examples
 #' \dontrun{
 #' con <- RSQLServer::src_sqlserver(server = "dbserver_dbname", file = "~/.sql.yaml")
-#' dbserver_tables <- db_list_tables(db_con = con, db_name = "dbname")
+#' dbserver_tables <- db_list_tbls(db_con = con,
+#'                                 db_name = "dbname",
+#'                                 db_schema = "dbschema")
 #' }
 #' @export
-db_list_tables <- db_list_("tables")
+db_list_tbls <- db_list_("tables")
 
 
 #' List views.
@@ -195,17 +198,18 @@ db_list_tvs <- db_list_("tvs")
 #' \dontrun{
 #' # connection and tibble objects
 #' con <- RSQLServer::src_sqlserver(server = "dbserver_dbname", file = "~/.sql.yaml")
-#' my_tbl <- dplyr::tbl(con, sql("SELECT * FROM [dbname].[dbschema].[mytable]"))
+#' my_tibble <- dplyr::tbl(con, dplyr::sql("SELECT * FROM [dbname].[dbschema].[dbtable]"))
 #'
-#' # get column names
-#' my_cols <- sql_col_names(c("mixedCasecol", "anothermixedCol"))
-#
+#' # column names
+#' my_cols <- c("mixedCasecol", "anothermixedCol")
+#'
 #' # use
-#' my_tbl %>% select(my_cols)
+#' my_tibble %>%
+#'   sql_col_names(my_cols)
 #' }
 #'
 #' @export
-sql_col_names <- function(cols, tbl) {
+sql_col_names <- function(tbl, cols) {
   purrr::map_chr(
     cols,
     function(col) dplyr::tbl_vars(tbl)[match(tolower(col),

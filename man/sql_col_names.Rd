@@ -4,12 +4,12 @@
 \alias{sql_col_names}
 \title{Get exact names of columns from SQL Server.}
 \usage{
-sql_col_names(cols, tbl)
+sql_col_names(tbl, cols)
 }
 \arguments{
-\item{cols}{character vector of column names}
-
 \item{tbl}{table object (tibble)}
+
+\item{cols}{character vector of column names}
 }
 \value{
 A character vector of column names with the appropriate case.
@@ -22,12 +22,14 @@ as SQL Server stores them.
 \dontrun{
 # connection and tibble objects
 con <- RSQLServer::src_sqlserver(server = "dbserver_dbname", file = "~/.sql.yaml")
-my_tbl <- dplyr::tbl(con, sql("SELECT * FROM [dbname].[dbschema].[mytable]"))
+my_tibble <- dplyr::tbl(con, dplyr::sql("SELECT * FROM [dbname].[dbschema].[dbtable]"))
 
-# get column names
-my_cols <- sql_col_names(c("mixedCasecol", "anothermixedCol"))
+# column names
+my_cols <- c("mixedCasecol", "anothermixedCol")
+
 # use
-my_tbl \%>\% select(my_cols)
+my_tibble \%>\%
+  sql_col_names(my_cols)
 }
 
 }

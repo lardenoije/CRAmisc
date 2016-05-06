@@ -27,7 +27,7 @@ functions.
   use one of the functions
   \itemize{
     \item \code{\link{db_list_schemas}}
-    \item \code{\link{db_list_tables}}
+    \item \code{\link{db_list_tbls}}
     \item \code{\link{db_list_views}}
     \item \code{\link{db_list_tvs}}
   }

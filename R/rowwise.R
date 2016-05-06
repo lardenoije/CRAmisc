@@ -40,6 +40,7 @@ rowwise_tr_chunks <- function(res, n, f) {
 
 # perform the XML cleansing on the dataframe chunks returned
 # this will be passed to rowwise_tr_chunks
+# @importFrom dplyr "%>%"
 #xml_processing <- function(df) {
 #  df %>%
 #    rowwise %>% # requires a dataframe

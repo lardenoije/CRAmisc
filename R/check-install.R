@@ -18,6 +18,12 @@
 #' check_install(req_pkgs)
 #' }
 #'
+#' @seealso
+#'   \itemize{
+#'     \href{https://rstudio.github.io/packrat/}{Packrat}
+#'     \href{https://github.com/robertzk/lockbox}{Lockbox}
+#'   }
+#'
 #' @export
 check_install <- function(pkgs) {
   installed_packages <- installed.packages()[,1]

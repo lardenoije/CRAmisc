@@ -1,30 +1,36 @@
 #' Generate SQL query.
 #'
-#' \code{db_list_sql_} returns an SQL query as a string based on the parameters
+#' \code{sql_list_sql_} returns an SQL query as a string based on the parameters
 #' passed to it.
 #'
-#' \code{db_list_sql_} is used along with the function factory
-#' \code{\link{db_list_}} to create functions that return properties of a
+#' \code{sql_list_sql_} is used along with the function factory
+#' \code{\link{sql_list_}} to create functions that return properties of a
 #' Microsoft SQL Server database.
 #'
 #' @section Warning: The intent is not to use this function directly.  Instead
 #'   use one of the functions
 #'   \itemize{
-#'     \item \code{\link{db_list_schemas}}
-#'     \item \code{\link{db_list_tbls}}
-#'     \item \code{\link{db_list_views}}
-#'     \item \code{\link{db_list_tvs}}
+#'     \item \code{\link{sql_list_schemas}}
+#'     \item \code{\link{sql_list_tbls}}
+#'     \item \code{\link{sql_list_views}}
+#'     \item \code{\link{sql_list_tvs}}
 #'   }
 #'
 #' @param db_con Database server connection object.
 #' @param db_name Database name.
 #' @param db_schema Database schema.
 #' @param obj String used with \code{switch} to select appropriate SQL query.
-#'   Choices include \code{"schemas"}, \code{"tables"}, \code{"views"}, and
-#'   \code{"tvs"}.
+#'   Choices include
+#'   \itemize{
+#'     \item \code{"schemas"}
+#'     \item \code{"tables"}
+#'     \item \code{"views"}
+#'     \item \code{"tvs"}
+#'   }
 #'
 #' @return An SQL query as a string.
-db_list_sql_ <- function(db_con, db_name, db_schema, obj) {
+#'
+sql_list_sql_ <- function(db_con, db_name, db_schema, obj) {
   # switch is weird in R
   sql_statement <-
     switch(obj,
@@ -60,42 +66,59 @@ db_list_sql_ <- function(db_con, db_name, db_schema, obj) {
                     WHERE name = '", db_schema, "')")
            }
     )
- }
+}
 
 
-#' Create db_list_xyz functions.
+#' Create sql_list_xyz functions.
 #'
-#' \code{db_list_} is a function factory to create functions that returns
+#' \code{sql_list_} is a function factory to create functions that return
 #' properties of a Microsoft SQL Server database.
 #'
-#' \code{db_list_} is used along with \code{\link{db_list_sql_}} to create
+#' \code{sql_list_} is used along with \code{\link{sql_list_sql_}} to create
 #' functions.
 #'
 #' @section Warning: The intent is not to use this function directly.  Instead
 #'   use one of the functions
 #'   \itemize{
-#'     \item \code{\link{db_list_schemas}}
-#'     \item \code{\link{db_list_tbls}}
-#'     \item \code{\link{db_list_views}}
-#'     \item \code{\link{db_list_tvs}}
+#'     \item \code{\link{sql_list_schemas}}
+#'     \item \code{\link{sql_list_tbls}}
+#'     \item \code{\link{sql_list_views}}
+#'     \item \code{\link{sql_list_tvs}}
 #'   }
 #'
 #' @param obj String used with \code{switch} in the function
-#'   \code{\link{db_list_sql_}} to select appropriate SQL query. Choices include
-#'   \code{"schemas"}, \code{"tables"}, \code{"views"}, and \code{"tvs"}.
+#'   \code{\link{sql_list_sql_}} to select appropriate SQL query. Choices include
+#'   \itemize{
+#'     \item \code{"schemas"}
+#'     \item \code{"tables"}
+#'     \item \code{"views"}
+#'     \item \code{"tvs"}
+#'   }
 #'
 #' @return A function that can be assigned a custom variable name.
 #'
 #' @seealso
 #'   \href{http://adv-r.had.co.nz/Functional-programming.html#closures}{Closures}
-db_list_ <- function(obj) {
-  function(db_con, db_name, db_schema) {
-    sql_statement <- db_list_sql_(db_con = db_con,
-                                  db_name = db_name,
-                                  db_schema = db_schema,
-                                  obj = obj)
+#'
+sql_list_ <- function(obj) {
+  if (obj == "schemas") {
+    function(db_con, db_name) {
+      sql_statement <- sql_list_sql_(db_con = db_con,
+                                     db_name = db_name,
+                                     db_schema = NULL,
+                                     obj = obj)
+      # assumes that the column name returned is always 'name'
+      sort(as.data.frame(dplyr::tbl(db_con, dplyr::sql(sql_statement)))$name)
+    }
+  } else {
+    function(db_con, db_name, db_schema) {
+      sql_statement <- sql_list_sql_(db_con = db_con,
+                                     db_name = db_name,
+                                     db_schema = db_schema,
+                                     obj = obj)
     # assumes that the column name returned is always 'name'
     sort(as.data.frame(dplyr::tbl(db_con, dplyr::sql(sql_statement)))$name)
+    }
   }
 }
 
@@ -103,18 +126,21 @@ db_list_ <- function(obj) {
 #'
 #' List all schemas in a Microsoft SQL Server database.
 #'
-#' @inheritParams db_list_sql_
+#' @inheritParams sql_list_sql_
 #'
 #' @return A character vector of all schemas.
 #'
 #' @examples
 #' \dontrun{
 #' con <- RSQLServer::src_sqlserver(server = "dbserver_dbname", file = "~/.sql.yaml")
-#' dbserver_schemas <- db_list_schemas(db_con = con)
+#' dbserver_schemas <- sql_list_schemas(db_con = con,
+#'                                      db_name = "dbname")
 #' }
 #'
+#' @family sql_lists
+#'
 #' @export
-db_list_schemas <- db_list_("schemas")
+sql_list_schemas <- sql_list_("schemas")
 
 
 #' List tables.
@@ -123,21 +149,24 @@ db_list_schemas <- db_list_("schemas")
 #'
 #' @section Warning:
 #' Will not return views.  If tables and views are desired, use
-#' \code{\link{db_list_tvs}}.
+#' \code{\link{sql_list_tvs}}.
 #'
-#' @inheritParams db_list_sql_
+#' @inheritParams sql_list_sql_
 #'
 #' @return A character vector of all tables.
 #'
 #' @examples
 #' \dontrun{
 #' con <- RSQLServer::src_sqlserver(server = "dbserver_dbname", file = "~/.sql.yaml")
-#' dbserver_tables <- db_list_tbls(db_con = con,
-#'                                 db_name = "dbname",
-#'                                 db_schema = "dbschema")
+#' dbserver_tables <- sql_list_tbls(db_con = con,
+#'                                  db_name = "dbname",
+#'                                  db_schema = "dbschema")
 #' }
+#'
+#' @family sql_lists
+#'
 #' @export
-db_list_tbls <- db_list_("tables")
+sql_list_tbls <- sql_list_("tables")
 
 
 #' List views.
@@ -146,42 +175,46 @@ db_list_tbls <- db_list_("tables")
 #'
 #' @section Warning:
 #' Will not return tables.  If tables and views are desired, use
-#' \code{\link{db_list_tvs}}.
+#' \code{\link{sql_list_tvs}}.
 #'
-#' @inheritParams db_list_sql_
+#' @inheritParams sql_list_sql_
 #'
 #' @return A character vector of all views.
 #'
 #' @examples
 #' \dontrun{
 #' con <- RSQLServer::src_sqlserver(server = "dbserver_dbname", file = "~/.sql.yaml")
-#' dbserver_views <- db_list_views(db_con = con,
-#'                                 db_name = "dbname",
-#'                                 db_schema = "dbschema")
+#' dbserver_views <- sql_list_views(db_con = con,
+#'                                  db_name = "dbname",
+#'                                  db_schema = "dbschema")
 #' }
 #'
+#' @family sql_lists
+#'
 #' @export
-db_list_views <- db_list_("views")
+sql_list_views <- sql_list_("views")
 
 
 #' List tables and views.
 #'
 #' List all tables and views in a Microsoft SQL Server database.
 #'
-#' @inheritParams db_list_sql_
+#' @inheritParams sql_list_sql_
 #'
 #' @return A character vector of all tables and views.
 #'
 #' @examples
 #' \dontrun{
 #' con <- RSQLServer::src_sqlserver(server = "dbserver_dbname", file = "~/.sql.yaml")
-#' dbserver_tvs <- db_list_tvs(db_con = con,
-#'                             db_name = "dbname",
-#'                             db_schema = "dbschema")
+#' dbserver_tvs <- sql_list_tvs(db_con = con,
+#'                              db_name = "dbname",
+#'                              db_schema = "dbschema")
 #' }
 #'
+#' @family sql_lists
+#'
 #' @export
-db_list_tvs <- db_list_("tvs")
+sql_list_tvs <- sql_list_("tvs")
 
 
 #' Get exact names of columns from SQL Server.
@@ -201,15 +234,17 @@ db_list_tvs <- db_list_("tvs")
 #' my_tibble <- dplyr::tbl(con, dplyr::sql("SELECT * FROM [dbname].[dbschema].[dbtable]"))
 #'
 #' # column names
-#' my_cols <- c("mixedCasecol", "anothermixedCol")
+#' my_cols <- c("mixedCasecol", "anothermixedCASECol")
 #'
 #' # use
 #' my_tibble %>%
-#'   sql_col_names(my_cols)
+#'   sql_list_cols(my_cols)
 #' }
 #'
+#' @family sql_lists
+#'
 #' @export
-sql_col_names <- function(tbl, cols) {
+sql_list_cols <- function(tbl, cols) {
   purrr::map_chr(
     cols,
     function(col) dplyr::tbl_vars(tbl)[match(tolower(col),

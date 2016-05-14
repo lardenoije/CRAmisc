@@ -31,77 +31,77 @@ con <- src_sqlserver_safely(server = test_server,
 
 # sample table / query
 sql_query <- paste0("SELECT TOP 10 * FROM [", test_db, "].[dbo].[", test_view, "]")
-test_view_tibble <- dplyr::tbl(con$result, dplyr::sql(sql_query))
+if (!is.na(con$result)) test_view_tibble <- dplyr::tbl(con$result, dplyr::sql(sql_query))
 
 # tests
-test_that("db_list_schemas lists schemas", {
+test_that("sql_list_schemas lists schemas", {
   skip_if_not(is.null(con$error),
               message = paste0("Unable to make connection to ", test_server))
-  expect_match(db_list_schemas(db_con = con$result, db_name = test_db),
+  expect_match(sql_list_schemas(db_con = con$result, db_name = test_db),
                "dbo",
                all = FALSE,
                ignore.case = TRUE)
 })
 
-test_that("db_list_tbls lists tables", {
+test_that("sql_list_tbls lists tables", {
   skip_if_not(is.null(con$error),
               message = paste0("Unable to make connection to ", test_server))
 
-  expect_match(db_list_tbls(db_con = con$result,
-                            db_name = test_db,
-                            db_schema = "dbo"),
+  expect_match(sql_list_tbls(db_con = con$result,
+                             db_name = test_db,
+                             db_schema = "dbo"),
                test_table,
                all = FALSE,
                ignore.case = TRUE)
 })
 
-test_that("db_list_views lists views", {
+test_that("sql_list_views lists views", {
   skip_if_not(is.null(con$error),
               message = paste0("Unable to make connection to ", test_server))
 
-  expect_match(db_list_views(db_con = con$result,
-                             db_name = test_db,
-                             db_schema = "dbo"),
+  expect_match(sql_list_views(db_con = con$result,
+                              db_name = test_db,
+                              db_schema = "dbo"),
                test_view,
                all = FALSE,
                ignore.case = TRUE)
 })
 
-test_that("db_list_views lists tables and views", {
+test_that("sql_list_views lists tables and views", {
   skip_if_not(is.null(con$error),
               message = paste0("Unable to make connection to ", test_server))
 
-  expect_match(db_list_views(db_con = con$result,
-                             db_name = test_db,
-                             db_schema = "dbo"),
+  expect_match(sql_list_views(db_con = con$result,
+                              db_name = test_db,
+                              db_schema = "dbo"),
                test_view,
                all = FALSE,
                ignore.case = TRUE)
-  expect_match(db_list_tbls(db_con = con$result,
-                            db_name = test_db,
-                            db_schema = "dbo"),
+  expect_match(sql_list_tbls(db_con = con$result,
+                             db_name = test_db,
+                             db_schema = "dbo"),
                test_table,
                all = FALSE,
                ignore.case = TRUE)
 })
 
-test_that("sql_col_names returns appropriate case", {
+test_that("sql_list_cols returns appropriate case", {
   skip_if_not(is.null(con$error),
               message = paste0("Unable to make connection to ", test_server))
 
   test_col_upper <- toupper(test_col)
-  expect_equal(sql_col_names(tbl = test_view_tibble,
+  expect_equal(sql_list_cols(tbl = test_view_tibble,
                              cols = test_col_upper),
                test_col)
 })
 
-test_that("sql_col_names can be used with a pipe", {
+test_that("sql_list_cols can be used with a pipe", {
   skip_if_not(is.null(con$error),
               message = paste0("Unable to make connection to ", test_server))
 
-  sql_col_names_pipeline <- function(df, cols) {
+  sql_list_cols_pipeline <- function(df, cols) {
     df %>%
-      sql_col_names(cols)
+      sql_list_cols(cols)
   }
 
   expect_equal(sql_col_names_pipeline(test_view_tibble, test_col),

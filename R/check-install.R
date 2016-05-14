@@ -9,19 +9,18 @@
 #' called for its side effects.
 #'
 #' @examples
-#' \dontrun{
 #' req_pkgs <- list(
 #'   "dplyr",
 #'   "purrr",
 #'   "rprojroot"
 #' )
+#'
 #' check_install(req_pkgs)
-#' }
 #'
 #' @seealso
 #'   \itemize{
-#'     \href{https://rstudio.github.io/packrat/}{Packrat}
-#'     \href{https://github.com/robertzk/lockbox}{Lockbox}
+#'     \item \href{https://rstudio.github.io/packrat/}{Packrat}
+#'     \item \href{https://github.com/robertzk/lockbox}{Lockbox}
 #'   }
 #'
 #' @export

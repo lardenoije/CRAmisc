@@ -17,7 +17,7 @@ sql_list_tbls(db_con, db_name, db_schema)
 A character vector of all tables.
 }
 \description{
-List all tables in a Microsoft SQL Server database.
+\code{sql_list_tbls} lists all tables in a Microsoft SQL Server database.
 }
 \section{Warning}{
 

@@ -15,8 +15,9 @@ sql_list_cols(tbl, cols)
 A character vector of column names with the appropriate case.
 }
 \description{
-Because Microsoft SQL Server column names can be case sensitive, get the exact column names
-as SQL Server stores them.
+\code{sql_list_cols} returns Microsoft SQL Server column names with the
+appropriate case.  Because column names can be case sensitive, get the exact
+column names as SQL Server stores them.
 }
 \examples{
 \dontrun{

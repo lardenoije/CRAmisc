@@ -145,7 +145,7 @@ sql_list_schemas <- sql_list_("schemas")
 
 #' List tables.
 #'
-#' List all tables in a Microsoft SQL Server database.
+#' \code{sql_list_tbls} lists all tables in a Microsoft SQL Server database.
 #'
 #' @section Warning:
 #' Will not return views.  If tables and views are desired, use
@@ -171,7 +171,7 @@ sql_list_tbls <- sql_list_("tables")
 
 #' List views.
 #'
-#' List all views in a Microsoft SQL Server database.
+#' \code{sql_list_views} lists all views in a Microsoft SQL Server database.
 #'
 #' @section Warning:
 #' Will not return tables.  If tables and views are desired, use
@@ -197,7 +197,8 @@ sql_list_views <- sql_list_("views")
 
 #' List tables and views.
 #'
-#' List all tables and views in a Microsoft SQL Server database.
+#' \code{sql_list_tvs} lists all tables and views in a Microsoft SQL Server
+#' database.
 #'
 #' @inheritParams sql_list_sql_
 #'
@@ -219,8 +220,9 @@ sql_list_tvs <- sql_list_("tvs")
 
 #' Get exact names of columns from SQL Server.
 #'
-#' Because Microsoft SQL Server column names can be case sensitive, get the exact column names
-#' as SQL Server stores them.
+#' \code{sql_list_cols} returns Microsoft SQL Server column names with the
+#' appropriate case.  Because column names can be case sensitive, get the exact
+#' column names as SQL Server stores them.
 #'
 #' @param cols character vector of column names
 #' @param tbl table object (tibble)

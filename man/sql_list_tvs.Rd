@@ -17,7 +17,8 @@ sql_list_tvs(db_con, db_name, db_schema)
 A character vector of all tables and views.
 }
 \description{
-List all tables and views in a Microsoft SQL Server database.
+\code{sql_list_tvs} lists all tables and views in a Microsoft SQL Server
+database.
 }
 \examples{
 \dontrun{

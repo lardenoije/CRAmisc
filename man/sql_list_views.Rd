@@ -17,7 +17,7 @@ sql_list_views(db_con, db_name, db_schema)
 A character vector of all views.
 }
 \description{
-List all views in a Microsoft SQL Server database.
+\code{sql_list_views} lists all views in a Microsoft SQL Server database.
 }
 \section{Warning}{
 

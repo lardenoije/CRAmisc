@@ -17,7 +17,7 @@ sql_list_(obj)
 }}
 }
 \value{
-A function that can be assigned a custom variable name.
+A function that executes an appropriate SQL query.
 }
 \description{
 \code{sql_list_} is a function factory to create functions that return
@@ -26,16 +26,15 @@ properties of a Microsoft SQL Server database.
 \details{
 \code{sql_list_} is used along with \code{\link{sql_list_sql_}} to create
 functions.
+
+The intent is not to use this function directly.  Instead
+use one of the functions
+\itemize{
+  \item \code{\link{sql_list_schemas}}
+  \item \code{\link{sql_list_tbls}}
+  \item \code{\link{sql_list_views}}
+  \item \code{\link{sql_list_tvs}}
 }
-\section{Warning}{
- The intent is not to use this function directly.  Instead
-  use one of the functions
-  \itemize{
-    \item \code{\link{sql_list_schemas}}
-    \item \code{\link{sql_list_tbls}}
-    \item \code{\link{sql_list_views}}
-    \item \code{\link{sql_list_tvs}}
-  }
 }
 \seealso{
 \href{http://adv-r.had.co.nz/Functional-programming.html#closures}{Closures}

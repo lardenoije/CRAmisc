@@ -1,7 +1,7 @@
 Package: CRAmisc
 Type: Package
 Title: Curtis Miscellaneous
-Version: 0.2.1
+Version: 0.2.3
 Authors@R: person("Curtis", "Alexander", role = c("aut", "cre"), email = "calex@calex.org")
 Maintainer: Curtis Alexander <calex@calex.org>
 Description: Contains a collection of personal functions for data analysis.
@@ -13,6 +13,7 @@ Imports:
     purrr (>= 0.2.1)
 Suggests:
     DBI (>= 0.4.0),
+    rprojroot (>= 1.0.2),
     RSQLServer (>= 0.2.0),
     testthat
 LazyData: TRUE

@@ -33,15 +33,14 @@ passed to it.
 \code{sql_list_sql_} is used along with the function factory
 \code{\link{sql_list_}} to create functions that return properties of a
 Microsoft SQL Server database.
+
+The intent is not to use this function directly.  Instead use one of the
+functions
+\itemize{
+  \item \code{\link{sql_list_schemas}}
+  \item \code{\link{sql_list_tbls}}
+  \item \code{\link{sql_list_views}}
+  \item \code{\link{sql_list_tvs}}
 }
-\section{Warning}{
- The intent is not to use this function directly.  Instead
-  use one of the functions
-  \itemize{
-    \item \code{\link{sql_list_schemas}}
-    \item \code{\link{sql_list_tbls}}
-    \item \code{\link{sql_list_views}}
-    \item \code{\link{sql_list_tvs}}
-  }
 }
 

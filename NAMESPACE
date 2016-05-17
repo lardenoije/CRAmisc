@@ -2,6 +2,9 @@
 
 export(check_install)
 export(expandingList)
+export(is_linux)
+export(is_osx)
+export(is_windows)
 export(sql_list_cols)
 export(sql_list_schemas)
 export(sql_list_tbls)

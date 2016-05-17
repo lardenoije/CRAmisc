@@ -18,10 +18,10 @@
 #' check_install(req_pkgs)
 #'
 #' @seealso
-#'   \itemize{
-#'     \item \href{https://rstudio.github.io/packrat/}{Packrat}
-#'     \item \href{https://github.com/robertzk/lockbox}{Lockbox}
-#'   }
+#' \itemize{
+#'   \item \href{https://rstudio.github.io/packrat/}{Packrat}
+#'   \item \href{https://github.com/robertzk/lockbox}{Lockbox}
+#' }
 #'
 #' @export
 check_install <- function(pkgs) {

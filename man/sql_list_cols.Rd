@@ -2,14 +2,14 @@
 % Please edit documentation in R/sql-explore.R
 \name{sql_list_cols}
 \alias{sql_list_cols}
-\title{Get exact names of columns from SQL Server.}
+\title{List exact names of columns.}
 \usage{
 sql_list_cols(tbl, cols)
 }
 \arguments{
-\item{tbl}{table object (tibble)}
+\item{tbl}{A table object (\code{tibble}).}
 
-\item{cols}{character vector of column names}
+\item{cols}{A character vector of column names.}
 }
 \value{
 A character vector of column names with the appropriate case.
@@ -18,6 +18,10 @@ A character vector of column names with the appropriate case.
 \code{sql_list_cols} returns Microsoft SQL Server column names with the
 appropriate case.  Because column names can be case sensitive, get the exact
 column names as SQL Server stores them.
+}
+\details{
+\code{dplyr::tbl_vars(x)} does not return case sensitive columns, thus the
+the need for this function.
 }
 \examples{
 \dontrun{

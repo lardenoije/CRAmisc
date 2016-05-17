@@ -10,24 +10,24 @@ expandingList(capacity = 10, envir = emptyenv())
 \item{capacity}{Initial list capacity or length.}
 }
 \value{
-A closure named expandingList with functions (or methods)
+A closure named expandingList with functions
 \itemize{
   \item \code{expandingList$double.size} doubles the size of the list
   \item \code{expandingList$add} adds an element to the list
   \item \code{expandingList$as.list} converts the \code{expandingList} into
-  an R list
+  a standard \R \code{list}
 }
 }
 \description{
-\code{expandingList} is a fast implementation of a list that can be appended
-to and turned into a list.
+\code{expandingList} is a fast implementation of a list that can be
+dynamically appended to and turned into a standard \R \code{list}.
 }
 \details{
 \code{expandingList} is a
 \href{http://adv-r.had.co.nz/Functional-programming.html#closures}{closure}
 that enables modification in place.  It serves as an
 \href{http://www.win-vector.com/blog/2015/03/using-closures-as-objects-in-r/)}{object}
-in R.
+in \R.
 
 The code is copied from Jan Kanis at
 \url{http://stackoverflow.com/a/32870310}.

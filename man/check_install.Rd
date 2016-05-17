@@ -29,8 +29,8 @@ check_install(req_pkgs)
 }
 \seealso{
 \itemize{
-    \item \href{https://rstudio.github.io/packrat/}{Packrat}
-    \item \href{https://github.com/robertzk/lockbox}{Lockbox}
-  }
+  \item \href{https://rstudio.github.io/packrat/}{Packrat}
+  \item \href{https://github.com/robertzk/lockbox}{Lockbox}
+}
 }
 

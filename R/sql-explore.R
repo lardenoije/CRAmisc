@@ -7,29 +7,28 @@
 #' \code{\link{sql_list_}} to create functions that return properties of a
 #' Microsoft SQL Server database.
 #'
-#' @section Warning: The intent is not to use this function directly.  Instead
-#'   use one of the functions
-#'   \itemize{
-#'     \item \code{\link{sql_list_schemas}}
-#'     \item \code{\link{sql_list_tbls}}
-#'     \item \code{\link{sql_list_views}}
-#'     \item \code{\link{sql_list_tvs}}
-#'   }
+#' The intent is not to use this function directly.  Instead use one of the
+#' functions
+#' \itemize{
+#'   \item \code{\link{sql_list_schemas}}
+#'   \item \code{\link{sql_list_tbls}}
+#'   \item \code{\link{sql_list_views}}
+#'   \item \code{\link{sql_list_tvs}}
+#' }
 #'
 #' @param db_con Database server connection object.
 #' @param db_name Database name.
 #' @param db_schema Database schema.
 #' @param obj String used with \code{switch} to select appropriate SQL query.
-#'   Choices include
-#'   \itemize{
-#'     \item \code{"schemas"}
-#'     \item \code{"tables"}
-#'     \item \code{"views"}
-#'     \item \code{"tvs"}
-#'   }
+#' Choices include
+#' \itemize{
+#'   \item \code{"schemas"}
+#'   \item \code{"tables"}
+#'   \item \code{"views"}
+#'   \item \code{"tvs"}
+#' }
 #'
 #' @return An SQL query as a string.
-#'
 sql_list_sql_ <- function(db_con, db_name, db_schema, obj) {
   # switch is weird in R
   sql_statement <-
@@ -77,29 +76,28 @@ sql_list_sql_ <- function(db_con, db_name, db_schema, obj) {
 #' \code{sql_list_} is used along with \code{\link{sql_list_sql_}} to create
 #' functions.
 #'
-#' @section Warning: The intent is not to use this function directly.  Instead
-#'   use one of the functions
-#'   \itemize{
-#'     \item \code{\link{sql_list_schemas}}
-#'     \item \code{\link{sql_list_tbls}}
-#'     \item \code{\link{sql_list_views}}
-#'     \item \code{\link{sql_list_tvs}}
-#'   }
+#' The intent is not to use this function directly.  Instead
+#' use one of the functions
+#' \itemize{
+#'   \item \code{\link{sql_list_schemas}}
+#'   \item \code{\link{sql_list_tbls}}
+#'   \item \code{\link{sql_list_views}}
+#'   \item \code{\link{sql_list_tvs}}
+#' }
 #'
 #' @param obj String used with \code{switch} in the function
-#'   \code{\link{sql_list_sql_}} to select appropriate SQL query. Choices include
-#'   \itemize{
-#'     \item \code{"schemas"}
-#'     \item \code{"tables"}
-#'     \item \code{"views"}
-#'     \item \code{"tvs"}
-#'   }
+#' \code{\link{sql_list_sql_}} to select appropriate SQL query. Choices include
+#' \itemize{
+#'   \item \code{"schemas"}
+#'   \item \code{"tables"}
+#'   \item \code{"views"}
+#'   \item \code{"tvs"}
+#' }
 #'
-#' @return A function that can be assigned a custom variable name.
+#' @return A function that executes an appropriate SQL query.
 #'
 #' @seealso
-#'   \href{http://adv-r.had.co.nz/Functional-programming.html#closures}{Closures}
-#'
+#' \href{http://adv-r.had.co.nz/Functional-programming.html#closures}{Closures}
 sql_list_ <- function(obj) {
   if (obj == "schemas") {
     function(db_con, db_name) {
@@ -147,7 +145,6 @@ sql_list_schemas <- sql_list_("schemas")
 #'
 #' \code{sql_list_tbls} lists all tables in a Microsoft SQL Server database.
 #'
-#' @section Warning:
 #' Will not return views.  If tables and views are desired, use
 #' \code{\link{sql_list_tvs}}.
 #'
@@ -173,7 +170,6 @@ sql_list_tbls <- sql_list_("tables")
 #'
 #' \code{sql_list_views} lists all views in a Microsoft SQL Server database.
 #'
-#' @section Warning:
 #' Will not return tables.  If tables and views are desired, use
 #' \code{\link{sql_list_tvs}}.
 #'
@@ -218,14 +214,17 @@ sql_list_views <- sql_list_("views")
 sql_list_tvs <- sql_list_("tvs")
 
 
-#' Get exact names of columns from SQL Server.
+#' List exact names of columns.
 #'
 #' \code{sql_list_cols} returns Microsoft SQL Server column names with the
 #' appropriate case.  Because column names can be case sensitive, get the exact
 #' column names as SQL Server stores them.
 #'
-#' @param cols character vector of column names
-#' @param tbl table object (tibble)
+#' \code{dplyr::tbl_vars(x)} does not return case sensitive columns, thus the
+#' the need for this function.
+#'
+#' @param cols A character vector of column names.
+#' @param tbl A table object (\code{tibble}).
 #'
 #' @return A character vector of column names with the appropriate case.
 #'

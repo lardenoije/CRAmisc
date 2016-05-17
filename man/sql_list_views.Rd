@@ -19,8 +19,7 @@ A character vector of all views.
 \description{
 \code{sql_list_views} lists all views in a Microsoft SQL Server database.
 }
-\section{Warning}{
-
+\details{
 Will not return tables.  If tables and views are desired, use
 \code{\link{sql_list_tvs}}.
 }

@@ -1,4 +1,3 @@
-library(CRAmisc)
 context("SQL Server explore")
 
 # get environment variables
@@ -37,6 +36,7 @@ if (!is.na(con$result)) test_view_tibble <- dplyr::tbl(con$result, dplyr::sql(sq
 test_that("sql_list_schemas lists schemas", {
   skip_if_not(is.null(con$error),
               message = paste0("Unable to make connection to ", test_server))
+
   expect_match(sql_list_schemas(db_con = con$result, db_name = test_db),
                "dbo",
                all = FALSE,

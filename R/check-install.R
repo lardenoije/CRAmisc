@@ -25,7 +25,7 @@
 #'
 #' @export
 check_install <- function(pkgs) {
-  installed_packages <- installed.packages()[,1]
+  installed_packages <- installed.packages()[ ,1]
   for (i in seq_along(pkgs)) {
     pkg <- pkgs[[i]]
     if (!pkg %in% installed_packages) {

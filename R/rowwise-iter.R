@@ -1,3 +1,6 @@
+#' Rowwise iteration and transformation.
+#'
+#' \rowwise_iter_tr
 # transform a table rowwise in chunks
 # helpful for when you need to be careful about memory consumption
 #   such as when XMLs, JSON docs,  or blobs are embedded in database columns

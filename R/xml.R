@@ -3,6 +3,7 @@
 safe_xml_find_one <- purrr::safely(xml2::xml_find_one, otherwise = NA_character_)
 safe_xml_find_all <- purrr::safely(xml2::xml_find_all, otherwise = NA_character_)
 safe_xml_attr <- purrr::safely(xml2::xml_attr, otherwise = NA_character_)
+safe_xml_text <- purrr::safely(xml2::xml_text, otherwise = NA_character_)
 
 get_xml_attr <- function(xml_col, xpath, attr_name) {
   # using the xpath, find the attribute

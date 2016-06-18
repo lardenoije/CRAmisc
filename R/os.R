@@ -26,7 +26,7 @@
 #' \href{http://adv-r.had.co.nz/Functional-programming.html#closures}{Closures}
 is_os_ <- function(os_string) {
   function() {
-    grepl(pattern = os_string, sessionInfo()$running, ignore.case = TRUE)
+    grepl(pattern = os_string, tolower(Sys.info()['sysname']), ignore.case = TRUE)
   }
 }
 
@@ -51,7 +51,7 @@ is_linux <- is_os_("linux")
 #' @family is_os
 #'
 #' @export
-is_osx <- is_os_("os x")
+is_osx <- is_os_("darwin")
 
 
 #' Is Windows

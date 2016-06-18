@@ -64,11 +64,18 @@ chunked_invoke_rows <- function(res, f, n) {
 
   while (!DBI::dbHasCompleted(res)) {
     df_chunk <- DBI::dbFetch(res, n = n)  # dataframe
-    df_res <- f(df_chunk)  # apply function
+    if(nrow(df_chunk) != 0) {
+      df_res <- f(df_chunk)  # apply function
+    } else {
+      break
+    }
     df_list$add(df_res)  # add to expandingList
   }
   # convert to an actual list as opposed to an expandingList
   df_list <- df_list$as.list()
+
+  # clear results
+  invisible(DBI::dbClearResult(res))
 
   # final step is to bind into a single dataframe
   dplyr::bind_rows(df_list)

@@ -120,6 +120,7 @@ sql_list_ <- function(obj) {
   }
 }
 
+
 #' List schemas.
 #'
 #' List all schemas in a Microsoft SQL Server database.

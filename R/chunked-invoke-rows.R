@@ -73,34 +73,3 @@ chunked_invoke_rows <- function(res, f, n) {
   # final step is to bind into a single dataframe
   dplyr::bind_rows(df_list)
 }
-
-# may use for example / vignette
-#dbcon <- DBI::dbConnect(drv = RSQLServer::SQLServer(),
-#                        server = "SQL_TEST",
-#                        file = '~/.sql.yaml')
-
-# sql_query <- "SELECT * FROM [database].[schema].[table]"
-
-# res <- DBI::dbSendQuery(dbcon, sql_query)
-
-# perform the XML cleansing on the dataframe chunks returned
-# this will be passed to rowwise_tr_chunks
-# @importFrom dplyr "%>%"
-#xml_processing <- function(df) {
-#  df %>%
-#    rowwise %>% # requires a dataframe
-#    mutate(
-#      my_name = get_xml_attr(
-#        xml_col = XMLData,
-#        xpath = "",
-#        attr_name = "Name"
-#    ),
-#      my_result = get_xml_attr(
-#        xml_col = XMLData,
-#        xpath = "",
-#        attr_name = "Result"
-#    ))
-#}
-
-# process
-# final_df <- rowwise_tr_chunks(res, 1000, xml_processing)

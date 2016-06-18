@@ -1,0 +1,90 @@
+---
+title: "Parsing XML using chunked_invoke_rows"
+author: "Curtis Alexander"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Parsing XML using chunked_invoke_rows}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+## Introduction
+A common use of the `chunked_invoke_rows` function is to iteratively parse XML that is stored in a column within a database table.  This pattern can be applied to any large query result set that requires a custom function to be applied to each row.
+
+## Parsing XML
+The example below details how one would use the `xml_extract` function along with `chunked_invoke_rows` to iteratively parse XML.  Obviously the result set below will fit entirely into memory and doesn't need to be chunked.  Again, this is to demonstrate a pattern than can be used with much larger result sets.
+
+The example below requires the `DBI`, `dplyr`, and `RSQLite`, packages.  The function `xml_extract` requires `purrr` and `xml2`.
+
+### Prepare Database
+The code below prepares an `RSQLite` in-memory database based on the `mtcars` dataset.  The code also will create a new column, `xml_col`, that will be used to demonstrate XML parsing.
+
+```{r, eval = TRUE, echo = TRUE}
+library("dplyr")
+
+# function to create an XML document
+xml_create <- function(car, hp, cyl) {
+  paste0("<root>
+    <car>", car, "</car>
+    <stats hp=\"", hp, "\" cyl=\"", cyl, "\"></stats>
+  </root>")
+}
+
+mtcars_with_xml <- mtcars %>%
+  mutate(car = attr(., "row.names"),
+         xml_col = xml_create(car = car,
+                              hp = hp,
+                              cyl = cyl)) %>%
+  select(car, mpg, hp, cyl, xml_col)  # only keep 5 columns
+
+# in memory SQLite database
+dbcon <- DBI::dbConnect(RSQLite::SQLite(), dbname = ":memory:")
+invisible(DBI::dbWriteTable(dbcon, "mtcars_with_xml", mtcars_with_xml))
+```
+
+### Create Query and Send to Database
+Next, create a query and send to the database.  The function `dbSendQuery` will submit a synchronous query to be run on the database and will block until it has completed.  But the result set is left on the database and is not brought back until `DBI::dbFetch` is called.
+
+```{r, eval = TRUE, echo = TRUE}
+sql_query <- "SELECT * FROM mtcars_with_xml where hp > 100"
+res <- DBI::dbSendQuery(dbcon, sql_query)
+```
+
+### Write Custom Parsing Function
+The function that is passed to `chunked_invoke_rows` should take in a dataframe and return a transformed dataframe.  The function below makes use of the `xml_extract` function which is just a convenience wrapper around the parsing functions found in the `xml2` package.  In addition, `xml_extract` makes use of `purrr::safely` to silence parsing errors.  This is useful when working with large result sets.
+
+```{r, eval = TRUE, echo = TRUE}
+# f should accept a dataframe and return a dataframe
+f <- function(df) {
+  df %>%
+    dplyr::rowwise() %>%
+    dplyr::mutate(
+      xml_car = xml_extract(
+        xml = xml_col,
+        xpath = "//root/car",
+        extract_type = "text"
+      ),
+      xml_hp = xml_extract(
+        xml = xml_col,
+        xpath = "//root/stats",
+        extract_type = "attr",
+        extract_value = "hp"
+      ),
+      xml_cyl = xml_extract(
+        xml = xml_col,
+        xpath = "//root/stats",
+        extract_type = "attr",
+        extract_value = "cyl"
+      ))
+}
+```
+
+### Iterate Over Chunks
+Finally, call `chunked_invoke_rows` to iteratively parse the XML document within each row of the dataframe.
+
+```{r, eval = TRUE , echo = TRUE}
+# process 5 rows at a time
+mtcars_with_xml_parsed <- chunked_invoke_rows(res, f, 5)
+mtcars_with_xml_parsed
+```

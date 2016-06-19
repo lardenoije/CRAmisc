@@ -20,8 +20,6 @@
 #'
 #' @return A function that checks the type of OS.
 #'
-#' @examples
-#'
 #' @seealso
 #' \href{http://adv-r.had.co.nz/Functional-programming.html#closures}{Closures}
 is_os_ <- function(os_string) {

@@ -13,6 +13,7 @@
 #' \url{http://stackoverflow.com/a/32870310}.
 #'
 #' @param capacity Initial list capacity or length.
+#' @param envir Environment.
 #'
 #' @return A closure named expandingList with functions
 #' \itemize{

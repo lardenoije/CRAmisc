@@ -21,6 +21,7 @@ The example below requires the `DBI`, `dplyr`, and `RSQLite`, packages.  The fun
 The code below prepares an `RSQLite` in-memory database based on the `mtcars` dataset.  The code also will create a new column, `xml_col`, that will be used to demonstrate XML parsing.
 
 ```{r, eval = TRUE, echo = TRUE}
+library("CRAmisc")
 library("dplyr")
 
 # function to create an XML document
@@ -61,18 +62,18 @@ f <- function(df) {
     dplyr::rowwise() %>%
     dplyr::mutate(
       xml_car = xml_extract(
-        xml = xml_col,
+        x = xml_col,
         xpath = "//root/car",
         extract_type = "text"
       ),
       xml_hp = xml_extract(
-        xml = xml_col,
+        x = xml_col,
         xpath = "//root/stats",
         extract_type = "attr",
         extract_value = "hp"
       ),
       xml_cyl = xml_extract(
-        xml = xml_col,
+        x = xml_col,
         xpath = "//root/stats",
         extract_type = "attr",
         extract_value = "cyl"
@@ -81,10 +82,17 @@ f <- function(df) {
 ```
 
 ### Iterate Over Chunks
-Finally, call `chunked_invoke_rows` to iteratively parse the XML document within each row of the dataframe.
+Invoke `chunked_invoke_rows` to iteratively parse the XML document within each row of the dataframe.
 
 ```{r, eval = TRUE , echo = TRUE}
 # process 5 rows at a time
 mtcars_with_xml_parsed <- chunked_invoke_rows(res, f, 5)
 mtcars_with_xml_parsed
+```
+
+### Cleanup
+Close the database connection.  The result set does not need to be cleared (`DBI::dbClearResult(res)`)as that occurs within `chunked_invoke_rows`.
+
+```{r, eval = TRUE, echo = TRUE}
+DBI::dbDisconnect(dbcon)
 ```

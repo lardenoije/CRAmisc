@@ -1,7 +1,7 @@
 Package: CRAmisc
 Type: Package
 Title: Curtis Miscellaneous
-Version: 0.3.0.9003
+Version: 0.3.0.9001
 Authors@R: person("Curtis", "Alexander", role = c("aut", "cre"), email = "calex@calex.org")
 Maintainer: Curtis Alexander <calex@calex.org>
 Description: Contains a collection of personal functions for data analysis.
@@ -9,18 +9,18 @@ License: MIT + file LICENSE
 URL: https://github.com/curtisalexander/CRAmisc
 BugReports: https://github.com/curtisalexander/CRAmisc/issues
 Imports:
+    DBI (>= 0.4.0),
     dplyr (>= 0.4.3),
     magrittr(>= 1.5),
     purrr (>= 0.2.1),
     xml2 (>= 0.1.2)
 Suggests:
-    DBI (>= 0.4.0),
-    rprojroot (>= 1.0.2),
-    RSQLServer (>= 0.2.0),
-    testthat,
     knitr,
     rmarkdown,
-    RSQLite
+    rprojroot (>= 1.0.2),
+    RSQLite,
+    RSQLServer (>= 0.2.0),
+    testthat
 LazyData: TRUE
 RoxygenNote: 5.0.1
 VignetteBuilder: knitr

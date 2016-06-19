@@ -8,6 +8,8 @@ expandingList(capacity = 10, envir = emptyenv())
 }
 \arguments{
 \item{capacity}{Initial list capacity or length.}
+
+\item{envir}{Environment.}
 }
 \value{
 A closure named expandingList with functions

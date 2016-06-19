@@ -30,9 +30,6 @@ functions
   \item \code{\link{is_windows}}
 }
 }
-\examples{
-
-}
 \seealso{
 \href{http://adv-r.had.co.nz/Functional-programming.html#closures}{Closures}
 }

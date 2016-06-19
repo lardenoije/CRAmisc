@@ -23,6 +23,8 @@
 #'   \item \href{https://github.com/robertzk/lockbox}{Lockbox}
 #' }
 #'
+#' @importFrom utils install.packages installed.packages
+#'
 #' @export
 check_install <- function(pkgs) {
   installed_packages <- installed.packages()[ ,1]

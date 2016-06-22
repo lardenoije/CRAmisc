@@ -60,7 +60,6 @@ var_text2_node$error
 \seealso{
 \itemize{
   \item \link[xml2]{xml_find_all}
-  \item \link[xml2]{xml_find_one}
 }
 
 

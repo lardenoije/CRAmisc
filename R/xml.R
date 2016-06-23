@@ -30,8 +30,6 @@
 #'   \item \link[xml2]{xml_find_all}
 #' }
 #'
-#' @seealso
-#'
 #' @examples
 #' var_text_node <- safe_xml_find_one(xml2::read_xml(xml_doc),
 #'                                    xpath = "//root_tag/another_tag/var_text")

@@ -21,8 +21,8 @@
 #'
 #' @seealso
 #' \itemize{
-#'   \item \code{purrr::invoke_rows}
-#'   \item \code{dplyr::rowwise}
+#'   \item \code{\link[purrr]{invoke_rows}}
+#'   \item \code{\link[dplyr]{rowwise}}
 #'   \item The \href{https://github.com/edwindj/chunked}{chunked} package.
 #' }
 #'

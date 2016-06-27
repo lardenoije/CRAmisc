@@ -91,7 +91,7 @@ mtcars_with_xml_parsed
 ```
 
 ### Cleanup
-Close the database connection.  The result set does not need to be cleared (`DBI::dbClearResult(res)`)as that occurs within `chunked_invoke_rows`.
+Close the database connection.  The result set does not need to be cleared (`DBI::dbClearResult(res)`) as that occurs within `chunked_invoke_rows`.
 
 ```{r, eval = TRUE, echo = TRUE}
 DBI::dbDisconnect(dbcon)

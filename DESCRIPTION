@@ -1,7 +1,7 @@
 Package: CRAmisc
 Type: Package
 Title: Curtis Miscellaneous
-Version: 0.3.0.9002
+Version: 0.3.1
 Authors@R: person("Curtis", "Alexander", role = c("aut", "cre"), email = "calex@calex.org")
 Maintainer: Curtis Alexander <calex@calex.org>
 Description: Contains a collection of personal functions for data analysis.
@@ -10,10 +10,11 @@ URL: https://github.com/curtisalexander/CRAmisc
 BugReports: https://github.com/curtisalexander/CRAmisc/issues
 Imports:
     DBI (>= 0.4.0),
-    dplyr (>= 0.4.3),
+    dplyr (== 0.4.3),
     magrittr(>= 1.5),
     purrr (>= 0.2.1),
-    xml2 (>= 0.1.2)
+    xml2 (>= 0.1.2),
+    httr
 Suggests:
     knitr,
     rmarkdown,

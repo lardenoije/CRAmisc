@@ -61,7 +61,5 @@ var_text2_node$error
 \itemize{
   \item \link[xml2]{xml_find_all}
 }
-
-
 }
 

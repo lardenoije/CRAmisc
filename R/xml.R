@@ -21,25 +21,35 @@
 #' similarly for atttributes). Default namespaces must be given an explicit
 #' name.
 #'
-#' @return \code{safe_xml_find_all} and \code{safe_xml_find_one} will either
+#' @return \code{safe_xml_find_all} and \code{safe_xml_find_first} will either
 #' return a nodeset (or node) or return \code{NA_character_} if there is not
 #' a match.
 #'
 #' @seealso
 #' \itemize{
 #'   \item \link[xml2]{xml_find_all}
+#'   \item \link[xml2]{xml_find_first}
 #' }
 #'
 #' @examples
-#' var_text_node <- safe_xml_find_one(xml2::read_xml(xml_doc),
-#'                                    xpath = "//root_tag/another_tag/var_text")
+#' xml_doc <- "
+#' <root_tag>
+#'   <another_tag>
+#'     <var_text>10</var_text>
+#'     <var_attr value=\"10\"></var_attr>
+#'   </another_tag>
+#' </root_tag>
+#' "
+#'
+#' var_text_node <- safe_xml_find_first(xml2::read_xml(xml_doc),
+#'                                      xpath = "//root_tag/another_tag/var_text")
 #'
 #' # returns a nodeset without an error
 #' var_text_node$result
 #' is.null(var_text_node$error)
 #'
-#' var_text2_node <- safe_xml_find_one(xml2::read_xml(xml_doc),
-#'                                     xpath = "//root_tag/another_tag/var_text2")
+#' var_text2_node <- safe_xml_find_first(xml2::read_xml(xml_doc),
+#'                                       xpath = "//root_tag/another_tag/var_text2")
 #'
 #' # does not return a nodeset but returns an error
 #' is.null(var_text2_node$result)
@@ -50,7 +60,7 @@ NULL
 
 #' @rdname safe_xml_find
 #' @export
-safe_xml_find_one <- purrr::safely(xml2::xml_find_one, otherwise = NA_character_)
+safe_xml_find_first <- purrr::safely(xml2::xml_find_first, otherwise = NA_character_)
 
 #' @rdname safe_xml_find
 #' @export
@@ -92,16 +102,16 @@ safe_xml_find_all <- purrr::safely(xml2::xml_find_all, otherwise = NA_character_
 #' "
 #'
 #' var_text <- safe_xml_text(
-#'   safe_xml_find_one(xml2::read_xml(xml_doc),
-#'                     xpath = "//root_tag/another_tag/var_text")$result)
+#'   safe_xml_find_first(xml2::read_xml(xml_doc),
+#'                       xpath = "//root_tag/another_tag/var_text")$result)
 #'
 #' # returns "10" without error
 #' var_text$result
 #' is.null(var_text$error)
 #'
 #' var_text2 <- safe_xml_text(
-#'   safe_xml_find_one(xml2::read_xml(xml_doc),
-#'                     xpath = "//root_tag/another_tag/var_text2")$result)
+#'   safe_xml_find_first(xml2::read_xml(xml_doc),
+#'                       xpath = "//root_tag/another_tag/var_text2")$result)
 #'
 #' # does not return a value but returns an error
 #' is.null(var_text2$result)
@@ -153,8 +163,8 @@ safe_xml_text <- purrr::safely(xml2::xml_text, otherwise = NA_character_)
 #' "
 #'
 #' var_attr <- safe_xml_attr(
-#'   safe_xml_find_one(xml2::read_xml(xml_doc),
-#'                     xpath = "//root_tag/another_tag/var_attr")$result,
+#'   safe_xml_find_first(xml2::read_xml(xml_doc),
+#'                       xpath = "//root_tag/another_tag/var_attr")$result,
 #'   "value")
 #'
 #' # returns "10" without error
@@ -162,8 +172,8 @@ safe_xml_text <- purrr::safely(xml2::xml_text, otherwise = NA_character_)
 #' is.null(var_attr$error)
 #'
 #' var_attr2 <- safe_xml_attr(
-#'   safe_xml_find_one(xml2::read_xml(xml_doc),
-#'                     xpath = "//root_tag/another_tag/var_attr")$result,
+#'   safe_xml_find_first(xml2::read_xml(xml_doc),
+#'                       xpath = "//root_tag/another_tag/var_attr")$result,
 #'   "value2")
 #'
 #' # does not return a value but returns an error
@@ -179,7 +189,7 @@ safe_xml_attr <- purrr::safely(xml2::xml_attr, otherwise = NA_character_)
 #' Return an XML node attribute if provided the document, XPath, and attribute
 #' name.
 #'
-#' Serves as a convenience function.  Utilizes \code{\link{safe_xml_find_one}}
+#' Serves as a convenience function.  Utilizes \code{\link{safe_xml_find_first}}
 #' and \code{\link{safe_xml_attr}} and will return \code{NA_character_} if an
 #' error occurs.
 #'
@@ -208,7 +218,7 @@ safe_xml_attr <- purrr::safely(xml2::xml_attr, otherwise = NA_character_)
 #' @export
 get_xml_attr <- function(x, xpath, extract_value) {
   xml_doc <- xml2::read_xml(x)
-  xml_node <- safe_xml_find_one(xml_doc, xpath, ns = xml2::xml_ns(xml_doc))
+  xml_node <- safe_xml_find_first(xml_doc, xpath, ns = xml2::xml_ns(xml_doc))
   xml_attr <- safe_xml_attr(xml_node$result, extract_value)
   return(xml_attr$result)
 }
@@ -218,7 +228,7 @@ get_xml_attr <- function(x, xpath, extract_value) {
 #'
 #' Return an XML text value if provided the document and Xpath.
 #'
-#' Serves as a convenience function.  Utilizes \code{\link{safe_xml_find_one}}
+#' Serves as a convenience function.  Utilizes \code{\link{safe_xml_find_first}}
 #' and \code{\link{safe_xml_text}} and will return \code{NA_character_} if an
 #' error occurs.
 #'
@@ -244,7 +254,7 @@ get_xml_attr <- function(x, xpath, extract_value) {
 #' @export
 get_xml_text <- function(x, xpath) {
   xml_doc <- xml2::read_xml(x)
-  xml_node <- safe_xml_find_one(xml_doc, xpath, ns = xml2::xml_ns(xml_doc))
+  xml_node <- safe_xml_find_first(xml_doc, xpath, ns = xml2::xml_ns(xml_doc))
   xml_text <- safe_xml_text(xml_node$result)
   return(xml_text$result)
 }
@@ -263,7 +273,7 @@ get_xml_text <- function(x, xpath) {
 #' \code{purrr::invoke_rows}.
 #'
 #' The safe versions of \code{xml2} functions are utilized in
-#' \code{xml_extract}.  The safe versions consume errors and is helpful when
+#' \code{xml_extract}.  The safe versions consume errors and are helpful when
 #' iterating over a set of XML documents where the schemas are inconsistent.
 #' But the safety provided slows down the parsing.
 #'
@@ -288,7 +298,7 @@ get_xml_text <- function(x, xpath) {
 #' @return The extracted text or attribute value from an XML tag.
 #'
 #' @seealso
-#' See \code{vignette("chunked-invoke-rows")} for simple usage.
+#' See \code{vignette("chunked-invoke-rows")} for usage.
 #'
 #'
 #' @export
@@ -310,7 +320,7 @@ xml_extract <- function(x,
   xml_doc <- xml2::read_xml(x)
 
   # find the appropriate node using xpath
-  xml_node <- safe_xml_find_one(xml_doc, xpath, ns = xml2::xml_ns(xml_doc))
+  xml_node <- safe_xml_find_first(xml_doc, xpath, ns = xml2::xml_ns(xml_doc))
 
   # extract the actual value
   if (extract_type == "attr") {

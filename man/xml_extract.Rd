@@ -41,7 +41,7 @@ utilizing a dataframe holding parameter values, \code{purrr::pmap}, and
 \code{purrr::invoke_rows}.
 
 The safe versions of \code{xml2} functions are utilized in
-\code{xml_extract}.  The safe versions consume errors and is helpful when
+\code{xml_extract}.  The safe versions consume errors and are helpful when
 iterating over a set of XML documents where the schemas are inconsistent.
 But the safety provided slows down the parsing.
 
@@ -52,6 +52,6 @@ Suggested resources for XPath are
 }
 }
 \seealso{
-See \code{vignette("chunked-invoke-rows")} for simple usage.
+See \code{vignette("chunked-invoke-rows")} for usage.
 }
 

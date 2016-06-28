@@ -18,7 +18,7 @@ XML text as a string or \code{NA_character_} if an error occurs.
 Return an XML text value if provided the document and Xpath.
 }
 \details{
-Serves as a convenience function.  Utilizes \code{\link{safe_xml_find_one}}
+Serves as a convenience function.  Utilizes \code{\link{safe_xml_find_first}}
 and \code{\link{safe_xml_text}} and will return \code{NA_character_} if an
 error occurs.
 }

@@ -48,8 +48,8 @@ xml_doc <- "
 "
 
 var_attr <- safe_xml_attr(
-  safe_xml_find_one(xml2::read_xml(xml_doc),
-                    xpath = "//root_tag/another_tag/var_attr")$result,
+  safe_xml_find_first(xml2::read_xml(xml_doc),
+                      xpath = "//root_tag/another_tag/var_attr")$result,
   "value")
 
 # returns "10" without error
@@ -57,8 +57,8 @@ var_attr$result
 is.null(var_attr$error)
 
 var_attr2 <- safe_xml_attr(
-  safe_xml_find_one(xml2::read_xml(xml_doc),
-                    xpath = "//root_tag/another_tag/var_attr")$result,
+  safe_xml_find_first(xml2::read_xml(xml_doc),
+                      xpath = "//root_tag/another_tag/var_attr")$result,
   "value2")
 
 # does not return a value but returns an error

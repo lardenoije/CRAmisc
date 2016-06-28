@@ -22,7 +22,7 @@ Return an XML node attribute if provided the document, XPath, and attribute
 name.
 }
 \details{
-Serves as a convenience function.  Utilizes \code{\link{safe_xml_find_one}}
+Serves as a convenience function.  Utilizes \code{\link{safe_xml_find_first}}
 and \code{\link{safe_xml_attr}} and will return \code{NA_character_} if an
 error occurs.
 }

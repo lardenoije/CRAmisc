@@ -3,10 +3,10 @@
 \name{safe_xml_find}
 \alias{safe_xml_find}
 \alias{safe_xml_find_all}
-\alias{safe_xml_find_one}
+\alias{safe_xml_find_first}
 \title{Safe \code{xml2} find functions}
 \usage{
-safe_xml_find_one(...)
+safe_xml_find_first(...)
 
 safe_xml_find_all(...)
 }
@@ -23,7 +23,7 @@ similarly for atttributes). Default namespaces must be given an explicit
 name.}
 }
 \value{
-\code{safe_xml_find_all} and \code{safe_xml_find_one} will either
+\code{safe_xml_find_all} and \code{safe_xml_find_first} will either
 return a nodeset (or node) or return \code{NA_character_} if there is not
 a match.
 }
@@ -42,15 +42,24 @@ Suggested resources for XPath are
 }
 }
 \examples{
-var_text_node <- safe_xml_find_one(xml2::read_xml(xml_doc),
-                                   xpath = "//root_tag/another_tag/var_text")
+xml_doc <- "
+<root_tag>
+  <another_tag>
+    <var_text>10</var_text>
+    <var_attr value=\\"10\\"></var_attr>
+  </another_tag>
+</root_tag>
+"
+
+var_text_node <- safe_xml_find_first(xml2::read_xml(xml_doc),
+                                     xpath = "//root_tag/another_tag/var_text")
 
 # returns a nodeset without an error
 var_text_node$result
 is.null(var_text_node$error)
 
-var_text2_node <- safe_xml_find_one(xml2::read_xml(xml_doc),
-                                    xpath = "//root_tag/another_tag/var_text2")
+var_text2_node <- safe_xml_find_first(xml2::read_xml(xml_doc),
+                                      xpath = "//root_tag/another_tag/var_text2")
 
 # does not return a nodeset but returns an error
 is.null(var_text2_node$result)
@@ -60,6 +69,7 @@ var_text2_node$error
 \seealso{
 \itemize{
   \item \link[xml2]{xml_find_all}
+  \item \link[xml2]{xml_find_first}
 }
 }
 

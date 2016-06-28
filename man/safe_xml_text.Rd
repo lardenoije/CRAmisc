@@ -39,16 +39,16 @@ xml_doc <- "
 "
 
 var_text <- safe_xml_text(
-  safe_xml_find_one(xml2::read_xml(xml_doc),
-                    xpath = "//root_tag/another_tag/var_text")$result)
+  safe_xml_find_first(xml2::read_xml(xml_doc),
+                      xpath = "//root_tag/another_tag/var_text")$result)
 
 # returns "10" without error
 var_text$result
 is.null(var_text$error)
 
 var_text2 <- safe_xml_text(
-  safe_xml_find_one(xml2::read_xml(xml_doc),
-                    xpath = "//root_tag/another_tag/var_text2")$result)
+  safe_xml_find_first(xml2::read_xml(xml_doc),
+                      xpath = "//root_tag/another_tag/var_text2")$result)
 
 # does not return a value but returns an error
 is.null(var_text2$result)

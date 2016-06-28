@@ -77,7 +77,8 @@ f <- function(df) {
         xpath = "//root/stats",
         extract_type = "attr",
         extract_value = "cyl"
-      ))
+      )
+    )
 }
 ```
 

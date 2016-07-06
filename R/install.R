@@ -6,6 +6,7 @@
 #' @param pkgs List or vector of packages to check and optionally install.
 #' @param repos Character vector of the base URL(s) of the repositories to use,
 #' e.g., the URL of a CRAN mirror.
+#' @param ... List of options to pass install.packages.
 #'
 #' @return Invisibly returns the input pkgs list or vector.  The function is
 #' called for its side effects.
@@ -28,14 +29,14 @@
 #' @importFrom utils install.packages installed.packages
 #'
 #' @export
-check_install <- function(pkgs, repos = NULL) {
+check_install <- function(pkgs, repos = NULL, ...) {
   installed_packages <- installed.packages()[ ,1]
   for (i in seq_along(pkgs)) {
     pkg <- pkgs[[i]]
     if (!pkg %in% installed_packages) {
       cat(paste0("Need to install: ", pkg, "\n"))
       if(is.null(repos)) install.packages(pkg, repos = "https://cran.rstudio.com")
-      else install.packages(pkg, repos = repos)
+      else install.packages(pkg, repos = repos, ...)
     } else cat(paste0(pkg, " already installed\n"))
   }
   invisible(pkgs)
@@ -54,6 +55,7 @@ check_install <- function(pkgs, repos = NULL) {
 #' @param pkg_version Character vector of the package version to install.
 #' @param cainfo Character vector of the file path to a CA file, e.g.,
 #' ca-bundle.crt.
+#' @param ... List of options to pass install.packages.
 #'
 #' @return There is no return as the function is called for its side effects.
 #'
@@ -72,7 +74,7 @@ check_install <- function(pkgs, repos = NULL) {
 #' @importFrom utils install.packages installed.packages
 #'
 #' @export
-prior_install <- function(pkg, pkg_version, cainfo = NULL) {
+prior_install <- function(pkg, pkg_version, cainfo = NULL, ...) {
   pkg_url <- paste0("https://cran.rstudio.com/src/contrib/Archive/",
                     pkg, "/", pkg, "_", pkg_version, ".tar.gz")
 
@@ -90,9 +92,8 @@ prior_install <- function(pkg, pkg_version, cainfo = NULL) {
     stop(paste0("The url ", pkg_url, " returned an HTTP error:\n",
                 pkg_url_error$error))
   } else {
-    install.packages(pkg_url, repos = NULL, type = "source")
+    install.packages(pkg_url, repos = NULL,
+                     type = "source",
+                     ...)
   }
-  on.exit({
-    httr::reset_config()
-  })
 }

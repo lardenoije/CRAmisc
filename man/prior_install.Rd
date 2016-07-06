@@ -4,7 +4,7 @@
 \alias{prior_install}
 \title{Install prior version of a package.}
 \usage{
-prior_install(pkg, pkg_version, cainfo = NULL)
+prior_install(pkg, pkg_version, cainfo = NULL, ...)
 }
 \arguments{
 \item{pkg}{Character vector of the package to install.}
@@ -13,6 +13,8 @@ prior_install(pkg, pkg_version, cainfo = NULL)
 
 \item{cainfo}{Character vector of the file path to a CA file, e.g.,
 ca-bundle.crt.}
+
+\item{...}{List of options to pass install.packages.}
 }
 \value{
 There is no return as the function is called for its side effects.

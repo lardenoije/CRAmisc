@@ -4,6 +4,8 @@
 #' installed, then install the package (from CRAN).
 #'
 #' @param pkgs List or vector of packages to check and optionally install.
+#' @param repos Character vector of the base URL(s) of the repositories to use,
+#' e.g., the URL of a CRAN mirror.
 #'
 #' @return Invisibly returns the input pkgs list or vector.  The function is
 #' called for its side effects.
@@ -50,12 +52,14 @@ check_install <- function(pkgs, repos = NULL) {
 #'
 #' @param pkg Character vector of the package to install.
 #' @param pkg_version Character vector of the package version to install.
+#' @param cainfo Character vector of the file path to a CA file, e.g.,
+#' ca-bundle.crt.
 #'
 #' @return There is no return as the function is called for its side effects.
 #'
 #' @examples
 #' \dontrun{
-#' prior_install(pkg = "tidytext", pkg_version = "0.1.0")
+#' prior_install(pkg = "pkgKitten", pkg_version = "0.1.0")
 #' }
 #'
 #' @seealso

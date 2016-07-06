@@ -221,7 +221,7 @@ sql_list_tvs <- sql_list_("tvs")
 #' appropriate case.  Because column names can be case sensitive, get the exact
 #' column names as SQL Server stores them.
 #'
-#' \code{dplyr::tbl_vars(x)} does not return case sensitive columns, thus the
+#' \link[dplyr]{tbl_vars} does not return case sensitive columns, thus the
 #' the need for this function.
 #'
 #' @param cols A character vector of column names.

@@ -1,5 +1,6 @@
 context("Check install")
 
+sink_file <- ifelse(is_windows(), "NUL", "/dev/null")
 # get environment variables
 # use environment variables to prevent being exposed publicly
 # see also
@@ -9,7 +10,13 @@ httr_cainfo <- Sys.getenv("TEST_HTTR_CAINFO")
 
 # test httr::http_error for use with the prior_install test
 safe_http_error <- purrr::safely(httr::http_error)
-http_error_test <- safe_http_error("https://cran.rstudio.com/src/contrib/Archive/")
+if(httr_cainfo != "") {
+  httr::set_config(httr::config(cainfo = httr_cainfo))
+  http_error_test <- safe_http_error("https://cran.rstudio.com/src/contrib/Archive/")
+  httr::reset_config()
+} else {
+  http_error_test <- safe_http_error("https://cran.rstudio.com/src/contrib/Archive/")
+}
 
 # tests
 test_that("check_install returns message for already installed package", {
@@ -59,7 +66,6 @@ test_that("check_install installs a missing package (CRAN mirror provided)", {
     # install package and...
     #   suppress all messages and output during the installation process
     #     note that this is not helpful if an error is thrown
-    sink_file <- ifelse(is_windows(), "NUL", "/dev/null")
     withr::with_message_sink(new = sink_file,
                              code = {
       withr::with_output_sink(new = sink_file,
@@ -80,28 +86,30 @@ test_that("check_install installs a missing package (CRAN mirror provided)", {
 })
 
 test_that("prior_install installs an older version of a package", {
-  skip_if_not(!(is.null(http_error_test$result) &
-              httr_cainfo == "" &
-              grepl("Peer certificate cannot be authenticated with given CA certificates",
-                    http_error_test$error)),
-              message = paste0("Please create the environment variable TEST_HTTR_CAINFO ",
-                               "within .Renviron.  Set the value of TEST_HTTR_CAINFO to the ",
-                               "appropriate CA file."))
+  skip_if_not(is.null(http_error_test$error),
+              message = paste0("An HTTP error was returned:\n",
+                               http_error_test$error, "\n",
+                               "CA certificate errors require setting the ",
+                               "environment variable TEST_HTTR_CAINFO within ",
+                               "the .Renviron file.  Direct TEST_HTTR_CAINFO ",
+                               "to the appropriate CA file."))
   # setup a temporary libpath and restore the normal libpath upon completion
   withr::with_temp_libpaths({
     # install package and...
     #   suppress all messages and output during the installation process
     #     note that this is not helpful if an error is thrown
-    sink_file <- ifelse(is_windows(), "NUL", "/dev/null")
     withr::with_message_sink(new = sink_file,
                              code = {
       withr::with_output_sink(new = sink_file,
                               code = {
         # pkgKitten: small, no {imports, compilation}
         if(httr_cainfo != "") {
-          prior_install("pkgKitten", "0.1.0", cainfo = httr_cainfo)
+          prior_install("pkgKitten", "0.1.0",
+                        cainfo = httr_cainfo) #,
+                        #quiet = TRUE)
         } else {
-          prior_install("pkgKitten", "0.1.0")
+          prior_install("pkgKitten", "0.1.0") #,
+                        #quiet = TRUE)
         }
       })
     })

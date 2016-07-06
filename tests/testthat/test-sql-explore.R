@@ -67,19 +67,19 @@ test_that("sql_list_views lists views", {
                ignore.case = TRUE)
 })
 
-test_that("sql_list_views lists tables and views", {
+test_that("sql_list_tvs lists tables and views", {
   skip_if_not(is.null(con$error),
               message = paste0("Unable to make connection to ", test_server))
 
-  expect_match(sql_list_views(db_con = con$result,
-                              db_name = test_db,
-                              db_schema = "dbo"),
+  expect_match(sql_list_tvs(db_con = con$result,
+                            db_name = test_db,
+                            db_schema = "dbo"),
                test_view,
                all = FALSE,
                ignore.case = TRUE)
-  expect_match(sql_list_tbls(db_con = con$result,
-                             db_name = test_db,
-                             db_schema = "dbo"),
+  expect_match(sql_list_tvs(db_con = con$result,
+                            db_name = test_db,
+                            db_schema = "dbo"),
                test_table,
                all = FALSE,
                ignore.case = TRUE)

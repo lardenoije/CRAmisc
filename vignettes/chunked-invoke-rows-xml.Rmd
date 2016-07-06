@@ -26,10 +26,14 @@ suppressMessages(library("dplyr"))
 
 # function to create an XML document
 xml_create <- function(car, hp, cyl) {
-  paste0("<root>
-    <car>", car, "</car>
-    <stats hp=\"", hp, "\" cyl=\"", cyl, "\"></stats>
-  </root>")
+  xml_doc <- paste0("<root><car>",
+                    car,
+                    "</car><stats hp=\"",
+                    hp,
+                    "\" cyl=\"",
+                    cyl,
+                    "\"></stats></root>")
+  gsub("[\r\n]", "", xml_doc)
 }
 
 mtcars_with_xml <- mtcars %>%
@@ -87,8 +91,9 @@ Invoke `chunked_invoke_rows` to iteratively parse the XML document within each r
 
 ```{r, eval = TRUE , echo = TRUE}
 # process 5 rows at a time
-mtcars_with_xml_parsed <- chunked_invoke_rows(res, f, 5)
-knitr::kable(mtcars_with_xml_parsed)
+mtcars_with_xml_parsed <- chunked_invoke_rows(res, f, 5) %>%
+  dplyr::select(-hp, -mpg, -cyl)
+knitr::kable(mtcars_with_xml_parsed, format = "html", padding = 2)
 ```
 
 ### Cleanup

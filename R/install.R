@@ -68,15 +68,27 @@ check_install <- function(pkgs, repos = NULL) {
 #' @importFrom utils install.packages installed.packages
 #'
 #' @export
-prior_install <- function(pkg, pkg_version) {
+prior_install <- function(pkg, pkg_version, cainfo = NULL) {
   pkg_url <- paste0("https://cran.rstudio.com/src/contrib/Archive/",
                     pkg, "/", pkg, "_", pkg_version, ".tar.gz")
 
-  pkg_url_error <- httr::http_error(pkg_url)
+  safe_http_error <- purrr::safely(httr::http_error)
 
-  if(pkg_url_error) {
-    stop(paste0("The url ", pkg_url, " returns an HTTP error."))
+  if(!is.null(cainfo)) {
+    httr::set_config(httr::config(cainfo = cainfo))
+    pkg_url_error <- safe_http_error(pkg_url)
+    httr::reset_config()
+  } else {
+    pkg_url_error <- safe_http_error(pkg_url)
+  }
+
+  if(is.null(pkg_url_error$result)) {
+    stop(paste0("The url ", pkg_url, " returned an HTTP error:\n",
+                pkg_url_error$error))
   } else {
     install.packages(pkg_url, repos = NULL, type = "source")
   }
+  on.exit({
+    httr::reset_config()
+  })
 }

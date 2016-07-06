@@ -22,7 +22,7 @@ The code below prepares an `RSQLite` in-memory database based on the `mtcars` da
 
 ```{r, eval = TRUE, echo = TRUE}
 library("CRAmisc")
-library("dplyr")
+suppressMessages(library("dplyr"))
 
 # function to create an XML document
 xml_create <- function(car, hp, cyl) {
@@ -88,7 +88,7 @@ Invoke `chunked_invoke_rows` to iteratively parse the XML document within each r
 ```{r, eval = TRUE , echo = TRUE}
 # process 5 rows at a time
 mtcars_with_xml_parsed <- chunked_invoke_rows(res, f, 5)
-mtcars_with_xml_parsed
+knitr::kable(mtcars_with_xml_parsed)
 ```
 
 ### Cleanup

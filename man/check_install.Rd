@@ -4,10 +4,13 @@
 \alias{check_install}
 \title{Check and install packages.}
 \usage{
-check_install(pkgs)
+check_install(pkgs, repos = NULL)
 }
 \arguments{
 \item{pkgs}{List or vector of packages to check and optionally install.}
+
+\item{repos}{Character vector of the base URL(s) of the repositories to use,
+e.g., the URL of a CRAN mirror.}
 }
 \value{
 Invisibly returns the input pkgs list or vector.  The function is

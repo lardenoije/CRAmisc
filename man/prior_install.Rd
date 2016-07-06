@@ -4,12 +4,15 @@
 \alias{prior_install}
 \title{Install prior version of a package.}
 \usage{
-prior_install(pkg, pkg_version)
+prior_install(pkg, pkg_version, cainfo = NULL)
 }
 \arguments{
 \item{pkg}{Character vector of the package to install.}
 
 \item{pkg_version}{Character vector of the package version to install.}
+
+\item{cainfo}{Character vector of the file path to a CA file, e.g.,
+ca-bundle.crt.}
 }
 \value{
 There is no return as the function is called for its side effects.
@@ -23,7 +26,7 @@ querying for the tar.gz file from the
 }
 \examples{
 \dontrun{
-prior_install(pkg = "tidytext", pkg_version = "0.1.0")
+prior_install(pkg = "pkgKitten", pkg_version = "0.1.0")
 }
 
 }

@@ -22,9 +22,12 @@ Return an XML node attribute if provided the document, XPath, and attribute
 name.
 }
 \details{
-Serves as a convenience function.  Utilizes \code{\link{safe_xml_find_first}}
-and \code{\link{safe_xml_attr}} and will return \code{NA_character_} if an
-error occurs.
+Serves as a convenience function.  Utilizes \link[xml2]{xml_find_first}
+and \link[xml2]{xml_attr} and will return \code{NA_character_} if the XML
+attribute cannot be located or an error occurs.
+
+Because the function uses \link[xml2]{xml_find_first}, only the first match
+is returned.
 }
 \examples{
 xml_doc <- "

@@ -18,9 +18,12 @@ XML text as a string or \code{NA_character_} if an error occurs.
 Return an XML text value if provided the document and Xpath.
 }
 \details{
-Serves as a convenience function.  Utilizes \code{\link{safe_xml_find_first}}
-and \code{\link{safe_xml_text}} and will return \code{NA_character_} if an
-error occurs.
+Serves as a convenience function.  Utilizes \link[xml2]{xml_find_first}
+and \link[xml2]{xml_text} and will return \code{NA_character_} if the XML
+text cannot be located or an error occurs.
+
+Because the function uses \link[xml2]{xml_find_first}, only the first match
+is returned.
 }
 \examples{
 xml_doc <- "

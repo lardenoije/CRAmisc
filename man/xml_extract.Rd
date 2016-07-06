@@ -31,19 +31,18 @@ The extracted text or attribute value from an XML tag.
 Extract XML text or an XML attribute via XPath.
 }
 \details{
-May be used as a UDF that is part of a dplyr pipeline.  The most simple use
-is to include \code{xml_extract} as part of a mutate function.  For details
-see \code{vignette("chunked-invoke-rows-xml")}.
+May be used as a UDF that is part of a \code{dplyr} pipeline.  The most
+simple use is to include \code{xml_extract} as part of a \code{dplyr::mutate}
+function.  For details see \code{vignette("chunked-invoke-rows-xml")}.
 
 A more complex use would be to use as a UDF to parse an arbitrary number of
-xml text and attribute values from an XML document.  This can be accomplished
+text and attribute values from an XML document.  This can be accomplished
 utilizing a dataframe holding parameter values, \code{purrr::pmap}, and
 \code{purrr::invoke_rows}.
 
-The safe versions of \code{xml2} functions are utilized in
-\code{xml_extract}.  The safe versions consume errors and are helpful when
-iterating over a set of XML documents where the schemas are inconsistent.
-But the safety provided slows down the parsing.
+Because \link[xml2]{xml_find_first} is the function utilized in
+\code{xml_extract}, errors are consumed.  This is helpful when iterating over
+a set of XML documents where the schemas are inconsistent.
 
 Suggested resources for XPath are
 \itemize{

@@ -7,7 +7,7 @@
 chunked_invoke_rows(res, f, n)
 }
 \arguments{
-\item{res}{DBI::dbSendQuery result set.}
+\item{res}{\code{DBI::dbSendQuery} result set.}
 
 \item{f}{The function that will be applied to each row of the database result
 set.  \code{f} is assumed to be constructed using a \code{dplyr} pipeline

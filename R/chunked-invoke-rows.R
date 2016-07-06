@@ -9,7 +9,7 @@
 #' are stored in a database column, then \code{chunked_invoke_rows} can be
 #' used to iteratively process and transform the data.
 #'
-#' @param res DBI::dbSendQuery result set.
+#' @param res \code{DBI::dbSendQuery} result set.
 #' @param f The function that will be applied to each row of the database result
 #' set.  \code{f} is assumed to be constructed using a \code{dplyr} pipeline
 #' where a dataframe is passed as the sole parameter and a transformed dataframe

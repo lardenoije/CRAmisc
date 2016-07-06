@@ -26,13 +26,14 @@
 #' @importFrom utils install.packages installed.packages
 #'
 #' @export
-check_install <- function(pkgs) {
+check_install <- function(pkgs, repos = NULL) {
   installed_packages <- installed.packages()[ ,1]
   for (i in seq_along(pkgs)) {
     pkg <- pkgs[[i]]
     if (!pkg %in% installed_packages) {
       cat(paste0("Need to install: ", pkg, "\n"))
-      install.packages(pkg)
+      if(is.null(repos)) install.packages(pkg, repos = "https://cran.rstudio.com")
+      else install.packages(pkg, repos = repos)
     } else cat(paste0(pkg, " already installed\n"))
   }
   invisible(pkgs)

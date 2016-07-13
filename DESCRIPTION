@@ -13,7 +13,7 @@ Imports:
     dplyr (== 0.4.3),
     magrittr(>= 1.5),
     purrr (>= 0.2.1),
-    xml2 (>= 0.1.2),
+    xml2 (>= 1.0.0),
     httr,
     tibble,
     assertthat,

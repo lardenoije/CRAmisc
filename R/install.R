@@ -97,3 +97,32 @@ prior_install <- function(pkg, pkg_version, cainfo = NULL, ...) {
                      ...)
   }
 }
+
+
+#' Packages Dataframe.
+#'
+#' \code{pkgs_df} returns a
+#' \href{https://cran.rstudio.com/package=tibble}{tibble} containing a subset of
+#' information about the packages installed.
+#'
+#' @return Returns a \href{https://cran.rstudio.com/package=tibble}{tibble}
+#' containing a subset of information about the packages installed.
+#'
+#' @examples
+#' pkgs <- pkgs_df()
+#' pkgs
+#'
+#' @seealso
+#' \link{check_install}
+#'
+#' @importFrom utils installed.packages
+#'
+#' @export
+pkgs_df <- function() {
+  installed.packages() %>%
+    as.data.frame(stringsAsFactors=FALSE) %>%
+    dplyr::select(Package, Version, Depends, Imports, LibPath, Built) %>%
+    dplyr::distinct(Package, Version, Depends, Imports, LibPath, Built) %>%
+    dplyr::arrange(Package) %>%
+    dplyr::as_data_frame()
+}

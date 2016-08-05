@@ -16,6 +16,13 @@
 #' is returned.
 #' @param n The number of rows to pull back from the database result set for
 #' each chunk.
+#' @param gc The type of garbage collection to run.  Default is \code{NA} or no
+#' garbage collection.  Choices include
+#' \itemize{
+#'   \item \code{r} = R garbage collection
+#'   \item \code{j} = Java garbage collection
+#'   \item \code{rj} = R and Java garbage collection
+#' }
 #'
 #' @return A dataframe that has been transformed by \code{f}.
 #'
@@ -53,11 +60,28 @@
 #' }
 #'
 #' @export
-chunked_invoke_rows <- function(res, f, n) {
+chunked_invoke_rows <- function(res, f, n, gc = NA_character_) {
   if(!requireNamespace("DBI", quietly = TRUE)) {
     stop("The DBI package is needed for this function.  Please install it.",
          call. = FALSE)
   }
+
+  # setup gc
+  if(is.na(gc)) {
+    gc_func <- function() { NULL }
+  } else if(gc == "r") {
+    gc_func <- function() { gc() }
+  } else if(gc == "j") {
+    gc_func <- function() { rJava::.jcall("java/lang/System", method = "gc") }
+  } else if(gc == "rj") {
+    gc_func <- function() {
+      gc()
+      rJava::.jcall("java/lang/System", method = "gc")
+    }
+  } else {
+    stop("The gc option should be set to\n'r'  ==> R garbage collection\n'j'  ==> Java garbage collection\n'rj' ==> R and Java garbage collection", call. = FALSE)
+  }
+
   # an expandingList is a fast implementation of a list that can be
   #   dynamically appended to and turned into a standard R list
   df_list <- expandingList()
@@ -69,6 +93,7 @@ chunked_invoke_rows <- function(res, f, n) {
     } else {
       break
     }
+    gc_func()   # cleanup
     df_list$add(df_res)  # add to expandingList
   }
   # convert to an actual list as opposed to an expandingList

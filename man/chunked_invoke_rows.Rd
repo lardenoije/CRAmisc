@@ -4,7 +4,7 @@
 \alias{chunked_invoke_rows}
 \title{Apply a function to each row of a database result set.}
 \usage{
-chunked_invoke_rows(res, f, n)
+chunked_invoke_rows(res, f, n, gc = NA_character_)
 }
 \arguments{
 \item{res}{\code{DBI::dbSendQuery} result set.}
@@ -16,6 +16,14 @@ is returned.}
 
 \item{n}{The number of rows to pull back from the database result set for
 each chunk.}
+
+\item{gc}{The type of garbage collection to run.  Default is \code{NA} or no
+garbage collection.  Choices include
+\itemize{
+  \item \code{r} = R garbage collection
+  \item \code{j} = Java garbage collection
+  \item \code{rj} = R and Java garbage collection
+}}
 }
 \value{
 A dataframe that has been transformed by \code{f}.

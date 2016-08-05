@@ -1,7 +1,7 @@
 Package: CRAmisc
 Type: Package
 Title: Curtis Miscellaneous
-Version: 0.3.6.9000
+Version: 0.3.7.9000
 Authors@R: person("Curtis", "Alexander", role = c("aut", "cre"), email = "calex@calex.org")
 Maintainer: Curtis Alexander <calex@calex.org>
 Description: Contains a collection of personal functions for data analysis.
@@ -9,14 +9,15 @@ License: MIT + file LICENSE
 URL: https://github.com/curtisalexander/CRAmisc
 BugReports: https://github.com/curtisalexander/CRAmisc/issues
 Imports:
+    assertthat,
     DBI (>= 0.4.0),
     dplyr (== 0.4.3),
+    httr,
     magrittr(>= 1.5),
     purrr (>= 0.2.1),
-    xml2 (>= 1.0.0),
-    httr,
+    rJava,
     tibble,
-    assertthat,
+    xml2 (>= 1.0.0),
     withr
 Suggests:
     knitr,

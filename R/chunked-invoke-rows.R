@@ -93,8 +93,8 @@ chunked_invoke_rows <- function(res, f, n, gc = NA_character_) {
     } else {
       break
     }
-    gc_func()   # cleanup
     df_list$add(df_res)  # add to expandingList
+    gc_func()   # cleanup
   }
   # convert to an actual list as opposed to an expandingList
   df_list <- df_list$as.list()

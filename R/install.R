@@ -121,8 +121,8 @@ prior_install <- function(pkg, pkg_version, cainfo = NULL, ...) {
 pkgs_df <- function() {
   installed.packages() %>%
     as.data.frame(stringsAsFactors=FALSE) %>%
-    dplyr::select(Package, Version, Depends, Imports, LibPath, Built) %>%
-    dplyr::distinct(Package, Version, Depends, Imports, LibPath, Built) %>%
-    dplyr::arrange(Package) %>%
+    dplyr::select_("Package", "Version", "Depends", "Imports", "LibPath", "Built") %>%
+    dplyr::distinct_("Package", "Version", "Depends", "Imports", "LibPath", "Built") %>%
+    dplyr::arrange_("Package") %>%
     dplyr::as_data_frame()
 }

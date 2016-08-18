@@ -3,6 +3,7 @@
 export("%>%")
 export(check_install)
 export(chunked_invoke_rows)
+export(convert_cols)
 export(df_diff)
 export(expandingList)
 export(get_xml_attr)

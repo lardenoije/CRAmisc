@@ -11,5 +11,11 @@ dup_keys <- duplicate_keys(df = test_df, key_col = "key")
 # tests
 test_that("duplicate keys are identified", {
   expect_equal(dup_keys, dplyr::as_data_frame(list(key = c(1000L),
-                                                   key_count = c(2L))))
+                                                   n = c(2L))))
+})
+
+test_that("has_cols returns columns", {
+  test_col_patt <- "^am"
+  expect_equal(has_cols(tbl = test_df,
+                        patt = test_col_patt), "amount")
 })

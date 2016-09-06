@@ -102,8 +102,8 @@ prior_install <- function(pkg, pkg_version, cainfo = NULL, ...) {
 #' Packages Dataframe.
 #'
 #' \code{pkgs_df} returns a
-#' \href{https://cran.rstudio.com/package=tibble}{tibble} containing a subset of
-#' information about the packages installed.
+#' \link[tibble]{tibble} containing a subset of information about the packages
+#' installed.
 #'
 #' @return Returns a \href{https://cran.rstudio.com/package=tibble}{tibble}
 #' containing a subset of information about the packages installed.

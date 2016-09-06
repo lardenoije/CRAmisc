@@ -225,7 +225,7 @@ sql_list_tvs <- sql_list_("tvs")
 #' the need for this function.
 #'
 #' @param cols A character vector of column names.
-#' @param tbl A table object (\code{tibble}).
+#' @param tbl A table object (\link[tibble]{tibble}).
 #'
 #' @return A character vector of column names with the appropriate case.
 #'

@@ -11,8 +11,7 @@ Returns a \href{https://cran.rstudio.com/package=tibble}{tibble}
 containing a subset of information about the packages installed.
 }
 \description{
-\code{pkgs_df} returns a
-\href{https://cran.rstudio.com/package=tibble}{tibble} containing a subset of
+\code{pkgs_df} returns a \link[tibble]{tibble} containing a subset of
 information about the packages installed.
 }
 \examples{

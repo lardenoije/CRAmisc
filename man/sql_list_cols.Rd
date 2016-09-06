@@ -7,7 +7,7 @@
 sql_list_cols(tbl, cols)
 }
 \arguments{
-\item{tbl}{A table object (\code{tibble}).}
+\item{tbl}{A \link[tibble]{tibble}.}
 
 \item{cols}{A character vector of column names.}
 }

@@ -28,15 +28,15 @@ duplicate_keys <- function(df, key_col) {
 }
 
 
-#' Has a column name?
+#' Matches a column name?
 #'
-#' \code{has_cols} returns matching column names from a database table.  The
+#' \code{match_cols} returns matching column names from a database table.  The
 #' matching is performed using regular expressions and \link[base]{grepl}.
 #'
 #' Ignores case by default.  Can be overridden by passing \code{ignore.case} via
 #' \code{...}.
 #'
-#' @param tbl A table object (\code{tibble}).
+#' @param tbl A \link[tibble]{tibble}.
 #' @param patt Regular expression pattern to pass to \code{grepl}.
 #' @param ... Parameters to pass along to \code{grepl}.
 #'
@@ -54,10 +54,10 @@ duplicate_keys <- function(df, key_col) {
 #'
 #' # use
 #' test_df %>%
-#'   has_cols(my_col)
+#'   match_cols(my_col)
 #'
 #' @export
-has_cols <- function(tbl, patt, ...) {
+match_cols <- function(tbl, patt, ...) {
     cols <- dplyr::tbl_vars(tbl)
     purrr::keep(.x = cols,
                 .p = grepl(patt, cols, ignore.case = TRUE, ...))

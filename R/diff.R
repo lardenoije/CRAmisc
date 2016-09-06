@@ -22,7 +22,7 @@
 #' @return Test results and differences are printed to standard out.
 #'
 #' @examples
-#' x <- tibble::frame_data(
+#' x <- tibble::tribble(
 #'  ~col1, ~col2,
 #'  1, "a",
 #'  2, "b",

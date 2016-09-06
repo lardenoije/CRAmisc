@@ -23,7 +23,7 @@ test_df <- data.frame(id,
                       character_var,
                       integer_var, stringsAsFactors = FALSE)
 
-types_df <- tibble::frame_data(
+types_df <- tibble::tribble(
   ~col_name, ~col_type,
   "date_var", "date",
   "datetime_var", "datetime",
@@ -35,7 +35,7 @@ types_df <- tibble::frame_data(
   "integer_var", "integer"
 )
 
-types_df_missing_col <- tibble::frame_data(
+types_df_missing_col <- tibble::tribble(
   ~col_name, ~col_type,
   "date_var", "date",
   "datetime_var", "datetime",
@@ -49,11 +49,8 @@ types_df_missing_col <- tibble::frame_data(
   "not_in_df2", "double"
 )
 
-test_df_converted_missing_col <- convert_cols(test_df,
-                                              types_df_missing_col)
-
-# suppressMessages(test_df_converted_missing_col <- convert_cols(test_df,
-#                                                               types_df_missing_col))
+suppressMessages(test_df_converted_missing_col <- convert_cols(test_df,
+                                                               types_df_missing_col))
 
 # convert the columns
 suppressMessages(test_df_converted <- convert_cols(test_df, types_df))

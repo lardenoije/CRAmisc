@@ -81,7 +81,7 @@ str(test_df)
 ## create a dataframe with columns named col_name and col_type (if you name
 ##   them something else you can always use dplyr::rename) with the column
 ##   name and the type you would like it converted to
-types_df <- tibble::frame_data(
+types_df <- tibble::tribble(
   ~col_name, ~col_type,
   "date_var", "date",
   "datetime_var", "datetime",

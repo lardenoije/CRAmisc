@@ -14,7 +14,7 @@ test_that("duplicate keys are identified", {
                                                    n = c(2L))))
 })
 
-test_that("has_cols returns columns", {
+test_that("match_cols returns columns", {
   test_col_patt <- "^am"
   expect_equal(match_cols(tbl = test_df,
                           patt = test_col_patt), "amount")

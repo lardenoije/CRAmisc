@@ -1,4 +1,4 @@
-context("Convert Columns")
+context("Convert Columns and Specification")
 
 # dataframe to convert
 id <- c(1L, 2L, 3L)
@@ -94,4 +94,30 @@ test_that("integer columns are converted", {
 test_that("column not in df is skipped", {
   expect_false(tibble::has_name(test_df, "not_in_df"))
   expect_identical(test_df_converted_missing_col, test_df_converted)
+})
+
+csv_df <- readr::read_csv("a,b,c\n1,2,3\n4,5,6")
+csv_spec <- readr::spec(csv_df)
+
+## returns
+##   a = col_integer()
+##   b = col_integer()
+##   c = col_integer()
+
+## update columns a and b to be doubles instead of integers
+col_spec_df <- tibble::tribble(
+  ~col_name, ~col_type,
+  "a", "double",
+  "b", "double"
+)
+
+## update the specification
+csv_spec_updated <- col_spec_update(csv_spec, col_spec_df)
+
+## re-read with new column spec
+csv_updated <- readr::read_csv("a,b,c\n1,2,3\n4,5,6",
+                                col_types = csv_spec_updated)
+
+test_that("column types were updated appropriately", {
+  expect_type(csv_updated$a, "double")
 })

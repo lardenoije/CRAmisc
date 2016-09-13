@@ -3,6 +3,7 @@
 export("%>%")
 export(check_install)
 export(chunked_invoke_rows)
+export(col_spec_update)
 export(convert_cols)
 export(df_diff)
 export(duplicate_keys)

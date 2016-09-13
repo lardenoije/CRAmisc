@@ -17,7 +17,7 @@
 #' \itemize{
 #'   \item An inner function, \code{convert_}, that converts a set of columns
 #'   that are to be converted to the same type using \link[purrr]{dmap_at}.
-#'   \item The enclosing enviornment that contains the dataframe that will be
+#'   \item The enclosing environment that contains the dataframe that will be
 #'   updated and contains a call to \link[purrr]{invoke_rows} to drive
 #'   iteration.
 #' }
@@ -156,4 +156,109 @@ convert_cols <- function(df, types_df) {
 
   # return the new dataframe
   df_converted
+}
+
+
+#' Convert a readr column specification
+#'
+#' Given a \link[readr]{cols} specification, update the specification in place
+#' by explicitly declaring the appropriate type in a dataframe.
+#'
+#' This is of value when importing an extremely wide dataframe with many
+#' columns.  It may not make sense to explicitly declare the type of every
+#' column by hand.  Nor should one have to copy/paste an exisiting column
+#' specification into a text editor in order to update the specification.
+#'
+#' A final use case is when problems occur and a \link[readr]{problems} tibble
+#' is created.  The tibble can be the starting point to decide upon the columns
+#' that require updating.
+#'
+#' \code{col_spec_update} is a closure that contains two parts.
+#' \itemize{
+#'   \item An inner function, \code{update_}, that updates the specification by
+#'   setting the \code{class} attribute for the given column.
+#'   \item The enclosing environment that contains the specification to be
+#'   updated and contains a call to \link[purrr]{invoke_rows} to drive
+#'   iteration.
+#' }
+#'
+#' @param col_spec A \link[readr]{cols} specification.  Most commonly produced
+#' as part of a call to \link[readr]{read_csv}.
+#' @param col_spec_df A dataframe containing the column name and type to update
+#' within the specification.  The expectation is that \code{col_spec_df} has
+#' columns named \code{col_name} and \code{col_type}.  If \code{col_spec_df}
+#' has columns named differently, this is easy to convert using
+#' \link[dplyr]{rename}.
+#'
+#' @return A copy of the original specification with updated column types.
+#'
+#' @examples
+#' test_df <- readr::read_csv("a,b,c\n1,2,3\n4,5,6")
+#' test_spec <- readr::spec(test_df)
+#'
+#' ## returns
+#' ##   a = col_integer()
+#' ##   b = col_integer()
+#' ##   c = col_integer()
+#'
+#' ## update columns a and b to be doubles instead of integers
+#'
+#' col_spec_df <- tibble::tribble(
+#'   ~col_name, ~col_type,
+#'   "a", "double",
+#'   "b", "double"
+#' )
+#'
+#' ## update the specification
+#' test_spec_updated <- col_spec_update(test_spec, col_spec_df)
+#'
+#' ## re-read with new column spec
+#' test_updated <- readr::read_csv("a,b,c\n1,2,3\n4,5,6",
+#'                                 col_types = test_spec_updated)
+#' @export
+col_spec_update <- function(col_spec, col_spec_df) {
+
+  # trailing underscore represents a "private" function
+  update_ <- function(col_name, col_type, ...) {
+    # swallow dots when using as part of invoke_rows
+    # used in case col_spec_df has other columns contained within
+    dots <- list(...)
+
+    # type check as well as create the collector type to utilize to set the
+    #   class attribute
+    if (col_type %in% c("character",
+                        "date",
+                        "datetime",
+                        "double",
+                        "euro_double",
+                        "integer",
+                        "logical",
+                        "number",
+                        "time",
+                        "skip",
+                        "guess")) {
+      col_type_full <- c(paste0("collector_", col_type), "collector")
+    } else {
+      stop("col_type must be one of:\n    character, date, datetime, double, euro_double, integer, logical, number, time, skip, or guess")
+    }
+
+    # check that col_name is part of the specification
+    if (col_name %in% names(col_spec_updated$cols)) {
+      attr(col_spec_updated$cols[col_name][[1]], "class") <<- col_type_full
+    } else {
+      message(paste0("Ignoring as the following column name ",
+                     "is not part of the specification:  ", col_name))
+    }
+  }
+
+  # create a copy of col_spec
+  col_spec_updated <- col_spec
+
+  # iterate over the col_spec_df dataframe, which tells us how to update the
+  #   column specification
+  purrr::invoke_rows(.d = col_spec_df,
+                     .f = update_)
+
+  # return the updated spec
+  return(col_spec_updated)
 }

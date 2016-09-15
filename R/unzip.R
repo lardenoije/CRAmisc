@@ -74,11 +74,27 @@
 #' )
 #' @export
 unzip_dir <- function(in_dir, out_dir, ext) {
-  zip_basename <- list.files(path = in_dir,
-                             pattern = paste0("\\.", ext, "$"),
-                             recursive = FALSE) %>%
-    strsplit(paste0("\\.", ext, "$")) %>%
-    unlist()
+  zip_files <- list.files(path = in_dir,
+                          pattern = paste0("\\.", ext, "$"),
+                          recursive = FALSE)
+
+  if (ext == "zipx") {
+    zip_basename <- purrr::map_chr(
+      .x = zip_files,
+      .f = function(z) system2(command = "lsar",
+                               args = c("-json", shQuote(file.path(in_dir, z))),
+                               stdout = TRUE) %>%
+                         jsonlite::fromJSON() %>%
+                         # subset list
+                         .$lsarContents %>%
+                         # subset dataframe
+                         .$XADFileName
+    )
+  } else {
+    zip_basename <- zip_files %>%
+      strsplit(paste0("\\.", ext, "$")) %>%
+      unlist()
+  }
 
   already_unzipped <- list.files(path = out_dir,
                                  recursive = FALSE)

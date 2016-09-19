@@ -13,4 +13,4 @@ devtools::install_github("curtisalexander/CRAmisc")
 
 ## Imports
 
-**Beware!**  Because this is a wide-ranging package, it imports many packages.
+**Beware!**  Because this is a wide-ranging package, it imports a slew of packages.  Review [DESCRIPTION](DESCRIPTION) for a full list.

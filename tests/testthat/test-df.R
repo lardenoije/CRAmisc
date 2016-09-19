@@ -27,3 +27,45 @@ test_that("types_df returns the appropriate column name and type", {
                           stringsAsFactors = FALSE) %>%
                  dplyr::as_data_frame())
 })
+
+## test tibble for case matching
+test_df_case <- tibble::tribble(
+  ~MixedCase, ~lowercase, ~UPPERCASE, ~aLtCaSe,
+  1, 11, 111, 1111,
+  2, 22, 222, 2222,
+  3, 33, 333, 3333
+)
+
+## column names to search for, ignoring case
+my_cols <- c("mixedcase", "altcase")
+
+test_that("exact_cols returns appropriate case", {
+  expect_equal(exact_cols(tbl = test_df_case,
+                          cols = my_cols),
+               c("MixedCase", "aLtCaSe"))
+})
+
+test_that("exact_cols can be used with a pipe", {
+  exact_cols_pipeline <- function(df, cols) {
+    df %>%
+      exact_cols(cols)
+  }
+
+  expect_equal(exact_cols_pipeline(test_df_case, my_cols),
+               c("MixedCase", "aLtCaSe"))
+})
+
+test_that("exact_cols works with dplyr::one_of", {
+  result_df <- tibble::tribble(
+    ~MixedCase, ~aLtCaSe,
+    1, 1111,
+    2, 2222,
+    3, 3333
+  )
+
+  expect_identical(test_df_case %>%
+                     dplyr::select(test_df_case %>%
+                                   exact_cols(my_cols) %>%
+                                   dplyr::one_of()),
+                   result_df)
+})

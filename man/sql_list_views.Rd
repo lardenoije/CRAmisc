@@ -33,8 +33,7 @@ dbserver_views <- sql_list_views(db_con = con,
 
 }
 \seealso{
-Other sql_lists: \code{\link{sql_list_cols}},
-  \code{\link{sql_list_schemas}},
+Other sql_lists: \code{\link{sql_list_schemas}},
   \code{\link{sql_list_tbls}}, \code{\link{sql_list_tvs}}
 }
 

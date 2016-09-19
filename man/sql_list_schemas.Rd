@@ -26,8 +26,7 @@ dbserver_schemas <- sql_list_schemas(db_con = con,
 
 }
 \seealso{
-Other sql_lists: \code{\link{sql_list_cols}},
-  \code{\link{sql_list_tbls}}, \code{\link{sql_list_tvs}},
-  \code{\link{sql_list_views}}
+Other sql_lists: \code{\link{sql_list_tbls}},
+  \code{\link{sql_list_tvs}}, \code{\link{sql_list_views}}
 }
 

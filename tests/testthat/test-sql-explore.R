@@ -84,26 +84,3 @@ test_that("sql_list_tvs lists tables and views", {
                all = FALSE,
                ignore.case = TRUE)
 })
-
-test_that("sql_list_cols returns appropriate case", {
-  skip_if_not(is.null(con$error),
-              message = paste0("Unable to make connection to ", test_server))
-
-  test_col_upper <- toupper(test_col)
-  expect_equal(sql_list_cols(tbl = test_view_tibble,
-                             cols = test_col_upper),
-               test_col)
-})
-
-test_that("sql_list_cols can be used with a pipe", {
-  skip_if_not(is.null(con$error),
-              message = paste0("Unable to make connection to ", test_server))
-
-  sql_list_cols_pipeline <- function(df, cols) {
-    df %>%
-      sql_list_cols(cols)
-  }
-
-  expect_equal(sql_list_cols_pipeline(test_view_tibble, test_col),
-               test_col)
-})

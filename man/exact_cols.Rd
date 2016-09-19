@@ -38,14 +38,12 @@ my_tibble <- tibble::tribble(
 ## column names to search for, ignoring case
 my_cols <- c("mixedcase", "altcase")
 
-my_tibble \%>\%
+my_cols_case <- my_tibble \%>\%
   exact_cols(my_cols)
 
 ## particularly useful when combined with dplyr::one_of
 my_tibble \%>\%
-  dplyr::select(my_tibble \%>\%
-                  exact_cols(my_cols) \%>\%
-                  dplyr::one_of())
+  dplyr::select(dplyr::one_of(my_cols_case))
 
 }
 

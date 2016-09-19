@@ -2,16 +2,16 @@
 % Please edit documentation in R/df.R
 \name{match_cols}
 \alias{match_cols}
-\title{Find a column name.}
+\title{Match column name.}
 \usage{
 match_cols(tbl, patt, ...)
 }
 \arguments{
 \item{tbl}{A \link[tibble]{tibble} or dataframe.}
 
-\item{patt}{Regular expression pattern to pass to \code{grepl}.}
+\item{patt}{Regular expression pattern to pass to \link[base]{grepl}.}
 
-\item{...}{Parameters to pass along to \code{grepl}.}
+\item{...}{Parameters to pass along to \link[base]{grepl}.}
 }
 \value{
 A character vector of column names matching the regex.

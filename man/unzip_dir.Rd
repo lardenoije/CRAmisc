@@ -2,7 +2,7 @@
 % Please edit documentation in R/unzip.R
 \name{unzip_dir}
 \alias{unzip_dir}
-\title{Unzip all files in a directory}
+\title{Unzip all files in a directory.}
 \usage{
 unzip_dir(in_dir, out_dir, ext)
 }

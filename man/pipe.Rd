@@ -2,12 +2,12 @@
 % Please edit documentation in R/utils.R
 \name{\%>\%}
 \alias{\%>\%}
-\title{Pipe operator}
+\title{Pipe operator.}
 \usage{
 lhs \%>\% rhs
 }
 \description{
-Pipe operator
+Pipe operator.
 }
 \keyword{internal}
 

@@ -2,7 +2,7 @@
 % Please edit documentation in R/data-types.R
 \name{col_spec_update}
 \alias{col_spec_update}
-\title{Convert a readr column specification}
+\title{Convert a readr column specification.}
 \usage{
 col_spec_update(col_spec, col_spec_df)
 }

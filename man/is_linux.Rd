@@ -2,7 +2,7 @@
 % Please edit documentation in R/os.R
 \name{is_linux}
 \alias{is_linux}
-\title{Is Linux}
+\title{Is Linux.}
 \usage{
 is_linux()
 }

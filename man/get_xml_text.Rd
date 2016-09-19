@@ -2,7 +2,7 @@
 % Please edit documentation in R/xml.R
 \name{get_xml_text}
 \alias{get_xml_text}
-\title{Get XML Text}
+\title{Get XML Text.}
 \usage{
 get_xml_text(x, xpath)
 }

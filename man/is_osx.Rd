@@ -2,7 +2,7 @@
 % Please edit documentation in R/os.R
 \name{is_osx}
 \alias{is_osx}
-\title{Is OSX}
+\title{Is OSX.}
 \usage{
 is_osx()
 }

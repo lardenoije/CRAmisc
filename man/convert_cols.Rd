@@ -2,7 +2,7 @@
 % Please edit documentation in R/data-types.R
 \name{convert_cols}
 \alias{convert_cols}
-\title{Convert dataframe column data types}
+\title{Convert dataframe column data types.}
 \usage{
 convert_cols(df, types_df)
 }

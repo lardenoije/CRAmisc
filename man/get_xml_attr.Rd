@@ -2,7 +2,7 @@
 % Please edit documentation in R/xml.R
 \name{get_xml_attr}
 \alias{get_xml_attr}
-\title{Get XML Attribute}
+\title{Get XML Attribute.}
 \usage{
 get_xml_attr(x, xpath, extract_value)
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/xml.R
 \name{xml_extract}
 \alias{xml_extract}
-\title{XML Extract}
+\title{XML Extract.}
 \usage{
 xml_extract(x, xpath, extract_type, extract_value = NULL,
   ret_var_name = NULL)

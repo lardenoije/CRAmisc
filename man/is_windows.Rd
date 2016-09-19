@@ -2,7 +2,7 @@
 % Please edit documentation in R/os.R
 \name{is_windows}
 \alias{is_windows}
-\title{Is Windows}
+\title{Is Windows.}
 \usage{
 is_windows()
 }

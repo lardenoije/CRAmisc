@@ -2,12 +2,12 @@
 % Please edit documentation in R/df.R
 \name{match_cols}
 \alias{match_cols}
-\title{Matches a column name?}
+\title{Find a column name.}
 \usage{
 match_cols(tbl, patt, ...)
 }
 \arguments{
-\item{tbl}{A \link[tibble]{tibble}.}
+\item{tbl}{A \link[tibble]{tibble} or dataframe.}
 
 \item{patt}{Regular expression pattern to pass to \code{grepl}.}
 
@@ -17,8 +17,8 @@ match_cols(tbl, patt, ...)
 A character vector of column names matching the regex.
 }
 \description{
-\code{match_cols} returns matching column names from a database table.  The
-matching is performed using regular expressions and \link[base]{grepl}.
+\code{match_cols} returns matching column names from a table.  The matching
+is performed using regular expressions and \link[base]{grepl}.
 }
 \details{
 Ignores case by default.  Can be overridden by passing \code{ignore.case} via

@@ -49,11 +49,35 @@ types_df_missing_col <- tibble::tribble(
   "not_in_df2", "double"
 )
 
+types_df_not_tibble <- data.frame(
+  col_name = c("date_var",
+               "datetime_var",
+               "double_var1",
+               "double_var2",
+               "numeric_var",
+               "logical_var",
+               "character_var",
+               "integer_var"),
+  col_type = c("date",
+               "datetime",
+               "double",
+               "double",
+               "numeric",
+               "logical",
+               "character",
+               "integer")
+)
+
+# convert the columns - missing column
 suppressMessages(test_df_converted_missing_col <- convert_cols(test_df,
                                                                types_df_missing_col))
 
-# convert the columns
+# convert the columns - all columns
 suppressMessages(test_df_converted <- convert_cols(test_df, types_df))
+
+# convert the columns - all columns
+suppressMessages(test_df_converted_not_tibble <- convert_cols(test_df,
+                                                              types_df_not_tibble))
 
 # tests
 test_that("date columns are converted", {
@@ -94,6 +118,10 @@ test_that("integer columns are converted", {
 test_that("column not in df is skipped", {
   expect_false(tibble::has_name(test_df, "not_in_df"))
   expect_identical(test_df_converted_missing_col, test_df_converted)
+})
+
+test_that("conversion happens if types_df is not a tibble", {
+  expect_identical(test_df_converted_not_tibble, test_df_converted)
 })
 
 csv_df <- readr::read_csv("a,b,c\n1,2,3\n4,5,6")

@@ -145,7 +145,10 @@ convert_cols <- function(df, types_df) {
   # utilize tidyr::nest so that conversions can happen in groups
   #   e.g. all character conversions happen at the same time in a single
   #     purrr::dmap_at call rather than one at a time
-  types_df_nest <- types_df %>% tidyr::nest_("col_name", key_col = "col_names")
+  types_df_nest <- types_df %>%
+    # make sure that all columns are character and not factors
+    dplyr::mutate_if(is.factor, as.character) %>%
+    tidyr::nest_("col_name", key_col = "col_names")
 
   # iterate over the types dataframe, which tells us how to convert columns
   #   in df

@@ -62,3 +62,23 @@ match_cols <- function(tbl, patt, ...) {
     purrr::keep(.x = cols,
                 .p = grepl(patt, cols, ignore.case = TRUE, ...))
 }
+
+#' Column names and types in a dataframe.
+#'
+#' Given a dataframe, \code{types_df} returns a \link[tibble]{tibble} with the
+#' column names and types.
+#'
+#' @param df A dataframe.
+#'
+#' @return A \link[tibble]{tibble} with the column names and types.
+#'
+#' @examples
+#' (mtcars %>%
+#'    types_df())
+#'
+#' @export
+types_df <- function(df) {
+  df %>%
+    purrr::dmap(class) %>%
+    tidyr::gather(key = "col_name", value = "col_type")
+}

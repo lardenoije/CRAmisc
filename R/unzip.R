@@ -1,4 +1,4 @@
-#' Unzip all files in a directory
+#' Unzip all files in a directory.
 #'
 #' Unzip all files in a given directory, identified by extension, placing the
 #' unzipped file in a separate output directory.

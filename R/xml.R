@@ -1,4 +1,4 @@
-#' Get XML Attribute
+#' Get XML Attribute.
 #'
 #' Return an XML node attribute if provided the document, XPath, and attribute
 #' name.
@@ -41,7 +41,7 @@ get_xml_attr <- function(x, xpath, extract_value) {
 }
 
 
-#' Get XML Text
+#' Get XML Text.
 #'
 #' Return an XML text value if provided the document and Xpath.
 #'
@@ -79,7 +79,7 @@ get_xml_text <- function(x, xpath) {
   return(xml_text)
 }
 
-#' XML Extract
+#' XML Extract.
 #'
 #' Extract XML text or an XML attribute via XPath.
 #'

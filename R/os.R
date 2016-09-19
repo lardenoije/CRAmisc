@@ -28,7 +28,7 @@ is_os_ <- function(os_string) {
   }
 }
 
-#' Is Linux
+#' Is Linux.
 #'
 #' Is the OS Linux.
 #'
@@ -40,7 +40,7 @@ is_os_ <- function(os_string) {
 is_linux <- is_os_("linux")
 
 
-#' Is OSX
+#' Is OSX.
 #'
 #' Is the OS OSX.
 #'
@@ -52,7 +52,7 @@ is_linux <- is_os_("linux")
 is_osx <- is_os_("darwin")
 
 
-#' Is Windows
+#' Is Windows.
 #'
 #' Is the OS Windows.
 #'

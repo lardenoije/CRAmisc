@@ -1,4 +1,4 @@
-#' Convert dataframe column data types
+#' Convert dataframe column data types.
 #'
 #' Given a configuration dataframe with column names and the required types,
 #' convert the column data types in a separate dataframe.
@@ -162,7 +162,7 @@ convert_cols <- function(df, types_df) {
 }
 
 
-#' Convert a readr column specification
+#' Convert a readr column specification.
 #'
 #' Given a \link[readr]{cols} specification, update the specification in place
 #' by explicitly declaring the appropriate type in a dataframe.

@@ -1,4 +1,4 @@
-#' Pipe operator
+#' Pipe operator.
 #'
 #' @name %>%
 #' @rdname pipe

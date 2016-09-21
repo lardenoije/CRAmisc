@@ -102,30 +102,30 @@ unzip_dir <- function(in_dir, out_dir, ext) {
 
   to_unzip <- purrr::discard(zip_basename, ~ .x %in% already_unzipped)
 
-  if (ext == "gz") {
+  if (toupper(ext) == "GZ") {
     purrr::walk(
       .x = to_unzip,
       .f = function(z) system2(command = "gunzip",
                                args = c("-c",
                                         shQuote(file.path(in_dir,
-                                                          paste0(z, ".gz")))),
+                                                          paste0(z, ".", ext)))),
                                stdout = file.path(out_dir, z))
     )
-  } else if (ext == "zipx") {
+  } else if (toupper(ext) == "ZIPX") {
     purrr::walk(
       .x = to_unzip,
       .f = function(z) system2(command = "unar",
                                args = c(shQuote(file.path(in_dir,
-                                                          paste0(z, ".zipx"))),
+                                                          paste0(z, ".", ext))),
                                         "-o",
                                         shQuote(file.path(out_dir))))
     )
-  } else if (ext == "zip") {
+  } else if (toupper(ext) == "ZIP") {
     purrr::walk(
       .x = to_unzip,
       .f = function(z) system2(command = "unzip",
                                args = c(shQuote(file.path(in_dir,
-                                                          paste0(z, ".zip"))),
+                                                          paste0(z, ".", ext))),
                                         "-d",
                                         shQuote(file.path(out_dir))))
     )

@@ -72,6 +72,7 @@
 #'             args = c("-l", "out_dir"))
 #'   }
 #' )
+#'
 #' @export
 unzip_dir <- function(in_dir, out_dir, ext) {
   zip_files <- list.files(path = in_dir,

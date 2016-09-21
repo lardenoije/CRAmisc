@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>match_cols. CRAmisc 0.4.0.9001</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<link href="css/highlight.css" rel="stylesheet">
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+<script type="text/javascript"
+  src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class="container">
+      <a class="brand" href="index.html">CRAmisc 0.4.0.9001</a>
+      <div class="nav">
+        <ul class="nav">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="reference.html">Reference</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Match column name.</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre><span class="functioncall"><a href='match_cols.html'>match_cols</a></span><span class="keyword">(</span><span class="symbol">tbl</span><span class="keyword">,</span> <span class="symbol">patt</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span></pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>tbl</dt>
+      <dd>A <a href='http://www.rdocumentation.org/packages/tibble/topics/tibble'>tibble</a> or dataframe.</dd>
+      <dt>patt</dt>
+      <dd>Regular expression pattern to pass to <a href='http://www.rdocumentation.org/packages/base/topics/grep'>grepl</a>.</dd>
+      <dt>...</dt>
+      <dd>Parameters to pass along to <a href='http://www.rdocumentation.org/packages/base/topics/grep'>grepl</a>.</dd>
+    </dl>
+    
+    <div class="Value">
+      <h2>Value</h2>
+
+      <p><dl>
+A character vector of column names matching the regex.
+</dl></p>
+
+    </div>
+
+    <div class="Description">
+      <h2>Description</h2>
+
+      <p><code>match_cols</code> returns matching column names from a table.  The matching
+is performed using regular expressions and <a href='http://www.rdocumentation.org/packages/base/topics/grep'>grepl</a>.</p>
+
+    </div>
+
+    <div class="Details">
+      <h2>Details</h2>
+
+      <p>Ignores case by default.  Can be overridden by passing <code>ignore.case</code> via
+<code>...</code>.</p>
+
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'><span class="comment">## dataframe to convert</span>
+<span class="symbol">key</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='http://www.rdocumentation.org/packages/base/topics/c'>c</a></span><span class="keyword">(</span><span class="number">1000L</span><span class="keyword">,</span> <span class="number">2000L</span><span class="keyword">,</span> <span class="number">3000L</span><span class="keyword">,</span> <span class="number">4000L</span><span class="keyword">,</span> <span class="number">1000L</span><span class="keyword">)</span>
+<span class="symbol">amount</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='http://www.rdocumentation.org/packages/base/topics/c'>c</a></span><span class="keyword">(</span><span class="string">"46.41"</span><span class="keyword">,</span> <span class="string">"118.11"</span><span class="keyword">,</span> <span class="string">"84.68"</span><span class="keyword">,</span> <span class="string">"493.59"</span><span class="keyword">,</span> <span class="string">"51.10"</span><span class="keyword">)</span>
+
+<span class="symbol">test_df</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='http://www.rdocumentation.org/packages/base/topics/data.frame'>data.frame</a></span><span class="keyword">(</span><span class="symbol">key</span><span class="keyword">,</span> <span class="symbol">amount</span><span class="keyword">)</span>
+
+<span class="comment"># column names</span>
+<span class="symbol">my_col</span> <span class="assignement">&lt;-</span> <span class="string">"^am"</span>
+
+<span class="comment"># use</span>
+<span class="symbol">test_df</span> <span class="keyword">%&gt;%</span>
+  <span class="functioncall"><a href='match_cols.html'>match_cols</a></span><span class="keyword">(</span><span class="symbol">my_col</span><span class="keyword">)</span></div>
+<div class='output'>[1] &quot;amount&quot;
+</div>
+<div class='input'></div></pre>
+  </div>
+  <div class="span4 sidebar">
+    <!-- <ul>
+      <li>match_cols</li>
+    </ul>
+    <ul>
+      
+    </ul> -->
+
+
+
+
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="https://getbootstrap.com/2.0.4/">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

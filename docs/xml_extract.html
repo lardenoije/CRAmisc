@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>xml_extract. CRAmisc 0.4.0.9001</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<link href="css/highlight.css" rel="stylesheet">
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+<script type="text/javascript"
+  src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class="container">
+      <a class="brand" href="index.html">CRAmisc 0.4.0.9001</a>
+      <div class="nav">
+        <ul class="nav">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="reference.html">Reference</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>XML Extract.</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre><span class="functioncall"><a href='xml_extract.html'>xml_extract</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="symbol">xpath</span><span class="keyword">,</span> <span class="symbol">extract_type</span><span class="keyword">,</span> <span class="argument">extract_value</span>&nbsp;<span class="argument">=</span>&nbsp;NULL<span class="keyword">,</span>
+  <span class="argument">ret_var_name</span>&nbsp;<span class="argument">=</span>&nbsp;NULL<span class="keyword">)</span></pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>x</dt>
+      <dd>XML document: a literal XML document, a URL, or a string.</dd>
+      <dt>xpath</dt>
+      <dd>A string containing a xpath (1.0) expression.</dd>
+      <dt>extract_type</dt>
+      <dd>The string &quot;text&quot; or &quot;attr&quot; selecting the type of
+extraction.</dd>
+      <dt>extract_value</dt>
+      <dd>The attribute value to be extracted.  This only needs to
+be set if <code>extract_type = &quot;attr&quot;</code>.</dd>
+      <dt>ret_var_name</dt>
+      <dd>The variable name of the extracted value.
+<code>xml_extract</code> may be used as part of an assignment statement.  If this
+is the case, then the parameter <code>ret_var_name</code> should remain
+<code>NULL</code>.  But if <code>xml_extract</code> is to be used as part of a functional
+pipeline then it may be necessary to name the returned value.</dd>
+    </dl>
+    
+    <div class="Value">
+      <h2>Value</h2>
+
+      <p><dl>
+The extracted text or attribute value from an XML tag.
+</dl></p>
+
+    </div>
+
+    <div class="Description">
+      <h2>Description</h2>
+
+      <p>Extract XML text or an XML attribute via XPath.</p>
+
+    </div>
+
+    <div class="Details">
+      <h2>Details</h2>
+
+      <p>May be used as a UDF that is part of a <code>dplyr</code> pipeline.  The most
+simple use is to include <code>xml_extract</code> as part of a <code>dplyr::mutate</code>
+function.  For details see <code>vignette(&quot;chunked-invoke-rows-xml&quot;)</code>.</p>
+
+      <p>A more complex use would be to use as a UDF to parse an arbitrary number of
+text and attribute values from an XML document.  This can be accomplished
+utilizing a dataframe holding parameter values, <code>purrr::pmap</code>, and
+<code>purrr::invoke_rows</code>.</p>
+
+      <p>Because <a href='http://www.rdocumentation.org/packages/xml2/topics/xml_find_all'>xml_find_first</a> is the function utilized in
+<code>xml_extract</code>, errors are consumed.  This is helpful when iterating over
+a set of XML documents where the schemas are inconsistent.</p>
+
+      <p>Suggested resources for XPath are
+<ul>
+<li> <a href = 'https://developer.mozilla.org/en-US/docs/Web/XPath/Functions'>https://developer.mozilla.org/en-US/docs/Web/XPath/Functions</a>
+  </li>
+<li> <a href = 'http://www.w3schools.com/xsl/xpath_syntax.asp'>http://www.w3schools.com/xsl/xpath_syntax.asp</a>
+</li>
+</ul></p>
+
+      <p></p>
+
+    </div>
+      </div>
+  <div class="span4 sidebar">
+    <!-- <ul>
+      <li>xml_extract</li>
+    </ul>
+    <ul>
+      
+    </ul> -->
+
+    <h2>See also</h2>
+      <p>See <code>vignette(&quot;chunked-invoke-rows&quot;)</code> for usage.</p>
+
+    
+
+
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="https://getbootstrap.com/2.0.4/">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

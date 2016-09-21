@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>unzip_dir. CRAmisc 0.4.0.9001</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<link href="css/highlight.css" rel="stylesheet">
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+<script type="text/javascript"
+  src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class="container">
+      <a class="brand" href="index.html">CRAmisc 0.4.0.9001</a>
+      <div class="nav">
+        <ul class="nav">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="reference.html">Reference</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Unzip all files in a directory.</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre><span class="functioncall"><a href='unzip_dir.html'>unzip_dir</a></span><span class="keyword">(</span><span class="symbol">in_dir</span><span class="keyword">,</span> <span class="symbol">out_dir</span><span class="keyword">,</span> <span class="symbol">ext</span><span class="keyword">)</span></pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>in_dir</dt>
+      <dd>Input directory containing the zipped files to convert.</dd>
+      <dt>out_dir</dt>
+      <dd>Output directory to place the unzipped files.</dd>
+      <dt>ext</dt>
+      <dd>Zipped file extension.  The extensions supported are
+<ul>
+<li> <code>gz</code> - gzipped files, unzipped with <code>gunzip</code>
+  </li>
+<li> <code>zip</code> - zip files, unzipped with <code>unzip</code>
+  </li>
+<li> <code>zipx</code> - zipx or archive files, unzipped with <code>unar</code>
+</li>
+</ul>
+</dd>
+    </dl>
+    
+    <div class="Value">
+      <h2>Value</h2>
+
+      <p><dl>
+Invisibly returns a character vector of the zipped file basenames.
+</dl></p>
+
+    </div>
+
+    <div class="Description">
+      <h2>Description</h2>
+
+      <p>Unzip all files in a given directory, identified by extension, placing the
+unzipped file in a separate output directory.</p>
+
+    </div>
+
+    <div class="Details">
+      <h2>Details</h2>
+
+      <p><code>unzip_dir</code> makes system calls to <code>gunzip</code>, <code>unzip</code>, and
+<code>unar</code>.  Each of these need to be on the system <code>PATH</code> and able to
+be called from <a href='http://www.rdocumentation.org/packages/base/topics/system2'>system2</a>.  Calls have only been tested on OSX at
+this time.</p>
+
+      <p>On OSX, <code>unar</code> may be installed via <a href = 'http://brew.sh'>Homebrew</a>
+using the install command <code>brew install unar</code>.</p>
+
+      <p>Finally, <code>unzip_dir</code> checks whether or not the output directory already
+contains the file to be unzipped.  If the file already exists, then unzipping
+is skipped for the file.  This allows one to re-run the function multiple
+times without continually unzipping all files in the input directory.</p>
+
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'><span class="package">withr</span><span class="keyword">::</span><span class="functioncall"><a href='http://www.rdocumentation.org/packages/withr/topics/with_dir'>with_dir</a></span><span class="keyword">(</span>
+  <span class="argument">new</span> <span class="argument">=</span> <span class="functioncall"><a href='http://www.rdocumentation.org/packages/base/topics/tempfile'>tempdir</a></span><span class="keyword">(</span><span class="keyword">)</span><span class="keyword">,</span>
+  <span class="argument">code</span> <span class="argument">=</span> <span class="keyword">{</span>
+
+    <span class="comment"># create two small tables to write out as files</span>
+    <span class="symbol">a_df</span> <span class="assignement">&lt;-</span> <span class="package">tibble</span><span class="keyword">::</span><span class="functioncall"><a href='http://www.rdocumentation.org/packages/tibble/topics/tribble'>tribble</a></span><span class="keyword">(</span>
+      <span class="keyword">~</span><span class="symbol">a</span><span class="keyword">,</span> <span class="keyword">~</span><span class="symbol">b</span><span class="keyword">,</span> <span class="keyword">~</span><span class="symbol">c</span><span class="keyword">,</span>
+      <span class="number">1</span><span class="keyword">,</span> <span class="number">2</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">,</span>
+      <span class="number">4</span><span class="keyword">,</span> <span class="number">5</span><span class="keyword">,</span> <span class="number">6</span><span class="keyword">,</span>
+      <span class="number">7</span><span class="keyword">,</span> <span class="number">8</span><span class="keyword">,</span> <span class="number">9</span>
+    <span class="keyword">)</span>
+
+    <span class="symbol">d_df</span> <span class="assignement">&lt;-</span> <span class="package">tibble</span><span class="keyword">::</span><span class="functioncall"><a href='http://www.rdocumentation.org/packages/tibble/topics/tribble'>tribble</a></span><span class="keyword">(</span>
+      <span class="keyword">~</span><span class="symbol">d</span><span class="keyword">,</span> <span class="keyword">~</span><span class="symbol">e</span><span class="keyword">,</span> <span class="keyword">~</span><span class="symbol">f</span><span class="keyword">,</span>
+      <span class="number">11</span><span class="keyword">,</span> <span class="number">22</span><span class="keyword">,</span> <span class="number">33</span><span class="keyword">,</span>
+      <span class="number">44</span><span class="keyword">,</span> <span class="number">55</span><span class="keyword">,</span> <span class="number">66</span><span class="keyword">,</span>
+      <span class="number">77</span><span class="keyword">,</span> <span class="number">88</span><span class="keyword">,</span> <span class="number">99</span>
+    <span class="keyword">)</span>
+    <span class="comment"># make a new input directory</span>
+    <span class="functioncall"><a href='http://www.rdocumentation.org/packages/base/topics/system2'>system2</a></span><span class="keyword">(</span><span class="argument">command</span> <span class="argument">=</span> <span class="string">"mkdir"</span><span class="keyword">,</span>
+            <span class="argument">args</span> <span class="argument">=</span> <span class="string">"in_dir"</span><span class="keyword">)</span>
+    <span class="functioncall"><a href='http://www.rdocumentation.org/packages/base/topics/getwd'>setwd</a></span><span class="keyword">(</span><span class="string">"in_dir"</span><span class="keyword">)</span>
+
+    <span class="comment"># write csv files</span>
+    <span class="package">readr</span><span class="keyword">::</span><span class="functioncall"><a href='http://www.rdocumentation.org/packages/readr/topics/write_delim'>write_csv</a></span><span class="keyword">(</span><span class="symbol">a_df</span><span class="keyword">,</span> <span class="string">"a.csv"</span><span class="keyword">)</span>
+    <span class="package">readr</span><span class="keyword">::</span><span class="functioncall"><a href='http://www.rdocumentation.org/packages/readr/topics/write_delim'>write_csv</a></span><span class="keyword">(</span><span class="symbol">d_df</span><span class="keyword">,</span> <span class="string">"d.csv"</span><span class="keyword">)</span>
+
+    <span class="comment"># convert into gzip files</span>
+    <span class="functioncall"><a href='http://www.rdocumentation.org/packages/base/topics/system2'>system2</a></span><span class="keyword">(</span><span class="argument">command</span> <span class="argument">=</span> <span class="string">"gzip"</span><span class="keyword">,</span>
+            <span class="argument">args</span> <span class="argument">=</span> <span class="functioncall"><a href='http://www.rdocumentation.org/packages/base/topics/c'>c</a></span><span class="keyword">(</span><span class="string">"a.csv"</span><span class="keyword">,</span> <span class="string">"d.csv"</span><span class="keyword">)</span><span class="keyword">)</span>
+
+    <span class="comment"># make a new output directory</span>
+    <span class="functioncall"><a href='http://www.rdocumentation.org/packages/base/topics/getwd'>setwd</a></span><span class="keyword">(</span><span class="string">".."</span><span class="keyword">)</span>
+    <span class="functioncall"><a href='http://www.rdocumentation.org/packages/base/topics/system2'>system2</a></span><span class="keyword">(</span><span class="argument">command</span> <span class="argument">=</span> <span class="string">"mkdir"</span><span class="keyword">,</span>
+            <span class="argument">args</span> <span class="argument">=</span> <span class="string">"out_dir"</span><span class="keyword">)</span>
+
+    <span class="comment"># unzip all files</span>
+    <span class="functioncall"><a href='unzip_dir.html'>unzip_dir</a></span><span class="keyword">(</span><span class="string">"in_dir"</span><span class="keyword">,</span> <span class="string">"out_dir"</span><span class="keyword">,</span> <span class="string">"gz"</span><span class="keyword">)</span>
+
+    <span class="comment"># list all files</span>
+    <span class="functioncall"><a href='http://www.rdocumentation.org/packages/base/topics/system2'>system2</a></span><span class="keyword">(</span><span class="argument">command</span> <span class="argument">=</span> <span class="string">"ls"</span><span class="keyword">,</span>
+            <span class="argument">args</span> <span class="argument">=</span> <span class="functioncall"><a href='http://www.rdocumentation.org/packages/base/topics/c'>c</a></span><span class="keyword">(</span><span class="string">"-l"</span><span class="keyword">,</span> <span class="string">"out_dir"</span><span class="keyword">)</span><span class="keyword">)</span>
+  <span class="keyword">}</span>
+<span class="keyword">)</span></div></pre>
+  </div>
+  <div class="span4 sidebar">
+    <!-- <ul>
+      <li>unzip_dir</li>
+    </ul>
+    <ul>
+      
+    </ul> -->
+
+
+
+
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="https://getbootstrap.com/2.0.4/">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

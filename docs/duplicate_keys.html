@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>duplicate_keys. CRAmisc 0.4.0.9001</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<link href="css/highlight.css" rel="stylesheet">
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+<script type="text/javascript"
+  src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class="container">
+      <a class="brand" href="index.html">CRAmisc 0.4.0.9001</a>
+      <div class="nav">
+        <ul class="nav">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="reference.html">Reference</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Find duplicate keys in a dataframe.</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre><span class="functioncall"><a href='duplicate_keys.html'>duplicate_keys</a></span><span class="keyword">(</span><span class="symbol">df</span><span class="keyword">,</span> <span class="symbol">key_col</span><span class="keyword">)</span></pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>df</dt>
+      <dd>The dataframe to check for duplicate keys.</dd>
+      <dt>key_col</dt>
+      <dd>The column to check for duplicates.</dd>
+    </dl>
+    
+    <div class="Value">
+      <h2>Value</h2>
+
+      <p><dl>
+A tibble containing the duplicate keys and a count of the number of
+duplicates.
+</dl></p>
+
+    </div>
+
+    <div class="Description">
+      <h2>Description</h2>
+
+      <p>Return a vector of the duplicate keys within a dataframe.  Filters out NA
+values before determining duplicates.</p>
+
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'><span class="comment">## dataframe to convert</span>
+<span class="symbol">key</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='http://www.rdocumentation.org/packages/base/topics/c'>c</a></span><span class="keyword">(</span><span class="number">1000L</span><span class="keyword">,</span> <span class="number">2000L</span><span class="keyword">,</span> <span class="number">3000L</span><span class="keyword">,</span> <span class="number">4000L</span><span class="keyword">,</span> <span class="number">1000L</span><span class="keyword">)</span>
+<span class="symbol">amount</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='http://www.rdocumentation.org/packages/base/topics/c'>c</a></span><span class="keyword">(</span><span class="string">"46.41"</span><span class="keyword">,</span> <span class="string">"118.11"</span><span class="keyword">,</span> <span class="string">"84.68"</span><span class="keyword">,</span> <span class="string">"493.59"</span><span class="keyword">,</span> <span class="string">"51.10"</span><span class="keyword">)</span>
+
+<span class="symbol">test_df</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='http://www.rdocumentation.org/packages/base/topics/data.frame'>data.frame</a></span><span class="keyword">(</span><span class="symbol">key</span><span class="keyword">,</span> <span class="symbol">amount</span><span class="keyword">)</span>
+
+<span class="comment">## which keys are duplicated</span>
+<span class="functioncall"><a href='duplicate_keys.html'>duplicate_keys</a></span><span class="keyword">(</span><span class="argument">df</span> <span class="argument">=</span> <span class="symbol">test_df</span><span class="keyword">,</span> <span class="argument">key_col</span> <span class="argument">=</span> <span class="string">"key"</span><span class="keyword">)</span></div>
+<div class='output'># A tibble: 1 × 2
+    key     n
+  &lt;int&gt; &lt;int&gt;
+1  1000     2
+</div>
+<div class='input'></div></pre>
+  </div>
+  <div class="span4 sidebar">
+    <!-- <ul>
+      <li>duplicate_keys</li>
+    </ul>
+    <ul>
+      
+    </ul> -->
+
+
+
+
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="https://getbootstrap.com/2.0.4/">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

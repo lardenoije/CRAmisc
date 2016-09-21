@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>convert_cols. CRAmisc 0.4.0.9001</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<link href="css/highlight.css" rel="stylesheet">
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+<script type="text/javascript"
+  src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class="container">
+      <a class="brand" href="index.html">CRAmisc 0.4.0.9001</a>
+      <div class="nav">
+        <ul class="nav">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="reference.html">Reference</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Convert dataframe column data types.</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre><span class="functioncall"><a href='convert_cols.html'>convert_cols</a></span><span class="keyword">(</span><span class="symbol">df</span><span class="keyword">,</span> <span class="symbol">types_df</span><span class="keyword">)</span></pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>df</dt>
+      <dd>A dataframe that will have its column data types converted.</dd>
+      <dt>types_df</dt>
+      <dd>A dataframe containing the column to convert and the data
+type to convert to.  The expectation is that <code>types_df</code> has columns
+named <code>col_name</code> and <code>col_type</code>.  If <code>types_df</code> has columns
+named differently, this is easy to convert using <a href='http://www.rdocumentation.org/packages/dplyr/topics/select'>rename</a>.</dd>
+    </dl>
+    
+    <div class="Value">
+      <h2>Value</h2>
+
+      <p><dl>
+A copy of the original dataframe, df, with the column types
+converted.
+</dl></p>
+
+    </div>
+
+    <div class="Description">
+      <h2>Description</h2>
+
+      <p>Given a configuration dataframe with column names and the required types,
+convert the column data types in a separate dataframe.</p>
+
+    </div>
+
+    <div class="Details">
+      <h2>Details</h2>
+
+      <p>Column metadata may be stored separately from the code needed to perform the
+conversion.  As an example, a dataframe with 2,000 columns could have its
+metadata stored in a separate <code>csv</code> or <code>xlsx</code> file.  The metadata
+file would be read in as a dataframe and <code>convert_cols</code> would update the
+data types en masse.</p>
+
+      <p><code>convert_cols</code> is trading the need to maintain a separate metadata file
+for concise code that performs the data type conversion.  The alternative is
+to have verbose code that details each data type conversion to take place.</p>
+
+      <p><code>convert_cols</code> is a closure that contains two parts.
+<ul>
+<li> An inner function, <code>convert_</code>, that converts a set of columns
+  that are to be converted to the same type using <a href='http://www.rdocumentation.org/packages/purrr/topics/dmap'>dmap_at</a>.
+  </li>
+<li> The enclosing environment that contains the dataframe that will be
+  updated and contains a call to <a href='http://www.rdocumentation.org/packages/purrr/topics/by_row'>invoke_rows</a> to drive
+  iteration.
+</li>
+</ul></p>
+
+      <p>Finally, the function is missing cases to convert to the following types.
+The types includes should cover the most simple use cases.
+<ul>
+<li> list
+  </li>
+<li> factor
+  </li>
+<li> raw
+  </li>
+<li> complex
+</li>
+</ul></p>
+
+      <p></p>
+
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'><span class="comment">## dataframe to convert</span>
+<span class="symbol">id</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='http://www.rdocumentation.org/packages/base/topics/c'>c</a></span><span class="keyword">(</span><span class="number">1L</span><span class="keyword">,</span> <span class="number">2L</span><span class="keyword">,</span> <span class="number">3L</span><span class="keyword">)</span>
+<span class="symbol">date_var</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='http://www.rdocumentation.org/packages/base/topics/c'>c</a></span><span class="keyword">(</span><span class="string">"2016-01-02"</span><span class="keyword">,</span> <span class="string">"2015-12-24"</span><span class="keyword">,</span> <span class="string">"2016-05-05"</span><span class="keyword">)</span>
+<span class="symbol">datetime_var</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='http://www.rdocumentation.org/packages/base/topics/c'>c</a></span><span class="keyword">(</span><span class="string">"2016-01-02T11:11:04"</span><span class="keyword">,</span>
+                  <span class="string">"2015-12-24T08:11:41"</span><span class="keyword">,</span>
+                  <span class="string">"2016-05-05T05:05:49"</span><span class="keyword">)</span>
+<span class="symbol">double_var1</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='http://www.rdocumentation.org/packages/base/topics/c'>c</a></span><span class="keyword">(</span><span class="string">"46.41"</span><span class="keyword">,</span> <span class="string">"118.11"</span><span class="keyword">,</span> <span class="string">"84.68"</span><span class="keyword">)</span>
+<span class="symbol">double_var2</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='http://www.rdocumentation.org/packages/base/topics/c'>c</a></span><span class="keyword">(</span><span class="string">"68.48"</span><span class="keyword">,</span> <span class="string">"-248.99"</span><span class="keyword">,</span> <span class="string">"194"</span><span class="keyword">)</span>
+<span class="symbol">numeric_var</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='http://www.rdocumentation.org/packages/base/topics/c'>c</a></span><span class="keyword">(</span><span class="string">"78.61"</span><span class="keyword">,</span> <span class="string">"593.1"</span><span class="keyword">,</span> <span class="string">"123"</span><span class="keyword">)</span>
+<span class="symbol">logical_var</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='http://www.rdocumentation.org/packages/base/topics/c'>c</a></span><span class="keyword">(</span><span class="string">"true"</span><span class="keyword">,</span> <span class="string">"true"</span><span class="keyword">,</span> <span class="string">"false"</span><span class="keyword">)</span>
+<span class="symbol">character_var</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='http://www.rdocumentation.org/packages/base/topics/c'>c</a></span><span class="keyword">(</span><span class="number">49</span><span class="keyword">,</span> <span class="number">88</span><span class="keyword">,</span> <span class="number">104</span><span class="keyword">)</span>
+<span class="symbol">integer_var</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='http://www.rdocumentation.org/packages/base/topics/c'>c</a></span><span class="keyword">(</span><span class="string">"77"</span><span class="keyword">,</span> <span class="string">"84"</span><span class="keyword">,</span> <span class="string">"4949"</span><span class="keyword">)</span>
+
+<span class="symbol">test_df</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='http://www.rdocumentation.org/packages/base/topics/data.frame'>data.frame</a></span><span class="keyword">(</span><span class="symbol">id</span><span class="keyword">,</span>
+                      <span class="symbol">date_var</span><span class="keyword">,</span>
+                      <span class="symbol">datetime_var</span><span class="keyword">,</span>
+                      <span class="symbol">double_var1</span><span class="keyword">,</span>
+                      <span class="symbol">double_var2</span><span class="keyword">,</span>
+                      <span class="symbol">numeric_var</span><span class="keyword">,</span>
+                      <span class="symbol">logical_var</span><span class="keyword">,</span>
+                      <span class="symbol">character_var</span><span class="keyword">,</span>
+                      <span class="symbol">integer_var</span><span class="keyword">)</span>
+
+<span class="comment">## print the structure</span>
+<span class="functioncall"><a href='http://www.rdocumentation.org/packages/utils/topics/str'>str</a></span><span class="keyword">(</span><span class="symbol">test_df</span><span class="keyword">)</span></div>
+<div class='output'>&#39;data.frame&#39;:	3 obs. of  9 variables:
+ $ id           : int  1 2 3
+ $ date_var     : Factor w/ 3 levels &quot;2015-12-24&quot;,&quot;2016-01-02&quot;,..: 2 1 3
+ $ datetime_var : Factor w/ 3 levels &quot;2015-12-24T08:11:41&quot;,..: 2 1 3
+ $ double_var1  : Factor w/ 3 levels &quot;118.11&quot;,&quot;46.41&quot;,..: 2 1 3
+ $ double_var2  : Factor w/ 3 levels &quot;-248.99&quot;,&quot;194&quot;,..: 3 1 2
+ $ numeric_var  : Factor w/ 3 levels &quot;123&quot;,&quot;593.1&quot;,..: 3 2 1
+ $ logical_var  : Factor w/ 2 levels &quot;false&quot;,&quot;true&quot;: 2 2 1
+ $ character_var: num  49 88 104
+ $ integer_var  : Factor w/ 3 levels &quot;4949&quot;,&quot;77&quot;,&quot;84&quot;: 2 3 1
+</div>
+<div class='input'>
+<span class="comment">## create a dataframe with columns named col_name and col_type (if you name</span>
+<span class="comment">##   them something else you can always use dplyr::rename) with the column</span>
+<span class="comment">##   name and the type you would like it converted to</span>
+<span class="symbol">types_df</span> <span class="assignement">&lt;-</span> <span class="package">tibble</span><span class="keyword">::</span><span class="functioncall"><a href='http://www.rdocumentation.org/packages/tibble/topics/tribble'>tribble</a></span><span class="keyword">(</span>
+  <span class="keyword">~</span><span class="symbol">col_name</span><span class="keyword">,</span> <span class="keyword">~</span><span class="symbol">col_type</span><span class="keyword">,</span>
+  <span class="string">"date_var"</span><span class="keyword">,</span> <span class="string">"date"</span><span class="keyword">,</span>
+  <span class="string">"datetime_var"</span><span class="keyword">,</span> <span class="string">"datetime"</span><span class="keyword">,</span>
+  <span class="string">"double_var1"</span><span class="keyword">,</span> <span class="string">"double"</span><span class="keyword">,</span>
+  <span class="string">"double_var2"</span><span class="keyword">,</span> <span class="string">"double"</span><span class="keyword">,</span>
+  <span class="string">"numeric_var"</span><span class="keyword">,</span> <span class="string">"numeric"</span><span class="keyword">,</span>
+  <span class="string">"logical_var"</span><span class="keyword">,</span> <span class="string">"logical"</span><span class="keyword">,</span>
+  <span class="string">"character_var"</span><span class="keyword">,</span> <span class="string">"character"</span><span class="keyword">,</span>
+  <span class="string">"integer_var"</span><span class="keyword">,</span> <span class="string">"integer"</span>
+<span class="keyword">)</span>
+
+<span class="comment">## convert the columns</span>
+<span class="symbol">test_df_converted</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='convert_cols.html'>convert_cols</a></span><span class="keyword">(</span><span class="symbol">test_df</span><span class="keyword">,</span> <span class="symbol">types_df</span><span class="keyword">)</span></div>
+<strong class='message'>For col_type = &#39;numeric&#39; utilizing type double</strong>
+<div class='input'></div></pre>
+  </div>
+  <div class="span4 sidebar">
+    <!-- <ul>
+      <li>convert_cols</li>
+    </ul>
+    <ul>
+      
+    </ul> -->
+
+
+
+
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="https://getbootstrap.com/2.0.4/">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

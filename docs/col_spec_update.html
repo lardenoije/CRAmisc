@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>col_spec_update. CRAmisc 0.4.0.9001</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<link href="css/highlight.css" rel="stylesheet">
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+<script type="text/javascript"
+  src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class="container">
+      <a class="brand" href="index.html">CRAmisc 0.4.0.9001</a>
+      <div class="nav">
+        <ul class="nav">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="reference.html">Reference</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Convert a readr column specification.</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre><span class="functioncall"><a href='col_spec_update.html'>col_spec_update</a></span><span class="keyword">(</span><span class="symbol">col_spec</span><span class="keyword">,</span> <span class="symbol">col_spec_df</span><span class="keyword">)</span></pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>col_spec</dt>
+      <dd>A <a href='http://www.rdocumentation.org/packages/readr/topics/cols'>cols</a> specification.  Most commonly produced
+as part of a call to <a href='http://www.rdocumentation.org/packages/readr/topics/read_delim'>read_csv</a>.</dd>
+      <dt>col_spec_df</dt>
+      <dd>A dataframe containing the column name and type to update
+within the specification.  The expectation is that <code>col_spec_df</code> has
+columns named <code>col_name</code> and <code>col_type</code>.  If <code>col_spec_df</code>
+has columns named differently, this is easy to convert using
+<a href='http://www.rdocumentation.org/packages/dplyr/topics/select'>rename</a>.</dd>
+    </dl>
+    
+    <div class="Value">
+      <h2>Value</h2>
+
+      <p><dl>
+A copy of the original specification with updated column types.
+</dl></p>
+
+    </div>
+
+    <div class="Description">
+      <h2>Description</h2>
+
+      <p>Given a <a href='http://www.rdocumentation.org/packages/readr/topics/cols'>cols</a> specification, update the specification in place
+by explicitly declaring the appropriate type in a dataframe.</p>
+
+    </div>
+
+    <div class="Details">
+      <h2>Details</h2>
+
+      <p>This is of value when importing an extremely wide dataframe with many
+columns.  It may not make sense to explicitly declare the type of every
+column by hand.  Nor should one have to copy/paste an exisiting column
+specification into a text editor in order to update the specification.</p>
+
+      <p>A final use case is when problems occur and a <a href='http://www.rdocumentation.org/packages/readr/topics/problems'>problems</a> tibble
+is created.  The tibble can be the starting point to decide upon the columns
+that require updating.</p>
+
+      <p><code>col_spec_update</code> is a closure that contains two parts.
+<ul>
+<li> An inner function, <code>update_</code>, that updates the specification by
+  setting the <code>class</code> attribute for the given column.
+  </li>
+<li> The enclosing environment that contains the specification to be
+  updated and contains a call to <a href='http://www.rdocumentation.org/packages/purrr/topics/by_row'>invoke_rows</a> to drive
+  iteration.
+</li>
+</ul></p>
+
+      <p></p>
+
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'><span class="symbol">test_df</span> <span class="assignement">&lt;-</span> <span class="package">readr</span><span class="keyword">::</span><span class="functioncall"><a href='http://www.rdocumentation.org/packages/readr/topics/read_delim'>read_csv</a></span><span class="keyword">(</span><span class="string">"a,b,c\n1,2,3\n4,5,6"</span><span class="keyword">)</span>
+<span class="symbol">test_spec</span> <span class="assignement">&lt;-</span> <span class="package">readr</span><span class="keyword">::</span><span class="functioncall"><a href='http://www.rdocumentation.org/packages/stats/topics/spectrum'>spec</a></span><span class="keyword">(</span><span class="symbol">test_df</span><span class="keyword">)</span>
+
+<span class="comment">## returns</span>
+<span class="comment">##   a = col_integer()</span>
+<span class="comment">##   b = col_integer()</span>
+<span class="comment">##   c = col_integer()</span>
+
+<span class="comment">## update columns a and b to be doubles instead of integers</span>
+
+<span class="symbol">col_spec_df</span> <span class="assignement">&lt;-</span> <span class="package">tibble</span><span class="keyword">::</span><span class="functioncall"><a href='http://www.rdocumentation.org/packages/tibble/topics/tribble'>tribble</a></span><span class="keyword">(</span>
+  <span class="keyword">~</span><span class="symbol">col_name</span><span class="keyword">,</span> <span class="keyword">~</span><span class="symbol">col_type</span><span class="keyword">,</span>
+  <span class="string">"a"</span><span class="keyword">,</span> <span class="string">"double"</span><span class="keyword">,</span>
+  <span class="string">"b"</span><span class="keyword">,</span> <span class="string">"double"</span>
+<span class="keyword">)</span>
+
+<span class="comment">## update the specification</span>
+<span class="symbol">test_spec_updated</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='col_spec_update.html'>col_spec_update</a></span><span class="keyword">(</span><span class="symbol">test_spec</span><span class="keyword">,</span> <span class="symbol">col_spec_df</span><span class="keyword">)</span>
+
+<span class="comment">## re-read with new column spec</span>
+<span class="symbol">test_updated</span> <span class="assignement">&lt;-</span> <span class="package">readr</span><span class="keyword">::</span><span class="functioncall"><a href='http://www.rdocumentation.org/packages/readr/topics/read_delim'>read_csv</a></span><span class="keyword">(</span><span class="string">"a,b,c\n1,2,3\n4,5,6"</span><span class="keyword">,</span>
+                                <span class="argument">col_types</span> <span class="argument">=</span> <span class="symbol">test_spec_updated</span><span class="keyword">)</span></div></pre>
+  </div>
+  <div class="span4 sidebar">
+    <!-- <ul>
+      <li>col_spec_update</li>
+    </ul>
+    <ul>
+      
+    </ul> -->
+
+
+
+
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="https://getbootstrap.com/2.0.4/">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

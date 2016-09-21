@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>chunked_invoke_rows. CRAmisc 0.4.0.9001</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<link href="css/highlight.css" rel="stylesheet">
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+<script type="text/javascript"
+  src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class="container">
+      <a class="brand" href="index.html">CRAmisc 0.4.0.9001</a>
+      <div class="nav">
+        <ul class="nav">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="reference.html">Reference</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Apply a function to each row of a database result set.</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre><span class="functioncall"><a href='chunked_invoke_rows.html'>chunked_invoke_rows</a></span><span class="keyword">(</span><span class="symbol">res</span><span class="keyword">,</span> <span class="symbol">f</span><span class="keyword">,</span> <span class="symbol">n</span><span class="keyword">,</span> <span class="argument">gc</span>&nbsp;<span class="argument">=</span>&nbsp;<span class="number">NA_character_</span><span class="keyword">)</span></pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>res</dt>
+      <dd><code>DBI::dbSendQuery</code> result set.</dd>
+      <dt>f</dt>
+      <dd>The function that will be applied to each row of the database result
+set.  <code>f</code> is assumed to be constructed using a <code>dplyr</code> pipeline
+where a dataframe is passed as the sole parameter and a transformed dataframe
+is returned.</dd>
+      <dt>n</dt>
+      <dd>The number of rows to pull back from the database result set for
+each chunk.</dd>
+      <dt>gc</dt>
+      <dd>The type of garbage collection to run.  Default is <code>NA</code> or no
+garbage collection.  Choices include
+<ul>
+<li> <code>r</code> = R garbage collection
+  </li>
+<li> <code>j</code> = Java garbage collection
+  </li>
+<li> <code>rj</code> = R and Java garbage collection
+</li>
+</ul>
+</dd>
+    </dl>
+    
+    <div class="Value">
+      <h2>Value</h2>
+
+      <p><dl>
+A dataframe that has been transformed by <code>f</code>.
+</dl></p>
+
+    </div>
+
+    <div class="Description">
+      <h2>Description</h2>
+
+      <p><code>chunked_invoke_rows</code> pulls chunks from a database result set and
+applies a function to each row of the result set.  All transformed chunks
+are row bound to return a single dataframe.</p>
+
+    </div>
+
+    <div class="Details">
+      <h2>Details</h2>
+
+      <p>This function is useful when processing database result sets that are
+extremely large.  For example, if XML docs, JSON docs, or blobs of any kind
+are stored in a database column, then <code>chunked_invoke_rows</code> can be
+used to iteratively process and transform the data.</p>
+
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'><span class="comment">## Not run: ------------------------------------</span>
+<span class="comment"># # create in-memory SQLite database</span>
+<span class="comment"># dbcon &lt;- DBI::dbConnect(RSQLite::SQLite(), dbname = ":memory:")</span>
+<span class="comment"># DBI::dbWriteTable(dbcon, "mtcars", mtcars)</span>
+<span class="comment"># </span>
+<span class="comment"># # create and send a query</span>
+<span class="comment"># sql_query &lt;- "SELECT * FROM mtcars where hp &gt; 120"</span>
+<span class="comment"># res &lt;- DBI::dbSendQuery(dbcon, sql_query)</span>
+<span class="comment"># </span>
+<span class="comment"># # create a function to operate on chunks</span>
+<span class="comment"># # the function should accept a dataframe and return a dataframe</span>
+<span class="comment"># f &lt;- function(df) {</span>
+<span class="comment">#   df %&gt;%</span>
+<span class="comment">#     dplyr::mutate(hp_to_cyl = hp / cyl) %&gt;%</span>
+<span class="comment">#     dplyr::arrange(hp_to_cyl)</span>
+<span class="comment"># }</span>
+<span class="comment"># </span>
+<span class="comment"># # process 5 rows at a time</span>
+<span class="comment"># mtcars_new &lt;- chunked_invoke_rows(res, f, 5)</span>
+<span class="comment"># </span>
+<span class="comment"># # cleanup</span>
+<span class="comment"># DBI::dbClearResult(res)</span>
+<span class="comment"># DBI::dbDisconnect(dbcon)</span>
+<span class="comment">## ---------------------------------------------</span></div></pre>
+  </div>
+  <div class="span4 sidebar">
+    <!-- <ul>
+      <li>chunked_invoke_rows</li>
+    </ul>
+    <ul>
+      
+    </ul> -->
+
+    <h2>See also</h2>
+      <p><ul>
+<li> <code><a href='http://www.rdocumentation.org/packages/purrr/topics/by_row'>invoke_rows</a></code>
+  </li>
+<li> <code><a href='http://www.rdocumentation.org/packages/dplyr/topics/rowwise'>rowwise</a></code>
+  </li>
+<li> The <a href = 'https://github.com/edwindj/chunked'>chunked</a> package.
+</li>
+</ul></p>
+
+      <p></p>
+
+    
+
+
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="https://getbootstrap.com/2.0.4/">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

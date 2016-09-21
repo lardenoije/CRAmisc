@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>get_xml_attr. CRAmisc 0.4.0.9001</title>
+<title>xml_get_attr. CRAmisc 0.4.1.9000</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -32,7 +32,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class="container">
-      <a class="brand" href="index.html">CRAmisc 0.4.0.9001</a>
+      <a class="brand" href="index.html">CRAmisc 0.4.1.9000</a>
       <div class="nav">
         <ul class="nav">
           <li><a href="index.html">Home</a></li>
@@ -54,7 +54,7 @@
 <div class="row">
   <div class="span8">
     <h2>Usage</h2>
-    <pre><span class="functioncall"><a href='get_xml_attr.html'>get_xml_attr</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="symbol">xpath</span><span class="keyword">,</span> <span class="symbol">extract_value</span><span class="keyword">)</span></pre>
+    <pre><span class="functioncall"><a href='xml_get_attr.html'>xml_get_attr</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">,</span> <span class="symbol">xpath</span><span class="keyword">,</span> <span class="symbol">extract_value</span><span class="keyword">)</span></pre>
     
     <h2>Arguments</h2>
     <dl>
@@ -106,7 +106,7 @@ is returned.</p>
 &lt;/root_tag&gt;
 "</span>
 
-<span class="symbol">ten</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='get_xml_attr.html'>get_xml_attr</a></span><span class="keyword">(</span><span class="symbol">xml_doc</span><span class="keyword">,</span>
+<span class="symbol">ten</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='xml_get_attr.html'>xml_get_attr</a></span><span class="keyword">(</span><span class="symbol">xml_doc</span><span class="keyword">,</span>
                     <span class="string">"//root_tag/another_tag/var_attr"</span><span class="keyword">,</span>
                     <span class="string">"value"</span><span class="keyword">)</span>
 <span class="functioncall"><a href='http://www.rdocumentation.org/packages/base/topics/identical'>identical</a></span><span class="keyword">(</span><span class="symbol">ten</span><span class="keyword">,</span> <span class="string">"10"</span><span class="keyword">)</span></div>
@@ -116,7 +116,7 @@ is returned.</p>
   </div>
   <div class="span4 sidebar">
     <!-- <ul>
-      <li>get_xml_attr</li>
+      <li>xml_get_attr</li>
     </ul>
     <ul>
       

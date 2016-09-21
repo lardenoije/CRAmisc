@@ -263,5 +263,5 @@ col_spec_update <- function(col_spec, col_spec_df) {
                      .f = update_)
 
   # return the updated spec
-  return(col_spec_updated)
+  col_spec_updated
 }

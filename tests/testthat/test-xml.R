@@ -17,25 +17,25 @@ xml_doc <- "
 </root_tag>
 "
 
-test_that("get_xml_attr retrieves an attribute value", {
-  expect_equal(get_xml_attr(xml_doc,
+test_that("xml_get_attr retrieves an attribute value", {
+  expect_equal(xml_get_attr(xml_doc,
                             "//root_tag/another_tag/var_attr",
                             "value"), "10")
 })
 
-test_that("get_xml_attr returns NA when an attribute is missing", {
-  expect_equal(get_xml_attr(xml_doc,
+test_that("xml_get_attr returns NA when an attribute is missing", {
+  expect_equal(xml_get_attr(xml_doc,
                             "//root_tag/another_tag/missing_attr",
                             "value"), NA_character_)
 })
 
-test_that("get_xml_text retrieves a text value", {
-  expect_equal(get_xml_text(xml_doc,
+test_that("xml_get_text retrieves a text value", {
+  expect_equal(xml_get_text(xml_doc,
                             "//root_tag/another_tag/var_text"), "10")
 })
 
-test_that("get_xml_text returns NA when a text value is missing", {
-  expect_equal(get_xml_text(xml_doc,
+test_that("xml_get_text returns NA when a text value is missing", {
+  expect_equal(xml_get_text(xml_doc,
                             "//root_tag/another_tag/missing_text"),
                NA_character_)
 })

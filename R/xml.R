@@ -27,17 +27,16 @@
 #' </root_tag>
 #' "
 #'
-#' ten <- get_xml_attr(xml_doc,
+#' ten <- xml_get_attr(xml_doc,
 #'                     "//root_tag/another_tag/var_attr",
 #'                     "value")
 #' identical(ten, "10")
 #'
 #' @export
-get_xml_attr <- function(x, xpath, extract_value) {
-  xml_doc <- xml2::read_xml(x)
-  xml_node <- xml2::xml_find_first(xml_doc, xpath, ns = xml2::xml_ns(xml_doc))
-  xml_attr <- xml2::xml_attr(xml_node, extract_value)
-  return(xml_attr)
+xml_get_attr <- function(x, xpath, extract_value) {
+  xml2::read_xml(x) %>%
+    xml2::xml_find_first(., xpath, ns = xml2::xml_ns(.)) %>%
+    xml2::xml_attr(extract_value)
 }
 
 
@@ -67,16 +66,15 @@ get_xml_attr <- function(x, xpath, extract_value) {
 #' </root_tag>
 #' "
 #'
-#' ten <- get_xml_text(xml_doc,
+#' ten <- xml_get_text(xml_doc,
 #'                     "//root_tag/another_tag/var_text")
 #' identical(ten, "10")
 #'
 #' @export
-get_xml_text <- function(x, xpath) {
-  xml_doc <- xml2::read_xml(x)
-  xml_node <- xml2::xml_find_first(xml_doc, xpath, ns = xml2::xml_ns(xml_doc))
-  xml_text <- xml2::xml_text(xml_node)
-  return(xml_text)
+xml_get_text <- function(x, xpath) {
+  xml2::read_xml(x) %>%
+    xml2::xml_find_first(., xpath, ns = xml2::xml_ns(.)) %>%
+    xml2::xml_text()
 }
 
 #' XML Extract.
@@ -119,7 +117,6 @@ get_xml_text <- function(x, xpath) {
 #' @seealso
 #' See \code{vignette("chunked-invoke-rows")} for usage.
 #'
-#'
 #' @export
 xml_extract <- function(x,
                         xpath,
@@ -139,7 +136,8 @@ xml_extract <- function(x,
   xml_doc <- xml2::read_xml(x)
 
   # find the appropriate node using xpath
-  xml_node <- xml2::xml_find_first(xml_doc, xpath, ns = xml2::xml_ns(xml_doc))
+  xml_node <- xml2::read_xml(x) %>%
+    xml2::xml_find_first(., xpath, ns = xml2::xml_ns(.))
 
   # extract the actual value
   if (extract_type == "attr") {
@@ -152,5 +150,5 @@ xml_extract <- function(x,
   # useful if using with pmap and invoke_rows
   if(!is.null(ret_var_name)) names(xpath_result) <- ret_var_name
 
-  return(xpath_result)
+  xpath_result
 }

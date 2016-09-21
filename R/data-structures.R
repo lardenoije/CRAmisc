@@ -53,8 +53,7 @@ expandingList <- function(capacity = 10, envir = emptyenv()) {
   }
 
   methods$as.list <- function() {
-    b <- buffer[0:length]
-    return(b)
+    buffer[0:length]
   }
 
   methods

@@ -4,12 +4,12 @@
 \alias{duplicate_keys}
 \title{Find duplicate keys in a dataframe.}
 \usage{
-duplicate_keys(df, key_col)
+duplicate_keys(df, ...)
 }
 \arguments{
 \item{df}{The dataframe to check for duplicate keys.}
 
-\item{key_col}{The column to check for duplicates.}
+\item{...}{The column(s) to check for duplicates.}
 }
 \value{
 A tibble containing the duplicate keys and a count of the number of
@@ -27,7 +27,7 @@ amount <- c("46.41", "118.11", "84.68", "493.59", "51.10")
 test_df <- data.frame(key, amount)
 
 ## which keys are duplicated
-duplicate_keys(df = test_df, key_col = "key")
+duplicate_keys(df = test_df, "key")
 
 }
 

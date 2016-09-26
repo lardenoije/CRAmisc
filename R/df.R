@@ -4,7 +4,7 @@
 #' values before determining duplicates.
 #'
 #' @param df The dataframe to check for duplicate keys.
-#' @param key_col The column to check for duplicates.
+#' @param ... The column(s) to check for duplicates.
 #'
 #' @return A tibble containing the duplicate keys and a count of the number of
 #' duplicates.
@@ -17,12 +17,12 @@
 #' test_df <- data.frame(key, amount)
 #'
 #' ## which keys are duplicated
-#' duplicate_keys(df = test_df, key_col = "key")
+#' duplicate_keys(df = test_df, "key")
 #'
 #' @export
-duplicate_keys <- function(df, key_col) {
+duplicate_keys <- function(df, ...) {
   df %>%
-    dplyr::group_by_(key_col) %>%
+    dplyr::group_by_(...) %>%
     dplyr::tally() %>%
     dplyr::filter_(~n > 1)
 }

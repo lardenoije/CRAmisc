@@ -21,9 +21,9 @@ test_that("Unzip all gzipped files in a directory", {
 
       # make a new input directory
       system2(command = "mkdir",
-              args = "in_dir",
+              args = "in_dir_gz",
               stdout = NULL)
-      setwd("in_dir")
+      setwd("in_dir_gz")
 
       # write csv files
       readr::write_csv(a_df, "a.csv")
@@ -37,14 +37,14 @@ test_that("Unzip all gzipped files in a directory", {
       # make a new output directory
       setwd("..")
       system2(command = "mkdir",
-              args = "out_dir",
+              args = "out_dir_gz",
               stdout = NULL)
 
       # unzip all files
-      unzip_dir("in_dir", "out_dir", "gz")
+      unzip_dir("in_dir_gz", "out_dir_gz", "gz")
 
-      expect_equal(readr::read_csv("out_dir/a.csv"), a_df)
-      expect_equal(readr::read_csv("out_dir/d.csv"), d_df)
+      expect_equal(readr::read_csv("out_dir_gz/a.csv"), a_df)
+      expect_equal(readr::read_csv("out_dir_gz/d.csv"), d_df)
     }
   )
 })
@@ -70,9 +70,9 @@ test_that("Unzip all zipx files in a directory", {
 
       # make a new input directory
       system2(command = "mkdir",
-              args = "in_dir",
+              args = "in_dir_zipx",
               stdout = NULL)
-      setwd("in_dir")
+      setwd("in_dir_zipx")
 
       # write csv files
       readr::write_csv(a_df, "a.csv")
@@ -89,14 +89,14 @@ test_that("Unzip all zipx files in a directory", {
       # make a new output directory
       setwd("..")
       system2(command = "mkdir",
-              args = "out_dir",
+              args = "out_dir_zipx",
               stdout = NULL)
 
       # unzip all files
-      unzip_dir("in_dir", "out_dir", "zipx")
+      unzip_dir("in_dir_zipx", "out_dir_zipx", "zipx")
 
-      expect_equal(readr::read_csv("out_dir/a.csv"), a_df)
-      expect_equal(readr::read_csv("out_dir/d.csv"), d_df)
+      expect_equal(readr::read_csv("out_dir_zipx/a.csv"), a_df)
+      expect_equal(readr::read_csv("out_dir_zipx/d.csv"), d_df)
     }
   )
 })
@@ -122,9 +122,9 @@ test_that("Unzip all zip files in a directory regardless of case of file extensi
 
       # make a new input directory
       system2(command = "mkdir",
-              args = "in_dir",
+              args = "in_dir_zip",
               stdout = NULL)
-      setwd("in_dir")
+      setwd("in_dir_zip")
 
       # write csv files
       readr::write_csv(a_df, "a.csv")
@@ -141,14 +141,14 @@ test_that("Unzip all zip files in a directory regardless of case of file extensi
       # make a new output directory
       setwd("..")
       system2(command = "mkdir",
-              args = "out_dir",
+              args = "out_dir_zip",
               stdout = NULL)
 
       # unzip all files
-      unzip_dir("in_dir", "out_dir", "ZIP")
+      unzip_dir("in_dir_zip", "out_dir_zip", "ZIP")
 
-      expect_equal(readr::read_csv("out_dir/a.csv"), a_df)
-      expect_equal(readr::read_csv("out_dir/d.csv"), d_df)
+      expect_equal(readr::read_csv("out_dir_zip/a.csv"), a_df)
+      expect_equal(readr::read_csv("out_dir_zip/d.csv"), d_df)
     }
   )
 })

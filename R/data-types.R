@@ -265,3 +265,53 @@ col_spec_update <- function(col_spec, col_spec_df) {
   # return the updated spec
   col_spec_updated
 }
+
+
+
+#' Convert \link[readr]{spec} to a dataframe
+#'
+#' Take a \link[readr]{spec} and converts it to a dataframe.  The dataframe can
+#' then be written out as a CSV in lieu of writing out an actual \code{rds}
+#' object.  This is useful for cases when reading a \link[readr]{spec} that was
+#' saved as an \code{rds} throws an error.
+#'
+#' After reading the specification in CSV format back into \code{R}, it can be
+#' converted into an actual specification using \link{col_spec_update}.  See the
+#' example for methodology.
+#'
+#' @param spec A \link[readr]{spec} to be written as a dataframe
+#'
+#' @return A \link[tibble]{tibble} representation of a \link[readr]{spec}.
+#'
+#' @export
+spec_to_df <- function(spec) {
+  # from https://github.com/hadley/readr/blob/master/R/collectors.R
+  # collectors can be...
+  #   col_logical
+  #   col_integer
+  #   col_double
+  #   col_character
+  #   col_number
+  #   col_factor
+  #   col_guess
+  #   col_skip
+  #   col_datetime
+  #   col_date
+  #   col_time
+
+  # function for lmap
+  extract_ <- function(x) {
+    list(
+      list("col_name" = names(x),
+           "col_type" = class(x[[1]]) %>%
+             strsplit("collector_") %>%
+             unlist() %>%
+             .[2])
+    )
+  }
+
+  # extract_ returns a list of lists that are then row bound
+  #   in order to return a dataframe
+  purrr::lmap(spec$cols, extract_) %>%
+    dplyr::bind_rows()
+}

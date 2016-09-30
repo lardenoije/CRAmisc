@@ -149,3 +149,15 @@ csv_updated <- readr::read_csv("a,b,c\n1,2,3\n4,5,6",
 test_that("column types were updated appropriately", {
   expect_type(csv_updated$a, "double")
 })
+
+## spec_to_df
+test_that("spec can be converted to a dataframe", {
+  # returns a dataframe
+  expect_true(is.data.frame(spec_to_df(csv_spec)))
+
+  # gets the appropriate column type
+  csv_spec_col_a <- spec_to_df(csv_spec) %>%
+    dplyr::filter(col_name == "a") %>%
+    .$col_type
+  expect_equal(class(csv_df$a), csv_spec_col_a)
+})

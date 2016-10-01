@@ -2,25 +2,26 @@
 % Please edit documentation in R/data-types.R
 \name{spec_to_df}
 \alias{spec_to_df}
-\title{Convert \link[readr]{spec} to a dataframe}
+\title{Create a dataframe from a \link[readr]{cols} specification.}
 \usage{
 spec_to_df(spec)
 }
 \arguments{
-\item{spec}{A \link[readr]{spec} to be written as a dataframe}
+\item{spec}{A \link[readr]{cols} specification to be written as a dataframe.}
 }
 \value{
-A \link[tibble]{tibble} representation of a \link[readr]{spec}.
+A \link[tibble]{tibble} representation of a \link[readr]{cols}
+specification.
 }
 \description{
-Take a \link[readr]{spec} and converts it to a dataframe.  The dataframe can
-then be written out as a CSV in lieu of writing out an actual \code{rds}
-object.  This is useful for cases when reading a \link[readr]{spec} that was
-saved as an \code{rds} throws an error.
+Given a \link[readr]{cols} specificaton, convert it to a dataframe.
 }
 \details{
-After reading the specification in CSV format back into \code{R}, it can be
-converted into an actual specification using \link{col_spec_update}.  See the
-example for methodology.
+One use case is to write the returned dataframe as a \code{csv} in lieu of
+writing out a \link[readr]{cols} specification as an \code{rds} object.  This
+is useful for cases when reading a \link[readr]{cols} specification as an
+\code{rds} throws an error.
+
+The inverse operation is \link{spec_from_df}.
 }
 

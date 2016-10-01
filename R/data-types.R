@@ -1,4 +1,4 @@
-#' Convert dataframe column data types.
+#' Convert dataframe column types.
 #'
 #' Given a configuration dataframe with column names and the required types,
 #' convert the column data types in a separate dataframe.
@@ -162,7 +162,7 @@ convert_cols <- function(df, types_df) {
 }
 
 
-#' Convert a readr column specification.
+#' Update a readr column specification.
 #'
 #' Given a \link[readr]{cols} specification, update the specification in place
 #' by explicitly declaring the appropriate type in a dataframe.
@@ -176,7 +176,7 @@ convert_cols <- function(df, types_df) {
 #' is created.  The tibble can be the starting point to decide upon the columns
 #' that require updating.
 #'
-#' \code{col_spec_update} is a closure that contains two parts.
+#' \code{spec_update} is a closure that contains two parts.
 #' \itemize{
 #'   \item An inner function, \code{update_}, that updates the specification by
 #'   setting the \code{class} attribute for the given column.
@@ -192,6 +192,9 @@ convert_cols <- function(df, types_df) {
 #' columns named \code{col_name} and \code{col_type}.  If \code{col_spec_df}
 #' has columns named differently, this is easy to convert using
 #' \link[dplyr]{rename}.
+#' @param strict If set to \code{TRUE} then check that the column name that is
+#' being updated is within the specification that is being updated.  If set to
+#' FALSE then
 #'
 #' @return A copy of the original specification with updated column types.
 #'
@@ -205,7 +208,6 @@ convert_cols <- function(df, types_df) {
 #' ##   c = col_integer()
 #'
 #' ## update columns a and b to be doubles instead of integers
-#'
 #' col_spec_df <- tibble::tribble(
 #'   ~col_name, ~col_type,
 #'   "a", "double",
@@ -213,13 +215,14 @@ convert_cols <- function(df, types_df) {
 #' )
 #'
 #' ## update the specification
-#' test_spec_updated <- col_spec_update(test_spec, col_spec_df)
+#' test_spec_updated <- spec_update(test_spec, col_spec_df)
 #'
 #' ## re-read with new column spec
 #' test_updated <- readr::read_csv("a,b,c\n1,2,3\n4,5,6",
 #'                                 col_types = test_spec_updated)
+#'
 #' @export
-col_spec_update <- function(col_spec, col_spec_df) {
+spec_update <- function(col_spec, col_spec_df) {
 
   # trailing underscore represents a "private" function
   update_ <- function(col_name, col_type, ...) {
@@ -247,10 +250,15 @@ col_spec_update <- function(col_spec, col_spec_df) {
 
     # check that col_name is part of the specification
     if (col_name %in% names(col_spec_updated$cols)) {
-      attr(col_spec_updated$cols[col_name][[1]], "class") <<- col_type_full
+        if (col_type %in% c("date", "datetime", "time")) {
+          col_spec_updated$cols[col_name][[1]] <<- list(format = "")
+        } else {
+          col_spec_updated$cols[col_name][[1]] <<- list()
+        }
+        class(col_spec_updated$cols[col_name][[1]]) <<- col_type_full
     } else {
-      message(paste0("Ignoring as the following column name ",
-                     "is not part of the specification:  ", col_name))
+        message(paste0("Ignoring as the following column name ",
+                       "is not part of the specification:  ", col_name))
     }
   }
 
@@ -267,21 +275,99 @@ col_spec_update <- function(col_spec, col_spec_df) {
 }
 
 
+#' Create a \link[readr]{cols} specification from a dataframe.
+#'
+#' Given a dataframe with columns named \code{col_name} and \code{col_type},
+#' construct a \link[readr]{cols} specification.
+#'
+#' This allows one to create a \link[readr]{cols} specification from an existing
+#' dataframe.  Executing \link{types_df} on a dataframe will return a new
+#' dataframe containing the column names and types needed to create a
+#' \link[readr]{cols} specification.
+#'
+#' The inverse operation is \link{spec_to_df}.
+#'
+#' @param df A dataframe with column names \code{col_name} and \code{col_type}.
+#'
+#' @return A \link[readr]{cols} specification.
+#'
+#' @examples
+#' ## create an artificial df
+#' test_df <- readr::read_csv(paste0("a,b,c,d\n",
+#'                                   "1,two,3.0,2016-05-01T11:40:44\n",
+#'                                   "4,five,6.0,2014-12-01T06:12:23"))
+#'
+#' ## write the spec to disk as a mere CSV
+#' spec_df <- spec_to_df(readr::spec(test_df))
+#' tmp_dir <- tempdir()
+#' readr::write_csv(spec_df,
+#'                  file.path(tmp_dir, "test_df_spec.csv"))
+#' readr::write_csv(test_df,
+#'                  file.path(tmp_dir, "test_df.csv"))
+#'
+#' ## create a specification and then read original CSV back in
+#' spec_df_from_csv <- readr::read_csv(file.path(tmp_dir, "test_df_spec.csv"))
+#' spec_from_csv <- spec_from_df(spec_df_from_csv)
+#' test_df_from_csv <- readr::read_csv(file.path(tmp_dir, "test_df.csv"),
+#'                                     col_types = spec_from_csv)
+#' ## returns TRUE
+#' assertthat::are_equal(test_df, test_df_from_csv)
+#'
+#' @export
+spec_from_df <- function(df) {
+  if (!all(tibble::has_name(df, c("col_name", "col_type")))) {
+    stop(paste0("df must have columns named 'col_name' and 'col_type'.  ",
+                "dplyr::rename may be used for column renaming."))
+  } else {
 
-#' Convert \link[readr]{spec} to a dataframe
+    col_spec_ <- function(col_name, col_type, ...) {
+
+    }
+
+    type_list_update_ <- function(col_name, col_type, ...) {
+      type_list[[col_name]] <<- switch(col_type,
+                                       "_" = ,
+                                       "-" = readr::col_skip(),
+                                       "?" = readr::col_guess(),
+                                       "character" = readr::col_character(),
+                                       "date" = readr::col_date(),
+                                       "double" = readr::col_double(),
+                                       "euro_double" = readr::col_euro_double(),
+                                       "integer" = readr::col_integer(),
+                                       "logical" = readr::col_logical(),
+                                       "number" = readr::col_number(),
+                                       "datetime" = readr::col_datetime(),
+                                       "time" = readr::col_time())
+    }
+
+    # initial list
+    type_list <- list()
+    # iterate over the df dataframe, which tells us what type each column
+    #   should be
+    purrr::invoke_rows(.d = df,
+                       .f = type_list_update_)
+
+    # return the updated spec using a "private" function from readr
+    readr:::col_spec(type_list)
+  }
+}
+
+
+#' Create a dataframe from a \link[readr]{cols} specification.
 #'
-#' Take a \link[readr]{spec} and converts it to a dataframe.  The dataframe can
-#' then be written out as a CSV in lieu of writing out an actual \code{rds}
-#' object.  This is useful for cases when reading a \link[readr]{spec} that was
-#' saved as an \code{rds} throws an error.
+#' Given a \link[readr]{cols} specificaton, convert it to a dataframe.
 #'
-#' After reading the specification in CSV format back into \code{R}, it can be
-#' converted into an actual specification using \link{col_spec_update}.  See the
-#' example for methodology.
+#' One use case is to write the returned dataframe as a \code{csv} in lieu of
+#' writing out a \link[readr]{cols} specification as an \code{rds} object.  This
+#' is useful for cases when reading a \link[readr]{cols} specification as an
+#' \code{rds} throws an error.
 #'
-#' @param spec A \link[readr]{spec} to be written as a dataframe
+#' The inverse operation is \link{spec_from_df}.
 #'
-#' @return A \link[tibble]{tibble} representation of a \link[readr]{spec}.
+#' @param spec A \link[readr]{cols} specification to be written as a dataframe.
+#'
+#' @return A \link[tibble]{tibble} representation of a \link[readr]{cols}
+#' specification.
 #'
 #' @export
 spec_to_df <- function(spec) {

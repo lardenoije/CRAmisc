@@ -124,27 +124,28 @@ test_that("conversion happens if types_df is not a tibble", {
   expect_identical(test_df_converted_not_tibble, test_df_converted)
 })
 
-csv_df <- readr::read_csv("a,b,c\n1,2,3\n4,5,6")
+
+## spec tests
+csv_df <- readr::read_csv(paste0("a,b,c,d\n",
+                                 "1,two,3.0,2016-05-01T11:40:44\n",
+                                 "4,five,6.0,2014-12-01T06:12:23"))
 csv_spec <- readr::spec(csv_df)
 
-## returns
-##   a = col_integer()
-##   b = col_integer()
-##   c = col_integer()
-
-## update columns a and b to be doubles instead of integers
+## update columns a and c
 col_spec_df <- tibble::tribble(
   ~col_name, ~col_type,
   "a", "double",
-  "b", "double"
+  "c", "character"
 )
 
 ## update the specification
-csv_spec_updated <- col_spec_update(csv_spec, col_spec_df)
+csv_spec_updated <- spec_update(csv_spec, col_spec_df)
 
 ## re-read with new column spec
-csv_updated <- readr::read_csv("a,b,c\n1,2,3\n4,5,6",
-                                col_types = csv_spec_updated)
+csv_updated <- readr::read_csv(paste0("a,b,c,d\n",
+                                      "1,two,3.0,2016-05-01T11:40:44\n",
+                                      "4,five,6.0,2014-12-01T06:12:23"),
+                               col_types = csv_spec_updated)
 
 test_that("column types were updated appropriately", {
   expect_type(csv_updated$a, "double")
@@ -160,4 +161,26 @@ test_that("spec can be converted to a dataframe", {
     dplyr::filter(col_name == "a") %>%
     .$col_type
   expect_equal(class(csv_df$a), csv_spec_col_a)
+})
+
+## spec_from_df
+test_that("spec can be converted from a dataframe", {
+  spec_df <- tibble::tribble(
+    ~col_name, ~col_type,
+    "a", "integer",
+    "b", "character",
+    "c", "double",
+    "d", "datetime"
+  )
+  csv_spec_from_df <- spec_from_df(spec_df)
+
+  # returns a specification
+  expect_is(csv_spec_from_df, "col_spec")
+
+  # returns the appropriate class
+  col_a <- csv_spec_from_df %>%
+    .$cols %>%
+    .$a
+
+  expect_is(col_a, c("collector_integer", "collector"))
 })

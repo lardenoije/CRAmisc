@@ -192,9 +192,6 @@ convert_cols <- function(df, types_df) {
 #' columns named \code{col_name} and \code{col_type}.  If \code{col_spec_df}
 #' has columns named differently, this is easy to convert using
 #' \link[dplyr]{rename}.
-#' @param strict If set to \code{TRUE} then check that the column name that is
-#' being updated is within the specification that is being updated.  If set to
-#' FALSE then
 #'
 #' @return A copy of the original specification with updated column types.
 #'

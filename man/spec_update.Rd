@@ -15,10 +15,6 @@ within the specification.  The expectation is that \code{col_spec_df} has
 columns named \code{col_name} and \code{col_type}.  If \code{col_spec_df}
 has columns named differently, this is easy to convert using
 \link[dplyr]{rename}.}
-
-\item{strict}{If set to \code{TRUE} then check that the column name that is
-being updated is within the specification that is being updated.  If set to
-FALSE then}
 }
 \value{
 A copy of the original specification with updated column types.

@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>sql_list_sql_. CRAmisc 0.4.4.9000</title>
+<title>freq. CRAmisc 0.4.4.9000</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -49,42 +49,27 @@
         
       </header>
       
-      <h1>Generate SQL query.</h1>
+      <h1>One-way frequency table.</h1>
 
 <div class="row">
   <div class="span8">
     <h2>Usage</h2>
-    <pre><span class="functioncall"><a href='sql_list_sql_.html'>sql_list_sql_</a></span><span class="keyword">(</span><span class="symbol">db_con</span><span class="keyword">,</span> <span class="symbol">db_name</span><span class="keyword">,</span> <span class="symbol">db_schema</span><span class="keyword">,</span> <span class="symbol">obj</span><span class="keyword">)</span></pre>
+    <pre><span class="functioncall"><a href='freq.html'>freq</a></span><span class="keyword">(</span><span class="symbol">df</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span></pre>
     
     <h2>Arguments</h2>
     <dl>
-      <dt>db_con</dt>
-      <dd>Database server connection object.</dd>
-      <dt>db_name</dt>
-      <dd>Database name.</dd>
-      <dt>db_schema</dt>
-      <dd>Database schema.</dd>
-      <dt>obj</dt>
-      <dd>String used with <code>switch</code> to select appropriate SQL query.
-Choices include
-<ul>
-<li> <code>&quot;schemas&quot;</code>
-  </li>
-<li> <code>&quot;tables&quot;</code>
-  </li>
-<li> <code>&quot;views&quot;</code>
-  </li>
-<li> <code>&quot;tvs&quot;</code>
-</li>
-</ul>
-</dd>
+      <dt>df</dt>
+      <dd>The dataframe to perform the frequency on.</dd>
+      <dt>...</dt>
+      <dd>The column(s) to <code>group by</code> for counting.</dd>
     </dl>
     
     <div class="Value">
       <h2>Value</h2>
 
       <p><dl>
-An SQL query as a string.
+A <a href='http://www.rdocumentation.org/packages/dplyr/topics/reexports'>tibble</a>[tibble] containing the keys and a count of
+occurrences.
 </dl></p>
 
     </div>
@@ -92,38 +77,24 @@ An SQL query as a string.
     <div class="Description">
       <h2>Description</h2>
 
-      <p><code>sql_list_sql_</code> returns an SQL query as a string based on the parameters
-passed to it.</p>
+      <p>Create a simple one-way frequency table using <code>dplyr</code> verbs.</p>
 
     </div>
-
-    <div class="Details">
-      <h2>Details</h2>
-
-      <p><code>sql_list_sql_</code> is used along with the function factory
-<code><a href='sql_list_.html'>sql_list_</a></code> to create functions that return properties of a
-Microsoft SQL Server database.</p>
-
-      <p>The intent is not to use this function directly.  Instead use one of the
-functions
-<ul>
-<li> <code><a href='sql_list_schemas.html'>sql_list_schemas</a></code>
-  </li>
-<li> <code><a href='sql_list_tbls.html'>sql_list_tbls</a></code>
-  </li>
-<li> <code><a href='sql_list_views.html'>sql_list_views</a></code>
-  </li>
-<li> <code><a href='sql_list_tvs.html'>sql_list_tvs</a></code>
-</li>
-</ul></p>
-
-      <p></p>
-
-    </div>
-      </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'><span class="symbol">iris</span> <span class="keyword">%&gt;%</span> <span class="functioncall"><a href='freq.html'>freq</a></span><span class="keyword">(</span><span class="string">"Species"</span><span class="keyword">)</span></div>
+<div class='output'># A tibble: 3 × 2
+     Species     n
+      &lt;fctr&gt; &lt;int&gt;
+1     setosa    50
+2 versicolor    50
+3  virginica    50
+</div>
+<div class='input'></div></pre>
+  </div>
   <div class="span4 sidebar">
     <!-- <ul>
-      <li>sql_list_sql_</li>
+      <li>freq</li>
     </ul>
     <ul>
       

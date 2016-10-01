@@ -237,10 +237,15 @@ spec_update <- function(col_spec, col_spec_df) {
                         "integer",
                         "logical",
                         "number",
+                        "numeric",
                         "time",
                         "skip",
                         "guess")) {
-      col_type_full <- c(paste0("collector_", col_type), "collector")
+      if (col_type == "numeric") {
+        col_type_full <- c("collector_number", "collector")
+      } else {
+        col_type_full <- c(paste0("collector_", col_type), "collector")
+      }
     } else {
       stop("col_type must be one of:\n    character, date, datetime, double, euro_double, integer, logical, number, time, skip, or guess")
     }
@@ -333,6 +338,7 @@ spec_from_df <- function(df) {
                                        "integer" = readr::col_integer(),
                                        "logical" = readr::col_logical(),
                                        "number" = readr::col_number(),
+                                       "numeric" = readr::col_number(),
                                        "datetime" = readr::col_datetime(),
                                        "time" = readr::col_time())
     }

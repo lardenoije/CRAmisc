@@ -127,5 +127,12 @@ exact_cols <- function(tbl, cols) {
 types_df <- function(df) {
   df %>%
     purrr::dmap(class) %>%
-    tidyr::gather(key = "col_name", value = "col_type")
+    tidyr::gather(key = "col_name", value = "col_type") %>%
+    dplyr::distinct_("col_name", .keep_all = TRUE) %>%
+    dplyr::mutate(col_type = dplyr::case_when(
+      .$col_type == "POSIXct" ~ "datetime",
+      .$col_type == "POSIXt" ~ "time",
+      .$col_type == "Date" ~ "date",
+      TRUE ~ .$col_type
+    ))
 }

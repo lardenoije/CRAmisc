@@ -37,6 +37,35 @@ test_that("types_df returns the appropriate column name and type", {
                  dplyr::as_data_frame())
 })
 
+test_df2 <- tibble::tribble(
+  ~a, ~b, ~c, ~d,
+  1,"two","2016-01-11T11:00:14", 8.0,
+  3,"four","2012-03-08T18:48:11", 94.39,
+  5,"six","2010-10-10T01:01:01", 7,
+  7,"eight","2000-04-01T08:24:41", 19.48
+)
+
+test_df2 <- test_df2 %>%
+  purrr::dmap_at(.at = "c",
+                 .f = function(x) lubridate::as_datetime(x)) %>%
+  dplyr::mutate(e = lubridate::as_date(c))
+
+test_that("types_df handles datetime columns", {
+  expect_equal(test_df2 %>% types_df() %>% nrow(), 5)
+  expect_equal(test_df2 %>%
+                 types_df() %>%
+                 dplyr::filter(col_name == "c") %>%
+                 .$col_type, "datetime")
+  expect_equal(test_df2 %>%
+                 types_df() %>%
+                 dplyr::filter(col_name == "d") %>%
+                 .$col_type, "numeric")
+  expect_equal(test_df2 %>%
+                 types_df() %>%
+                 dplyr::filter(col_name == "e") %>%
+                 .$col_type, "date")
+})
+
 ## test tibble for case matching
 test_df_case <- tibble::tribble(
   ~MixedCase, ~lowercase, ~UPPERCASE, ~aLtCaSe,

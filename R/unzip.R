@@ -98,7 +98,9 @@ unzip_dir <- function(in_dir, out_dir, ext) {
   }
 
   already_unzipped <- list.files(path = out_dir,
-                                 recursive = FALSE)
+                                 recursive = FALSE) %>%
+    strsplit(paste0("\\.[[:alpha:]]+$")) %>%
+    unlist()
 
   to_unzip <- purrr::discard(zip_basename, ~ .x %in% already_unzipped)
 

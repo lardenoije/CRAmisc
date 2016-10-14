@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Home. CRAmisc</title>
+<title>spec_to_df. CRAmisc</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -21,8 +21,8 @@
 
 
 <!-- pkgdown -->
-<link href="pkgdown.css" rel="stylesheet">
-<script src="pkgdown.js"></script>
+<link href="../pkgdown.css" rel="stylesheet">
+<script src="../pkgdown.js"></script>
 
 <!-- mathjax -->
 <script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
@@ -45,18 +45,18 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">CRAmisc</a>
+      <a class="navbar-brand" href="../index.html">CRAmisc</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="index.html">Home</a>
+  <a href="../index.html">Home</a>
 </li>
 <li>
-  <a href="reference/index.html">Reference</a>
+  <a href="../reference/index.html">Reference</a>
 </li>
 <li>
-  <a href="articles/index.html">Articles</a>
+  <a href="../articles/index.html">Articles</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -73,18 +73,42 @@
       
       </header>
 
-      <div class="row">
+      <div class="page-header">
+  <h1>Create a dataframe from a </h1>
+</div>
+
+<div class="row">
   <div class="col-md-9">
     
-<h1 id="cramisc">CRAmisc</h1>
-<p>Personal R functions for data analysis.</p>
-<h2 id="installation">Installation</h2>
-<p>Install from Github</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">if (!<span class="kw">require</span>(<span class="st">"devtools"</span>)) <span class="kw">install.packages</span>(<span class="st">"devtools"</span>)
-devtools::<span class="kw">install_github</span>(<span class="st">"curtisalexander/CRAmisc"</span>)</code></pre></div>
-<h2 id="imports">Imports</h2>
-<p><strong>Beware!</strong> Because this is a wide-ranging package, it imports a slew of packages. Review <code>DESCRIPTION</code> for a full list.</p>
+    <p>Given a <a href='http://www.rdocumentation.org/packages/cols/topics/readr'>cols</a> specificaton, convert it to a dataframe.</p>
+    
 
+    <pre><span class='fu'>spec_to_df</span>(<span class='no'>spec</span>)</pre>
+    
+    <h2>Arguments</h2>
+    <dl class="dl-horizontal">
+      <dt>spec</dt>
+      <dd>A <a href='http://www.rdocumentation.org/packages/cols/topics/readr'>cols</a> specification to be written as a dataframe.</dd>
+    </dl>
+    
+    <div class="Value">
+      <h2>Value</h2>
+
+      <p>A <a href='http://www.rdocumentation.org/packages/tibble/topics/tibble'>tibble</a> representation of a <a href='http://www.rdocumentation.org/packages/cols/topics/readr'>cols</a>
+specification.</p>
+    </div>
+
+    <div class="Details">
+      <h2>Details</h2>
+
+      <p>One use case is to write the returned dataframe as a <code>csv</code> in lieu of
+writing out a <a href='http://www.rdocumentation.org/packages/cols/topics/readr'>cols</a> specification as an <code>rds</code> object.  This
+is useful for cases when reading a <a href='http://www.rdocumentation.org/packages/cols/topics/readr'>cols</a> specification as an
+<code>rds</code> throws an error.</p>
+      <p>The inverse operation is <a href='spec_from_df.html'>spec_from_df</a>.</p>
+    </div>
+      </div>
+  <div class="col-md-3">
   </div>
 </div>
 

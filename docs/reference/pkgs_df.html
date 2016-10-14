@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Home. CRAmisc</title>
+<title>pkgs_df. CRAmisc</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -21,8 +21,8 @@
 
 
 <!-- pkgdown -->
-<link href="pkgdown.css" rel="stylesheet">
-<script src="pkgdown.js"></script>
+<link href="../pkgdown.css" rel="stylesheet">
+<script src="../pkgdown.js"></script>
 
 <!-- mathjax -->
 <script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
@@ -45,18 +45,18 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">CRAmisc</a>
+      <a class="navbar-brand" href="../index.html">CRAmisc</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="index.html">Home</a>
+  <a href="../index.html">Home</a>
 </li>
 <li>
-  <a href="reference/index.html">Reference</a>
+  <a href="../reference/index.html">Reference</a>
 </li>
 <li>
-  <a href="articles/index.html">Articles</a>
+  <a href="../articles/index.html">Articles</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -73,18 +73,53 @@
       
       </header>
 
-      <div class="row">
+      <div class="page-header">
+  <h1>Packages Dataframe.</h1>
+</div>
+
+<div class="row">
   <div class="col-md-9">
     
-<h1 id="cramisc">CRAmisc</h1>
-<p>Personal R functions for data analysis.</p>
-<h2 id="installation">Installation</h2>
-<p>Install from Github</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">if (!<span class="kw">require</span>(<span class="st">"devtools"</span>)) <span class="kw">install.packages</span>(<span class="st">"devtools"</span>)
-devtools::<span class="kw">install_github</span>(<span class="st">"curtisalexander/CRAmisc"</span>)</code></pre></div>
-<h2 id="imports">Imports</h2>
-<p><strong>Beware!</strong> Because this is a wide-ranging package, it imports a slew of packages. Review <code>DESCRIPTION</code> for a full list.</p>
+    <p><code>pkgs_df</code> returns a <a href='http://www.rdocumentation.org/packages/tibble/topics/tibble'>tibble</a> containing a subset of
+information about the packages installed.</p>
+    
 
+    <pre><span class='fu'>pkgs_df</span>()</pre>
+        
+    <div class="Value">
+      <h2>Value</h2>
+
+      <p>Returns a <a href = 'tibble'>https://cran.rstudio.com/package=tibble</a>
+containing a subset of information about the packages installed.</p>
+    </div>
+
+    <div class="See also">
+      <h2>See also</h2>
+
+      <p><a href='check_install.html'>check_install</a></p>
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'><span class='no'>pkgs</span> <span class='kw'>&lt;-</span> <span class='fu'>pkgs_df</span>()
+<span class='no'>pkgs</span></div><div class='output co'>#&gt; # A tibble: 186 × 6
+#&gt;       Package  Version                                              Depends
+#&gt;         &lt;chr&gt;    &lt;chr&gt;                                                &lt;chr&gt;
+#&gt; 1  assertthat      0.1                                                 &lt;NA&gt;
+#&gt; 2   babynames    0.2.1                                          R (&gt;= 2.10)
+#&gt; 3        base    3.3.1                                                 &lt;NA&gt;
+#&gt; 4   base64enc    0.1-3                                         R (&gt;= 2.9.0)
+#&gt; 5          BH 1.60.0-2                                                 &lt;NA&gt;
+#&gt; 6         bit   1.1-12                                         R (&gt;= 2.9.2)
+#&gt; 7       bit64    0.9-5 R (&gt;= 3.0.1), bit (&gt;= 1.1-12), utils, methods, stats
+#&gt; 8      bitops    1.0-6                                                 &lt;NA&gt;
+#&gt; 9    bookdown      0.1                                                 &lt;NA&gt;
+#&gt; 10       boot   1.3-18                        R (&gt;= 3.0.0), graphics, stats
+#&gt; # ... with 176 more rows, and 3 more variables: Imports &lt;chr&gt;, LibPath &lt;chr&gt;,
+#&gt; #   Built &lt;chr&gt;
+#&gt; </div><div class='input'>
+</div></pre>
+  </div>
+  <div class="col-md-3">
   </div>
 </div>
 

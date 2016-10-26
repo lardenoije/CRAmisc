@@ -1,19 +1,19 @@
 ---
-title: "Parsing XML using chunked_invoke_rows"
+title: "Parsing XML using chunked_pmap"
 author: "Curtis Alexander"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Parsing XML using chunked_invoke_rows}
+  %\VignetteIndexEntry{Parsing XML using chunked_pmap}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
 ## Introduction
-A common use of the `chunked_invoke_rows` function is to iteratively parse XML that is stored in a column within a database table.  This pattern can be applied to any large query result set that requires a custom function to be applied to each row.
+A common use of the `chunked_pmap` function is to iteratively parse XML that is stored in a column within a database table.  This pattern can be applied to any large query result set that requires a custom function to be applied to each row.
 
 ## Parsing XML
-The example below details how one would use the `xml_extract` function along with `chunked_invoke_rows` to iteratively parse XML.  Obviously the result set below will fit entirely into memory and doesn't need to be chunked.  Again, this is to demonstrate a pattern than can be used with much larger result sets.
+The example below details how one would use the `xml_extract` function along with `chunked_pmap` to iteratively parse XML.  Obviously the result set below will fit entirely into memory and doesn't need to be chunked.  This is to demonstrate a pattern than can be used with much larger result sets.
 
 The example below requires the `DBI`, `dplyr`, and `RSQLite`, packages.  The function `xml_extract` requires `purrr` and `xml2`.
 
@@ -49,7 +49,7 @@ invisible(DBI::dbWriteTable(dbcon, "mtcars_with_xml", mtcars_with_xml))
 ```
 
 ### Create Query and Send to Database
-Next, create a query and send to the database.  The function `dbSendQuery` will submit a synchronous query to be run on the database and will block until it has completed.  But the result set is left on the database and is not brought back until `DBI::dbFetch` is called.
+Next, create a query and send to the database.  The function `DBI::dbSendQuery` will submit a synchronous query to be run on the database and will block until it has completed.  But the result set is left on the database and is not brought back until `DBI::dbFetch` is called.
 
 ```{r, eval = TRUE, echo = TRUE}
 sql_query <- "SELECT * FROM mtcars_with_xml where hp > 100"
@@ -57,7 +57,7 @@ res <- DBI::dbSendQuery(dbcon, sql_query)
 ```
 
 ### Write Custom Parsing Function
-The function that is passed to `chunked_invoke_rows` should take in a dataframe and return a transformed dataframe.  The function below makes use of the `xml_extract` function which is just a convenience wrapper around the parsing functions found in the `xml2` package.  In addition, `xml_extract` makes use of `purrr::safely` to silence parsing errors.  This is useful when working with large result sets.
+The function that is passed to `chunked_pmap` should take in a dataframe and return a transformed dataframe.  The function below makes use of the `xml_extract` function which is just a convenience wrapper around the parsing functions found in the `xml2` package.  In addition, `xml_extract` makes use of `purrr::safely` to silence parsing errors.  This is useful when working with large result sets.
 
 ```{r, eval = TRUE, echo = TRUE}
 # f should accept a dataframe and return a dataframe
@@ -87,17 +87,17 @@ f <- function(df) {
 ```
 
 ### Iterate Over Chunks
-Invoke `chunked_invoke_rows` to iteratively parse the XML document within each row of the dataframe.
+Invoke `chunked_pmap` to iteratively parse the XML document within each row of the dataframe.
 
 ```{r, eval = TRUE , echo = TRUE}
 # process 5 rows at a time
-mtcars_with_xml_parsed <- chunked_invoke_rows(res, f, 5) %>%
+mtcars_with_xml_parsed <- chunked_pmap(res, f, 5) %>%
   dplyr::select(-hp, -mpg, -cyl)
 knitr::kable(mtcars_with_xml_parsed, format = "html", padding = 2)
 ```
 
 ### Cleanup
-Close the database connection.  The result set does not need to be cleared (`DBI::dbClearResult(res)`) as that occurs within `chunked_invoke_rows`.
+Close the database connection.  The result set does not need to be cleared (`DBI::dbClearResult(res)`) as that occurs within `chunked_pmap`.
 
 ```{r, eval = TRUE, echo = TRUE}
 DBI::dbDisconnect(dbcon)

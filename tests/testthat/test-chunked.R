@@ -1,4 +1,4 @@
-context("Chunked Invoke Rows")
+context("Chunked Functions")
 
 # create in-memory SQLite database
 dbcon <- DBI::dbConnect(RSQLite::SQLite(), dbname = ":memory:")
@@ -19,7 +19,7 @@ f <- function(df) {
 # tests
 test_that("mtcars_new has the new column hp_to_cyl", {
   res <- DBI::dbSendQuery(dbcon, sql_query)
-  mtcars_new <- chunked_invoke_rows(res, f, 5)
+  mtcars_new <- chunked_pmap(res, f, 5)
 
   expect_named(mtcars_new,
                c("row_names", "mpg", "cyl", "hp", "wt", "hp_to_cyl"),
@@ -27,10 +27,10 @@ test_that("mtcars_new has the new column hp_to_cyl", {
                ignore.case = TRUE)
 })
 
-test_that("chunked_invoke_rows throws an error when incorrect gc option passed", {
+test_that("chunked_pmap throws an error when incorrect gc option passed", {
   res <- DBI::dbSendQuery(dbcon, sql_query)
 
-  expect_error(chunked_invoke_rows(res, f, 5, "x"))
+  expect_error(chunked_pmap(res, f, 5, "x"))
 
   # because of the error, clear the result set
   DBI::dbClearResult(res)
@@ -38,7 +38,7 @@ test_that("chunked_invoke_rows throws an error when incorrect gc option passed",
 
 test_that("garbage collection triggers without issue", {
   res <- DBI::dbSendQuery(dbcon, sql_query)
-  mtcars_new <- chunked_invoke_rows(res, f, 5, gc = "r")
+  mtcars_new <- chunked_pmap(res, f, 5, gc = "r")
 
   expect_named(mtcars_new,
                c("row_names", "mpg", "cyl", "hp", "wt", "hp_to_cyl"),

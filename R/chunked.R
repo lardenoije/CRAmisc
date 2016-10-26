@@ -1,12 +1,12 @@
 #' Apply a function to each row of a database result set.
 #'
-#' \code{chunked_invoke_rows} pulls chunks from a database result set and
+#' \code{chunked_pmap} pulls chunks from a database result set and
 #' applies a function to each row of the result set.  All transformed chunks
 #' are row bound to return a single dataframe.
 #'
 #' This function is useful when processing database result sets that are
 #' extremely large.  For example, if XML docs, JSON docs, or blobs of any kind
-#' are stored in a database column, then \code{chunked_invoke_rows} can be
+#' are stored in a database column, then \code{chunked_pmap} can be
 #' used to iteratively process and transform the data.
 #'
 #' @param res \code{DBI::dbSendQuery} result set.
@@ -28,7 +28,7 @@
 #'
 #' @seealso
 #' \itemize{
-#'   \item \code{\link[purrr]{invoke_rows}}
+#'   \item \code{\link[purrr]{pmap}}
 #'   \item \code{\link[dplyr]{rowwise}}
 #'   \item The \href{https://github.com/edwindj/chunked}{chunked} package.
 #' }
@@ -52,7 +52,7 @@
 #' }
 #'
 #' # process 5 rows at a time
-#' mtcars_new <- chunked_invoke_rows(res, f, 5)
+#' mtcars_new <- chunked_pmap(res, f, 5)
 #'
 #' # cleanup
 #' DBI::dbClearResult(res)
@@ -60,12 +60,7 @@
 #' }
 #'
 #' @export
-chunked_invoke_rows <- function(res, f, n, gc = NA_character_) {
-  if(!requireNamespace("DBI", quietly = TRUE)) {
-    stop("The DBI package is needed for this function.  Please install it.",
-         call. = FALSE)
-  }
-
+chunked_pmap <- function(res, f, n, gc = NA_character_) {
   # setup gc
   if(is.na(gc)) {
     gc_func <- function() { NULL }
@@ -73,7 +68,7 @@ chunked_invoke_rows <- function(res, f, n, gc = NA_character_) {
     gc_func <- function() { gc() }
   } else if(gc == "j") {
     gc_func <- function() { rJava::.jcall("java/lang/System", method = "gc") }
-  } else if(gc == "rj") {
+  } else if(gc %in% c("rj", "jr")) {
     gc_func <- function() {
       gc()
       rJava::.jcall("java/lang/System", method = "gc")

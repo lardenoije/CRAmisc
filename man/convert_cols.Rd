@@ -38,7 +38,7 @@ to have verbose code that details each data type conversion to take place.
   \item An inner function, \code{convert_}, that converts a set of columns
   that are to be converted to the same type using \link[purrr]{dmap_at}.
   \item The enclosing environment that contains the dataframe that will be
-  updated and contains a call to \link[purrr]{invoke_rows} to drive
+  updated and contains a call to \link[purrr]{pmap} to drive
   iteration.
 }
 

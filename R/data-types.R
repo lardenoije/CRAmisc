@@ -18,7 +18,7 @@
 #'   \item An inner function, \code{convert_}, that converts a set of columns
 #'   that are to be converted to the same type using \link[purrr]{dmap_at}.
 #'   \item The enclosing environment that contains the dataframe that will be
-#'   updated and contains a call to \link[purrr]{invoke_rows} to drive
+#'   updated and contains a call to \link[purrr]{pmap} to drive
 #'   iteration.
 #' }
 #'
@@ -89,7 +89,7 @@
 convert_cols <- function(df, types_df) {
   # trailing underscore represents a "private" function
   convert_ <- function(col_type, col_names, ...) {
-    # swallow dots when using as part of invoke_rows
+    # swallow dots when using as part of pmap
     # used in case types_df has other columns contained within
     dots <- list(...)
 
@@ -154,8 +154,8 @@ convert_cols <- function(df, types_df) {
   #   in df
   # if there are columns within types_df other than col_name and col_type,
   #   they are swallowed by the fact that convert_ takes dots (...)
-  purrr::invoke_rows(.d = types_df_nest,
-                     .f = convert_)
+  purrr::pmap(.l = types_df_nest,
+              .f = convert_)
 
   # return the new dataframe
   df_converted
@@ -181,7 +181,7 @@ convert_cols <- function(df, types_df) {
 #'   \item An inner function, \code{update_}, that updates the specification by
 #'   setting the \code{class} attribute for the given column.
 #'   \item The enclosing environment that contains the specification to be
-#'   updated and contains a call to \link[purrr]{invoke_rows} to drive
+#'   updated and contains a call to \link[purrr]{pmap} to drive
 #'   iteration.
 #' }
 #'
@@ -223,7 +223,7 @@ spec_update <- function(col_spec, col_spec_df) {
 
   # trailing underscore represents a "private" function
   update_ <- function(col_name, col_type, ...) {
-    # swallow dots when using as part of invoke_rows
+    # swallow dots when using as part of pmap
     # used in case col_spec_df has other columns contained within
     dots <- list(...)
 
@@ -269,7 +269,7 @@ spec_update <- function(col_spec, col_spec_df) {
 
   # iterate over the col_spec_df dataframe, which tells us how to update the
   #   column specification
-  purrr::invoke_rows(.d = col_spec_df,
+  purrr::pmap(.l = col_spec_df,
                      .f = update_)
 
   # return the updated spec
@@ -347,7 +347,7 @@ spec_from_df <- function(df) {
     type_list <- list()
     # iterate over the df dataframe, which tells us what type each column
     #   should be
-    purrr::invoke_rows(.d = df,
+    purrr::pmap(.l = df,
                        .f = type_list_update_)
 
     # return the updated spec using a "private" function from readr

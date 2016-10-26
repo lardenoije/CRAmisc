@@ -87,8 +87,7 @@ xml_get_text <- function(x, xpath) {
 #'
 #' A more complex use would be to use as a UDF to parse an arbitrary number of
 #' text and attribute values from an XML document.  This can be accomplished
-#' utilizing a dataframe holding parameter values, \code{purrr::pmap}, and
-#' \code{purrr::invoke_rows}.
+#' utilizing a dataframe holding parameter values and \code{purrr::pmap}.
 #'
 #' Because \link[xml2]{xml_find_first} is the function utilized in
 #' \code{xml_extract}, errors are consumed.  This is helpful when iterating over
@@ -147,7 +146,7 @@ xml_extract <- function(x,
   }
 
   # assign a name to the result
-  # useful if using with pmap and invoke_rows
+  # useful if using with pmap
   if(!is.null(ret_var_name)) names(xpath_result) <- ret_var_name
 
   xpath_result

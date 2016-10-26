@@ -37,8 +37,7 @@ function.  For details see \code{vignette("chunked-invoke-rows-xml")}.
 
 A more complex use would be to use as a UDF to parse an arbitrary number of
 text and attribute values from an XML document.  This can be accomplished
-utilizing a dataframe holding parameter values, \code{purrr::pmap}, and
-\code{purrr::invoke_rows}.
+utilizing a dataframe holding parameter values and \code{purrr::pmap}.
 
 Because \link[xml2]{xml_find_first} is the function utilized in
 \code{xml_extract}, errors are consumed.  This is helpful when iterating over

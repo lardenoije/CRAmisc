@@ -38,7 +38,7 @@ that require updating.
   \item An inner function, \code{update_}, that updates the specification by
   setting the \code{class} attribute for the given column.
   \item The enclosing environment that contains the specification to be
-  updated and contains a call to \link[purrr]{invoke_rows} to drive
+  updated and contains a call to \link[purrr]{pmap} to drive
   iteration.
 }
 }

@@ -115,8 +115,7 @@ simple use is to include <code>xml_extract</code> as part of a <code>dplyr::muta
 function.  For details see <code>vignette(&quot;chunked-invoke-rows-xml&quot;)</code>.</p>
     <p>A more complex use would be to use as a UDF to parse an arbitrary number of
 text and attribute values from an XML document.  This can be accomplished
-utilizing a dataframe holding parameter values, <code>purrr::pmap</code>, and
-<code>purrr::invoke_rows</code>.</p>
+utilizing a dataframe holding parameter values and <code>purrr::pmap</code>.</p>
     <p>Because <a href='http://www.rdocumentation.org/packages/xml2/topics/xml_find_all'>xml_find_first</a> is the function utilized in
 <code>xml_extract</code>, errors are consumed.  This is helpful when iterating over
 a set of XML documents where the schemas are inconsistent.</p>
